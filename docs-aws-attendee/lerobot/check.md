@@ -64,7 +64,7 @@ done
 
 ---
 
-[実習の進め方](../aws-workflow.md) · [次へ: キャリブレーション](calibration.md)
+[前へ: EC2 への接続](../connect.md) · [次へ: キャリブレーション](calibration.md)
 
 {% if audience == "staff" %}
 

@@ -38,7 +38,9 @@ gclue-ai-handson-attendee dcv
 このターミナルは接続のために開いたままにし、終了するときだけ Ctrl+C を押します。
 
 [ポートが使用中・パスワード忘れ・証明書の警告](reference/connect.md#dcv)は逆引きページを確認してください。
-次は [教材の取得と LeRobot の表示](dataset.md)へ進みます。
+次は手元の Jetson／Mac に戻り、[ロボットとカメラの接続確認](lerobot/check.md)へ進みます。DCV の接続用ターミナルは開いたまま、手元の操作には別のターミナルを使い、[導入時の有効化](setup.md#3)を行ってから続けてください。
+
+学習を行わない基本コースでは、手元の収集・学習・推論を省略し、[配布教材の確認](dataset.md)へ進みます。
 
 別の方法で作業する場合の [SSH・VS Code 接続](reference/connect.md#ssh)、
 [Git の送受信](reference/connect.md#git)は逆引きページにあります。
