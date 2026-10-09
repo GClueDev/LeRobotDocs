@@ -21,7 +21,7 @@ gclue-ai-handson-attendee files pull --prefix datasets/ \
   --dest ./datasets
 ```
 
-これは共有領域 `shared/datasets/` の取得です。現行教材取得と違い、任意の `--prefix` 取得に manifest の SHA 検証が必ず付くわけではありません。講師のチェックサム表があれば別に照合してください。
+これは共有領域 `shared/datasets/` の取得です。取得後は `meta/info.json` の存在と、データの情報・映像を確認してください。
 
 ## モデル以外のファイルを保存するとき
 
@@ -94,7 +94,7 @@ cmp proof.txt downloaded/proof.txt
 
 `cmp` が何も表示せず終了すれば内容が一致しています。フォルダを upload した場合はフォルダ名も保存されるので、例の `checkpoints` は回収先の `./recovered/checkpoints/` に入ります。
 
-EC2 で AWS CLI を使うときは、講師が用意した一時認証情報を読み込んでから実行し、有効期限切れなら再配布を依頼してください。`aws s3 cp` の成功だけで回収完了とせず、手元へ戻したファイルのサイズ・ハッシュまたは `cmp` も確認します。
+EC2 で AWS CLI を使うときは、講師が用意した一時認証情報を読み込んでから実行し、有効期限切れなら再配布を依頼してください。`aws s3 cp` の成功だけで回収完了とせず、手元へ戻したファイルのサイズ・内容または `cmp` も確認します。
 
 ## 導入先を変更した場合の片付け {#custom-directory}
 

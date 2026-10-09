@@ -11,7 +11,7 @@ scp -r '<手元のデータセットフォルダ>' \
   'gclue-ai-handson-{{EVENT_ID}}:/home/ubuntu/lerobot/'
 ```
 
-コピー後に EC2 で `meta/info.json` の存在を確認し、講師から受け取ったチェックサムで照合します。
+コピー後に EC2 で `meta/info.json` の存在を確認し、データの情報と映像を確認します。
 
 ## Parquet を読めない：Git LFS の実体化 {#git-lfs}
 
