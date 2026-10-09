@@ -98,24 +98,36 @@ def on_pre_page_macros(env):
                  "staff/instructor/index.md", "staff/environment/index.md"}
     if audience != "attendee" and page in summaries:
         status = "有効" if policy["enabled"] else "無効（掲載しません）"
+        audience_label = {
+            "attendee": "受講者",
+            "staff": "講習会側（講師・環境構築担当者）",
+            "instructor": "講師",
+            "environment": "環境構築担当者",
+        }[audience]
+        console_status = "掲載する（true）" if policy["enabled"] else "掲載しない（false）"
         summary = f"""
 
 ## このビルドで有効・無効な手順
 
-| 項目 | このビルドの設定 |
-| --- | --- |
-| audience | `{audience}` |
-| 読み込んだ開催YAML | {policy['source']} |
-| YAML SHA-256 | `{policy['sha256']}` |
-| `aws.handson.attendee_console_access` | `{str(policy['enabled']).lower()}` |
-| 受講者のコンソールURL生成・直接操作・S3画面リンク | {status} |
-| 講師による受講者向けコンソールURLの配布案内 | {status} |
-| 講師・構築担当者自身の管理コンソール手順 | 有効（管理者自身の権限を使用） |
-| CLIによるS3転送・SSM（シェル接続）・SSH・Amazon DCV（リモートデスクトップ接続） | 有効 |
+<table class="aws-build-summary">
+<thead><tr><th>項目</th><th>このビルドの設定</th></tr></thead>
+<tbody>
+<tr><td>対象読者</td><td>{audience_label}</td></tr>
+<tr><td>読み込んだ講習会設定ファイル</td><td>{policy['source']}</td></tr>
+<tr><td>設定ファイルの照合値（SHA-256）</td><td><code>{policy['sha256']}</code></td></tr>
+<tr><td>受講者の AWS コンソール利用手順<br>（設定名：<code>aws.handson.attendee_console_access</code>）</td><td>{console_status}</td></tr>
+<tr><td>受講者のコンソールURL生成・直接操作・S3画面リンク</td><td>{status}</td></tr>
+<tr><td>講師による受講者向けコンソールURLの配布案内</td><td>{status}</td></tr>
+<tr><td>講師・構築担当者自身の管理コンソール手順</td><td>有効（管理者自身の権限を使用）</td></tr>
+<tr><td>CLIによるS3転送・SSM（シェル接続）・SSH・Amazon DCV（リモートデスクトップ接続）</td><td>有効</td></tr>
+</tbody>
+</table>
 
-これは静的ビルドに含まれる手順の表示設定です。実AWSのIAM適用を照会した証明ではありません。YAML未指定の通常プレビューは互換性のためtrueとなり、開催用の配布資料には正本YAMLを明示して再ビルドしてください。ブラウザの各種値やJSONインポートでこの設定は変更できません。
+講習会設定ファイルは、AWS 環境と講習資料に共通で使う設定ファイルです。照合値（SHA-256）は、同じ入力ファイルを使ったかを確認するための値です。
 
-falseに変更する場合は、同じ正本YAMLを変更 → AWS Sign-Inの有効化状態を確認 → CDK deploy → 受講者・インスタンスロールのIAM適用を確認 → 資格情報の払い出しと資料の再ビルド、の順で進めます。資料だけをfalseにしてもAWSのアクセスは拒否されません。
+この表は資料に掲載する手順の設定を示します。実際の AWS の権限設定を確認した証明ではありません。設定ファイルを指定しない通常プレビューでは、互換性のためコンソール利用手順を掲載します（true）。開催用の配布資料は、AWS 環境の構築に使った正本の設定ファイルを指定して再ビルドしてください。ブラウザの各種値や JSON インポートでこの設定は変更できません。
+
+コンソール利用手順を掲載しない設定（false）へ変更する場合は、同じ正本の設定ファイルを変更 → AWS Sign-Inの有効化状態を確認 → CDK deploy → 受講者・インスタンスロールのIAM適用を確認 → 資格情報の払い出しと資料の再ビルド、の順で進めます。資料だけを非掲載（false）にしても AWS のアクセスは拒否されません。
 
 ---
 

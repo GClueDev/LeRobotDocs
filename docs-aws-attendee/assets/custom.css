@@ -55,3 +55,26 @@ body {
 .md-typeset h2::before {
     content: "✅";
 }
+
+/* ビルド設定の長い照合値・設定名も、画面幅に合わせて折り返す。 */
+.md-typeset table.aws-build-summary {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.05rem solid var(--md-typeset-table-color);
+    font-size: 0.64rem;
+}
+.md-typeset table.aws-build-summary th,
+.md-typeset table.aws-build-summary td {
+    padding: 0.8em 1em;
+    vertical-align: top;
+    text-align: left;
+    border-top: 0.05rem solid var(--md-typeset-table-color);
+    overflow-wrap: anywhere;
+}
+.md-typeset table.aws-build-summary code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
