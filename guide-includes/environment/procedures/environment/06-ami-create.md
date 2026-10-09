@@ -40,7 +40,7 @@
      --output text
    ```
 
-   `create-image` の最後の ImageId を下の欄へ転記します。例: `ami-0fedcba9876543210`。元の AMI ID や開催用 AMI ID はこの時点で上書きしません。
+   先ほどの AMI 作成コマンドで表示された、`ami-` で始まる ID を下の「作成した AMI ID」欄へ転記します。例: `ami-0fedcba9876543210`。元の AMI ID や開催用 AMI ID はこの時点で上書きしません。
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="NEW_AMI_ID"></div>
 
@@ -86,7 +86,7 @@
 
 6. 設定ファイルの `aws.handson_cdk.instance.ami_id` に、新しい AMI ID を書きます。
 
-   状態が `available` と確認できたら、新しい AMI ID を下の「使用する AMI ID」へ転記し、開催 YAML の `ami_id` も同じ値にします。
+   状態が `available` と確認できたら、新しい AMI ID を下の「開催で使用する AMI ID」欄へ転記し、開催の設定ファイル（`{{CONFIG_DIR}}/gclue-ai-handson-config.yml`）の `aws.handson_cdk.instance.ami_id` にも同じ値を書きます。フォームへの入力だけでは、このファイルは更新されません。
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="AMI_ID"></div>
 

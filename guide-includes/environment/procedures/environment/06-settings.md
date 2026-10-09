@@ -1,6 +1,6 @@
 ## 2. 開催の設定ファイルを用意する
 
-ここは構築の設定値です。構築担当・管理者が確定した内容を入力し、同じ内容を開催 YAML に記載します。フォームを変えても YAML は変更されません。AMI を作り直す工程の元・新・一時 ID は、この開催用 AMI の欄と区別します。
+ここは構築の設定値です。構築担当・管理者が確定した内容を入力し、同じ内容を開催の設定ファイルに記載します。フォームを変えても設定ファイルは変更されません。AMI を作り直す工程の元・新・一時 ID は、この開催用 AMI の欄と区別します。
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="CONFIG_DIR EVENT_ID ACCOUNT_ID REGION PROFILE INSTANCE_TYPE AMI_ID"></div>
 
@@ -28,7 +28,7 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 | `aws.handson.account` | アカウント ID（12 桁。`"` で囲む） | [AWS アカウントの状態を確かめる](<<= guide_link('staff/preparation/environment-start.md#13-aws') =>>) で表示した値 |
 | `aws.handson.region` | リージョン（例: `ap-northeast-1`） | 管理者から受け取る |
 | `aws.handson.attendees` | 受講者 ID の一覧（1 件につき EC2 を 1 台作る。`shared` は使えない） | [用意するもの](<<= guide_link('staff/preparation/environment-start.md#_6') =>>) |
-| `aws.handson.attendee_console_access` | 受講者のAWSコンソール利用。真偽値 `true` / `false`、省略時true。インフラと資料で同じ開催YAMLを使用 | [コンソール利用設定の切替・適用確認](<<= guide_link('staff/environment/specs/access-control.md#false') =>>)に従う |
+| `aws.handson.attendee_console_access` | 受講者のAWSコンソール利用。真偽値 `true` / `false`、省略時true。インフラと資料で同じ開催の設定ファイルを使用 | [コンソール利用設定の切替・適用確認](<<= guide_link('staff/environment/specs/access-control.md#false') =>>)に従う |
 | `aws.handson.max_session_duration_seconds` | 受講者に渡す認証情報の有効期間の上限（秒、3600〜43200）。通常は 43200（12 時間）のまま | — |
 | `aws.handson.dcv_port` | Amazon DCV（リモートデスクトップ接続）の待ち受けポート。通常は 8443 のまま | — |
 | `aws.handson_cdk.network.vpc_cidr` | VPC の IP アドレスの範囲。アカウント内の他の VPC と重ならなければ記載例のまま | 下の VPC CIDR 確認コマンド |
