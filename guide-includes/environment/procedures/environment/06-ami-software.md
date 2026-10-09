@@ -31,7 +31,7 @@
    base64 < "$SETUP_SCRIPT" | fold -w 76
    ```
 
-   **EC2 の Terminal**（手順 2 の `ubuntu` ユーザー）で、次の 1 行を実行します。
+   **EC2 の Terminal**（`sudo -iu ubuntu` で切り替えた `ubuntu` ユーザー）で、次の 1 行を実行します。
 
    ```bash
    base64 -d > ~/setup-lerobot-ec2.sh <<'SETUP_BASE64'
@@ -97,7 +97,7 @@
 4. AMI の条件を満たしていることを確かめます。
 
    ソフトウェアを入れた後も、SSM Agent（EC2 側で接続・操作を受け付けるソフトウェア）、ed25519 のホスト鍵を持つ sshd、`git`、`flock`、GNU の `date`、`ubuntu` ユーザーへのパスワードなしの `sudo` が使える必要があります（DCV を使う講習会では DCV サーバーも。条件は [インフラ構成の仕様](<<= guide_link('staff/environment/specs/infrastructure.md') =>>) の「AMI」）。
-   `exit` で `ubuntu` ユーザーから抜け、Session Manager で入ったユーザーのまま、5.4 と同じ確認のコマンドを実行します。
+   `exit` で `ubuntu` ユーザーから抜け、Session Manager で入ったユーザーのまま、[（任意）インスタンスの中身を確かめる](<<= guide_link('staff/preparation/verify.md#54') =>>) と同じ確認のコマンドを実行します。
    `sudo-ok`、`sshd-ok`、`hostkey-ok` と、`git` と `flock` の場所の 2 行が表示されれば満たしています。
 
 5. AMI に残してはいけないものを消します。

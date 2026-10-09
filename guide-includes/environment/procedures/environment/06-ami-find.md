@@ -4,12 +4,12 @@
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="AMI_ID"></div>
 
-2.3 の AMI（以下「元の AMI」）に講義で使うソフトウェアを入れた AMI（以下「導入済みの AMI」）を使うと、受講者全員のインスタンスが、そのソフトウェアが入った状態で起動します。
+[AMI を選ぶ](<<= guide_link('staff/preparation/event-settings.md#23-ami') =>>) の AMI（以下「元の AMI」）に講義で使うソフトウェアを入れた AMI（以下「導入済みの AMI」）を使うと、受講者全員のインスタンスが、そのソフトウェアが入った状態で起動します。
 導入済みの AMI は、特定の開催のものではなく、同じ AWS アカウント・リージョンの複数の開催で使い回せます。
-前の開催で作った導入済みの AMI を使うのが通常で、2.4.1 で見つかれば、その AMI ID を設定ファイルに書くだけで済みます。
-新しく作るのは、使える導入済みの AMI がない場合だけです（2.4.2〜2.4.4）。
+前の開催で作った導入済みの AMI を使うのが通常で、[作ってある導入済みの AMI を探す](<<= guide_link('staff/preparation/ami-find.md#241-ami') =>>) で見つかれば、その AMI ID を設定ファイルに書くだけで済みます。
+新しく作るのは、使える導入済みの AMI がない場合だけです（[一時的なインスタンスを起動する](<<= guide_link('staff/preparation/ami-launch.md#242') =>>)〜[AMI を作る](<<= guide_link('staff/preparation/ami-create.md#244-ami') =>>)）。
 AMI の作成は AWS CLI で手動で行い、LeRobot の導入にはインフラリポジトリのシェルスクリプトを使います（理由は [インフラ構成の仕様](<<= guide_link('staff/environment/specs/infrastructure.md') =>>) の「AMI」）。
-2.3 の AMI に必要なソフトウェアがそろっている場合は、2.4 を飛ばして 2.5 へ進みます。
+[AMI を選ぶ](<<= guide_link('staff/preparation/event-settings.md#23-ami') =>>) の AMI に必要なソフトウェアがそろっている場合は、[（任意）ソフトウェアを導入済みの AMI を用意する](<<= guide_link('staff/preparation/ami-find.md#24-ami') =>>) を飛ばして [ルートデバイス名を調べる](<<= guide_link('staff/preparation/placement.md#25') =>>) へ進みます。
 
 #### 2.4.1 作ってある導入済みの AMI を探す
 
@@ -39,6 +39,6 @@ AMI の作成は AWS CLI で手動で行い、LeRobot の導入にはインフ�
      --output text
    ```
 
-3. 使える AMI があれば、設定ファイルの `aws.handson_cdk.instance.ami_id` にその AMI ID を書き、2.4.5 の注意を読んでから 2.5 へ進みます。
+3. 使える AMI があれば、設定ファイルの `aws.handson_cdk.instance.ami_id` にその AMI ID を書き、[注意](<<= guide_link('staff/preparation/ami-create.md#245') =>>) の注意を読んでから [ルートデバイス名を調べる](<<= guide_link('staff/preparation/placement.md#25') =>>) へ進みます。
 
-   使える AMI がなければ、2.4.2 から新しく作ります。
+   使える AMI がなければ、[一時的なインスタンスを起動する](<<= guide_link('staff/preparation/ami-launch.md#242') =>>) から新しく作ります。

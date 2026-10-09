@@ -1,6 +1,6 @@
 ### 2.5 ルートデバイス名を調べる
 
-[共通設定](<<= guide_link('common.md') =>>) の AMI ID を 2.3 の値（2.4 で導入済みの AMI にした場合はその AMI ID）へ更新して実行し、表示された値（例: `/dev/sda1`）を `root_device_name` に書きます。
+[共通設定](<<= guide_link('common.md') =>>) の AMI ID を [AMI を選ぶ](<<= guide_link('staff/preparation/event-settings.md#23-ami') =>>) の値（[（任意）ソフトウェアを導入済みの AMI を用意する](<<= guide_link('staff/preparation/ami-find.md#24-ami') =>>) で導入済みの AMI にした場合はその AMI ID）へ更新して実行し、表示された値（例: `/dev/sda1`）を `root_device_name` に書きます。
 
 ```bash
 aws --profile {{PROFILE_SH}} --region {{REGION}} \

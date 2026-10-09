@@ -4,7 +4,7 @@
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="SOURCE_AMI_ID BUILD_PROFILE_NAME BUILD_AMI_NAME BUILD_VOLUME_GB"></div>
 
-新しく作る前に、次のものを管理者から受け取っておきます（1.1）。
+新しく作る前に、次のものを管理者から受け取っておきます（[管理者に依頼するもの](<<= guide_link('staff/preparation/environment-start.md#11') =>>)）。
 
 - 一時的なインスタンスに付けるインスタンスプロファイルの名前（AWS 管理ポリシー `AmazonSSMManagedInstanceCore` を付けたロールのもの）
 - AMI を作る権限（一覧は [アクセス制御の仕様](<<= guide_link('staff/environment/specs/access-control.md') =>>) の「管理者の作業」。`AdministratorAccess` があれば足ります）
@@ -15,12 +15,12 @@
 - AMI の名前は `GClueAiHandsOn-AMI-<用途>-<作成日>` とします。`<用途>` は入れるソフトウェアを表す英小文字の短い語（例: `lerobot`）、`<作成日>` は `YYYYMMDD` の形の日付（例: `20261008`）です。以下、この名前を `{{BUILD_AMI_NAME}}` と書きます。
 
 一時的なインスタンスは講習会のスタックの外のもので、作業が終わったら削除します。
-このインスタンスも GPU の vCPU クォータを使うため、受講者のインスタンスと同時に動かす場合は 1.3 の計算に 1 台分を加えます。
+このインスタンスも GPU の vCPU クォータを使うため、受講者のインスタンスと同時に動かす場合は [AWS アカウントの状態を確かめる](<<= guide_link('staff/preparation/environment-start.md#13-aws') =>>) の計算に 1 台分を加えます。
 
 1. インスタンスを置く subnet を選びます。
 
    既定の VPC の subnet と、その Availability Zone を表示します。
-   2.6 の方法で、インスタンスタイプが提供されている Availability Zone の subnet を選んでください。
+   [Availability Zone を選ぶ](<<= guide_link('staff/preparation/placement.md#26-availability-zone') =>>) の方法で、インスタンスタイプが提供されている Availability Zone の subnet を選んでください。
    何も表示されない場合は、インターネットに出られる既存の subnet の ID を管理者に確かめます。
 
    ```bash

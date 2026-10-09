@@ -23,22 +23,22 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 
 | 項目 | 埋める値 | 値の調べ方 |
 | --- | --- | --- |
-| `aws.profile` | 1.1 で用意したプロファイル名 | 管理者から受け取る |
-| `aws.handson.deployment_id` | 開催 ID | 用意するもの |
-| `aws.handson.account` | アカウント ID（12 桁。`"` で囲む） | 1.3 で表示した値 |
+| `aws.profile` | [管理者に依頼するもの](<<= guide_link('staff/preparation/environment-start.md#11') =>>) で用意したプロファイル名 | 管理者から受け取る |
+| `aws.handson.deployment_id` | 開催 ID | [用意するもの](<<= guide_link('staff/preparation/environment-start.md#_6') =>>) |
+| `aws.handson.account` | アカウント ID（12 桁。`"` で囲む） | [AWS アカウントの状態を確かめる](<<= guide_link('staff/preparation/environment-start.md#13-aws') =>>) で表示した値 |
 | `aws.handson.region` | リージョン（例: `ap-northeast-1`） | 管理者から受け取る |
-| `aws.handson.attendees` | 受講者 ID の一覧（1 件につき EC2 を 1 台作る。`shared` は使えない） | 用意するもの |
-| `aws.handson.attendee_console_access` | 受講者のAWSコンソール利用。真偽値 `true` / `false`、省略時true。インフラと資料で同じ開催YAMLを使用 | アクセス制御仕様の切替・適用確認に従う |
+| `aws.handson.attendees` | 受講者 ID の一覧（1 件につき EC2 を 1 台作る。`shared` は使えない） | [用意するもの](<<= guide_link('staff/preparation/environment-start.md#_6') =>>) |
+| `aws.handson.attendee_console_access` | 受講者のAWSコンソール利用。真偽値 `true` / `false`、省略時true。インフラと資料で同じ開催YAMLを使用 | [コンソール利用設定の切替・適用確認](<<= guide_link('staff/environment/specs/access-control.md#false') =>>)に従う |
 | `aws.handson.max_session_duration_seconds` | 受講者に渡す認証情報の有効期間の上限（秒、3600〜43200）。通常は 43200（12 時間）のまま | — |
 | `aws.handson.dcv_port` | Amazon DCV（リモートデスクトップ接続）の待ち受けポート。通常は 8443 のまま | — |
 | `aws.handson_cdk.network.vpc_cidr` | VPC の IP アドレスの範囲。アカウント内の他の VPC と重ならなければ記載例のまま | 下の VPC CIDR 確認コマンド |
-| `aws.handson_cdk.network.availability_zones` / `max_azs` | 2.6 を参照 | 2.6 |
-| `aws.handson_cdk.instance.ami_id` | AMI ID | 2.3（2.4 で導入済みの AMI にした場合はその AMI ID） |
+| `aws.handson_cdk.network.availability_zones` / `max_azs` | [Availability Zone を選ぶ](<<= guide_link('staff/preparation/placement.md#26-availability-zone') =>>) を参照 | [Availability Zone を選ぶ](<<= guide_link('staff/preparation/placement.md#26-availability-zone') =>>) |
+| `aws.handson_cdk.instance.ami_id` | AMI ID | [AMI を選ぶ](<<= guide_link('staff/preparation/event-settings.md#23-ami') =>>)（[（任意）ソフトウェアを導入済みの AMI を用意する](<<= guide_link('staff/preparation/ami-find.md#24-ami') =>>) で導入済みの AMI にした場合はその AMI ID） |
 | `aws.handson_cdk.instance.instance_type` | インスタンスタイプ。通常は `g6e.2xlarge` のまま | — |
 | `aws.handson_cdk.instance.root_volume_size_gb` | ルートディスクの容量（GB）。通常は 512 のまま | — |
-| `aws.handson_cdk.instance.root_device_name` | AMI のルートデバイス名 | 2.5 |
-| `aws.handson_cdk.instance.availability_zone` | インスタンスを置く Availability Zone（任意） | 2.6 |
-| `aws.handson_cdk.issuer.access_key_serial` | 1 のまま | 変えるのは 6.4 のときだけ |
+| `aws.handson_cdk.instance.root_device_name` | AMI のルートデバイス名 | [ルートデバイス名を調べる](<<= guide_link('staff/preparation/placement.md#25') =>>) |
+| `aws.handson_cdk.instance.availability_zone` | インスタンスを置く Availability Zone（任意） | [Availability Zone を選ぶ](<<= guide_link('staff/preparation/placement.md#26-availability-zone') =>>) |
+| `aws.handson_cdk.issuer.access_key_serial` | 1 のまま | 変えるのは [払出し用の鍵を作り直す](<<= guide_link('staff/environment/procedures/environment.md#64') =>>) のときだけ |
 
 手元の Terminal（インフラリポジトリ直下）で、既存 VPC の CIDR を確認します。表示された範囲と重ならない範囲を設定してください。
 
@@ -73,4 +73,4 @@ Ubuntu 22.04 の AMI は、同梱スクリプトの対象外です。DCV と NVI
 - DCV（リモートデスクトップ）で接続する: Amazon DCV サーバーを入れた AMI が必要です。Deep Learning AMI には入っていません。
 - 受講者が SSH・git で接続する: SSH のサーバー（sshd）、`git`、`flock` が入っていて、Session Manager（シェル接続・ポート転送）で入ったユーザーから `ubuntu` ユーザーへパスワードなしで `sudo` できる AMI が必要です。Ubuntu の AWS 公式の AMI と Deep Learning AMI は、通常この条件を満たします。
 
-講義に使う大きなソフトウェア（PyTorch、LeRobot とその依存など）が 2.3 の AMI に入っていない場合は、次の 2.4 で、それを入れた AMI を用意します。
+講義に使う大きなソフトウェア（PyTorch、LeRobot とその依存など）が [AMI を選ぶ](<<= guide_link('staff/preparation/event-settings.md#23-ami') =>>) の AMI に入っていない場合は、次の [（任意）ソフトウェアを導入済みの AMI を用意する](<<= guide_link('staff/preparation/ami-find.md#24-ami') =>>) で、それを入れた AMI を用意します。
