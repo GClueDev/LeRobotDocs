@@ -41,25 +41,15 @@ gclue-ai-handson-attendee files upload ./checkpoints \
 
 ## EC2 のファイルを保存する {#ec2-upload}
 
-講師が自分の EC2 に認証情報ファイルを書き込んだ場合は、自分の EC2 から直接保存できます。
-SSH か DCV のターミナル（`ubuntu` ユーザー）で、次のコマンドを順に実行します。
+講師が EC2 に用意した受講者ツールを使います。DCV の Terminal（`ubuntu` ユーザー）で有効化し、手元と同じ `files upload` を実行します。
 
 ```bash
-source /tmp/gclue-ai-handson-{{EVENT_ID}}-{{ATTENDEE_ID}}.env
+source ~/gclue-ai-handson/{{EVENT_ID}}/activate
+gclue-ai-handson-attendee files upload ./checkpoints \
+  --to models/day1
 ```
 
-```bash
-S3_DEST="s3://$GCLUE_AI_HANDSON_BUCKET/$GCLUE_AI_HANDSON_ATTENDEE/mod"
-S3_DEST+="els/day1/checkpoints/"
-
-aws s3 cp --recursive ./checkpoints "$S3_DEST"
-```
-
-- `S3_DEST`はAWS上の保存先をまとめて覚える変数です。講師の認証ファイル内のバケット名と受講者IDから作り、説明用の例なら `s3://example-handson-workshop01/attendee01/models/day1/checkpoints/` になります。`models/day1`はこの保存例の分類名で、通し実習の `models/学習実行名/` とは別です。[モデル回収](../aws-model-recovery.md)を進めている場合は、そちらの保存先と取得手順を使います。
-- 認証情報ファイルの場所は、講師から別の場所を案内された場合はそれに従います。
-- `./checkpoints`: 保存するフォルダ。`models/day1/checkpoints/` は保存先で、変えてもかまいません。
-
-エラーが表示されずに、`upload:` で始まる行がファイルごとに表示されれば成功です。
+フォルダ名も付くため、自分専用の `models/day1/checkpoints/` に保存されます。通し実習では[モデル回収](../aws-model-recovery.md)の実行名と保存先を使い、この例と混ぜないでください。
 
 ## 保存したファイルを取り戻す {#recover}
 
@@ -94,7 +84,7 @@ cmp proof.txt downloaded/proof.txt
 
 `cmp` が何も表示せず終了すれば内容が一致しています。フォルダを upload した場合はフォルダ名も保存されるので、例の `checkpoints` は回収先の `./recovered/checkpoints/` に入ります。
 
-EC2 で AWS CLI を使うときは、講師が用意した一時認証情報を読み込んでから実行し、有効期限切れなら再配布を依頼してください。`aws s3 cp` の成功だけで回収完了とせず、手元へ戻したファイルのサイズ・内容または `cmp` も確認します。
+EC2 でも受講者ツールを有効化してから実行し、有効期限切れなら講師に更新を依頼してください。転送の成功だけで回収完了とせず、手元へ戻したファイルのサイズ・内容または `cmp` も確認します。
 
 ## 導入先を変更した場合の片付け {#custom-directory}
 
@@ -102,6 +92,6 @@ EC2 で AWS CLI を使うときは、講師が用意した一時認証情報を�
 
 ## チェックポイントのリンクと転送オプション {#checkpoint-links}
 
-`checkpoints/last` が別のチェックポイントへのシンボリックリンクでも、リンク先のファイルを `last/` の名前で転送します。手元では `last` は通常のディレクトリになります。各ステップのチェックポイントも回収します。[AWS CLI のリンクの扱い](https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html)も参照してください。
+`checkpoints/last` が別のチェックポイントへのシンボリックリンクでも、リンク先のファイルを `last/` の名前で転送します。手元では `last` は通常のディレクトリになります。各ステップのチェックポイントも回収します。
 
-`--recursive` はフォルダ内の各ファイルを、`--follow-symlinks` はリンク先の実体を転送する指定です。[モデル回収](../aws-model-recovery.md)では必要な指定を含めているので、変更せず使ってください。
+`files upload` はフォルダ内のファイルとリンク先の実体を転送します。受講者が `--recursive` や `--follow-symlinks` を指定する必要はありません。フォルダ名 `checkpoints` も保存先に付きます。`files pull --own --prefix models/学習実行名` で取得すると、その中の `checkpoints/` が取得先に作られます。

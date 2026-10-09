@@ -6,26 +6,23 @@
 
 実行場所: **EC2 の Ubuntu**。前の学習で使った `RUN_NAME` と `TRAIN_OUTPUT_DIR` を使います。学習が正常に終了し、ファイルへの書き込みが止まったことを確認してから進めます。同じ実行名へ保存し直す場合も、保存中に学習を再開しません。
 
-`RUN_NAME`は[学習](lerobot/train.md)で自動作成された実行名（説明用の例は `act-20261009-103000`）、`TRAIN_OUTPUT_DIR`はその学習結果のEC2内のフォルダです。学習時の値をそのまま使います。`S3_ROOT`は講師の認証情報から作る自分専用のS3保存先です。[AWSへの転送](aws-transfer.md)と同じ値で、自分でバケット名を考えません。
+`RUN_NAME`は[学習](lerobot/train.md)で自動作成された実行名（説明用の例は `act-20261009-103000`）、`TRAIN_OUTPUT_DIR`はその学習結果のEC2内のフォルダです。学習時の値をそのまま使います。バケット名・受講者 ID・リージョンは講師が導入した受講者ツールの設定から読み込みます。`--to` には自分専用の領域内の保存先だけを指定します。
 
 推論に必要な設定ファイルがあることを確認し、チェックポイントの各ファイルを保存します。
 
 ```bash
-source /tmp/gclue-ai-handson-{{EVENT_ID}}-{{ATTENDEE_ID}}.env
-S3_ROOT="s3://$GCLUE_AI_HANDSON_BUCKET"
-S3_ROOT+="/$GCLUE_AI_HANDSON_ATTENDEE"
+source ~/gclue-ai-handson/{{EVENT_ID}}/activate
 (
   set -e
   MODEL_DIR="$TRAIN_OUTPUT_DIR/checkpoints/last/pretrained_model"
   test -s "$MODEL_DIR/config.json"
-  aws s3 cp "$TRAIN_OUTPUT_DIR/checkpoints/" \
-    "$S3_ROOT/models/$RUN_NAME/checkpoints/" \
-    --recursive --follow-symlinks
+  gclue-ai-handson-attendee files upload \
+    "$TRAIN_OUTPUT_DIR/checkpoints" --to "models/$RUN_NAME"
   printf '学習実行名: %s\n' "$RUN_NAME"
 )
 ```
 
-転送がエラーなく終了したことを確認し、表示された学習実行名を控えます。自分専用の `models/学習実行名/` に保存されます。認証切れなら更新後に保存し直します。
+転送がエラーなく終了したことを確認し、表示された学習実行名を控えます。自分専用の `models/学習実行名/` に保存されます。認証切れなら講師に更新を依頼し、有効化し直してから保存します。
 
 リンクや転送オプションは[チェックポイント転送の補足](reference/files.md#checkpoint-links)を参照してください。
 

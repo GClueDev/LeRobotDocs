@@ -28,24 +28,22 @@ gclue-ai-handson-attendee dcv
 
 トンネル用のターミナルは開いたまま、案内された URL から DCV にログインします。DCV デスクトップ内で Terminal を開き、以降の EC2 工程はそこで実行します。
 
-実行場所: **EC2 の Ubuntu**。講師が LeRobot と受講者用の一時認証情報を配置済みであることが前提です。
+実行場所: **EC2 の Ubuntu**。講師が LeRobot と受講者ツールを準備済みであることが前提です。
 
 ```bash
 whoami
 cd ~/lerobot
 uv run --no-sync python --version
 uv run --no-sync lerobot-train --help
-source /tmp/gclue-ai-handson-{{EVENT_ID}}-{{ATTENDEE_ID}}.env
+source ~/gclue-ai-handson/{{EVENT_ID}}/activate
 DATASET_DIR={{DATASET_DIR_SH}}
-S3_ROOT="s3://$GCLUE_AI_HANDSON_BUCKET"
-S3_ROOT+="/$GCLUE_AI_HANDSON_ATTENDEE"
 ```
 
 `DATASET_DIR`は右上の「各種値の設定」で入力したEC2側の保存先を、このターミナルで取得に使うために覚える変数です。情報確認の識別名も、同じ設定からコマンドへ反映されます。自分の収集データを取得する場合、例えば `/home/ubuntu/handson-data/workshop01/attendee01/round1` のような未使用のフォルダを講師と確認します。配布データの場合は、講師が既に置いた場所を指定します。
 
-`source` は講師がEC2に配置した認証情報ファイルをこのターミナルへ読み込む操作です。ファイル内の `GCLUE_AI_HANDSON_BUCKET` はS3バケット名、`GCLUE_AI_HANDSON_ATTENDEE` は自分の受講者IDで、自分で作る値ではありません。`S3_ROOT`はこの2つから作る自分専用の保存先です。説明用の値なら `s3://example-handson-workshop01/attendee01` となります。
+`source` は講師が EC2 に用意した受講者ツールを有効化します。バケット名・受講者 ID・リージョンは導入済みの設定から読み込まれるので、S3 バケットパスを組み立てる必要はありません。`--own` は自分専用の領域、`--prefix datasets/round1` はその中の保存先を指定します。
 
-`whoami` が `ubuntu` であることを確認します。認証情報がない・期限切れの場合は講師に再配布を依頼します。EC2 上で依存を追加・更新せず、環境の不足は講師に確認します。
+`whoami` が `ubuntu` であることを確認します。ツールがない・認証情報が期限切れの場合は講師へ確認します。EC2 上で依存を追加・更新せず、環境の不足は講師に確認します。
 
 この工程は自分で収集したデータの取得です。講師の配置済み教材を使う場合は[教材とデータ確認](dataset.md)へ進みます。
 
@@ -59,8 +57,8 @@ S3_ROOT+="/$GCLUE_AI_HANDSON_ATTENDEE"
     exit 1
   }
   mkdir -p "$DATASET_DIR"
-  aws s3 cp "$S3_ROOT/datasets/round1/" \
-    "$DATASET_DIR/" --recursive
+  gclue-ai-handson-attendee files pull --own \
+    --prefix datasets/round1 --dest "$DATASET_DIR"
   cd "$DATASET_DIR"
   test -f meta/info.json
 )
