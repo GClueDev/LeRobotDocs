@@ -1,6 +1,6 @@
 # キャリブレーション
 
-実行場所: **手元の Jetson／Mac**。[接続の確認](check.md)で設定したポートを使います。機器の可動範囲を空け、停止操作ができる状態で進めます。
+実行場所: **手元の Jetson／Mac**。[接続の確認](check.md)で右上の設定へ入力したポートがコマンドに入ります。機器の可動範囲を空け、停止操作ができる状態で進めます。
 
 `--teleop.id` の `my_leader_arm` と `--robot.id` の `my_follower_arm` は、LeRobotが機器ごとの調整結果を保存・再利用するための名前です。この手順ではこの2つを使います。講師が機器ごとに別名を指定した場合は、以下と後続の収集・推論のコマンドをすべて同じ指定名へ揃えてください。USB接続先のポート名とは別です。
 
@@ -11,7 +11,7 @@
 ```bash
 lerobot-calibrate \
   --teleop.type=so101_leader \
-  --teleop.port="$TELEOP_PORT" \
+  --teleop.port={{TELEOP_PORT_SH}} \
   --teleop.id=my_leader_arm
 ```
 
@@ -22,7 +22,7 @@ lerobot-calibrate \
 ```bash
 lerobot-calibrate \
   --robot.type=so101_follower \
-  --robot.port="$ROBOT_PORT" \
+  --robot.port={{ROBOT_PORT_SH}} \
   --robot.id=my_follower_arm
 ```
 
@@ -31,10 +31,10 @@ lerobot-calibrate \
 ```bash
 lerobot-teleoperate \
   --robot.type=so101_follower \
-  --robot.port="$ROBOT_PORT" \
+  --robot.port={{ROBOT_PORT_SH}} \
   --robot.id=my_follower_arm \
   --teleop.type=so101_leader \
-  --teleop.port="$TELEOP_PORT" \
+  --teleop.port={{TELEOP_PORT_SH}} \
   --teleop.id=my_leader_arm
 ```
 

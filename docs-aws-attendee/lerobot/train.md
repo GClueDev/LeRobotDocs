@@ -32,8 +32,8 @@ TRAIN_OUTPUT_DIR="$HOME/handson-work/{{EVENT_ID}}"
 TRAIN_OUTPUT_DIR+="/{{ATTENDEE_ID}}/outputs/$RUN_NAME"
 export HF_HUB_OFFLINE=1
 uv run --no-sync lerobot-train \
-  --dataset.root="$DATASET_DIR" \
-  --dataset.repo_id="$DATASET_REPO_ID" \
+  --dataset.root={{DATASET_DIR_SH}} \
+  --dataset.repo_id={{DATASET_REPO_ID_SH}} \
   --dataset.video_backend=pyav \
   --policy.type=act \
   --output_dir="$TRAIN_OUTPUT_DIR" \
@@ -54,25 +54,7 @@ uv run --no-sync lerobot-train \
 
 学習ログの終了とチェックポイントを確認します。5000ステップだけでタスクが成功するとは限りません。従来の Jetson の学習時間を EC2 の実績としては扱いません。
 
-## 2. 学習の継続
-
-`steps` は追加回数ではなく、継続後に到達させる総ステップ数です。5000から15000ステップへ続ける例です。
-
-```bash
-TRAIN_CONFIG_PATH="$TRAIN_OUTPUT_DIR/checkpoints/last"
-TRAIN_CONFIG_PATH+="/pretrained_model/train_config.json"
-uv run --no-sync lerobot-train \
-  --config_path="$TRAIN_CONFIG_PATH" \
-  --resume=true \
-  --steps=15000 \
-  --policy.push_to_hub=false \
-  --save_checkpoint_to_hub=false \
-  --wandb.enable=false
-```
-
-`TRAIN_CONFIG_PATH`は前回の学習条件を記録したファイルの場所で、下の設定で学習結果のフォルダの中の `checkpoints/last/pretrained_model/train_config.json` を指します。別の学習結果を指定しないよう、同じ `TRAIN_OUTPUT_DIR` を使います。
-
-実際にできた `train_config.json` の場所を確認します。`RUN_NAME` と `TRAIN_OUTPUT_DIR` を控えます。
+追加の操作が必要な場合は[学習の継続](../reference/values.md#resume-training)を参照してください。
 
 ## AWS 経由でモデルを回収する
 

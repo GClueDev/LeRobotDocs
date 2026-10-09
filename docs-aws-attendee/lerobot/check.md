@@ -1,6 +1,6 @@
 # 接続の確認
 
-従来と同じ順で、ロボットを接続した手元の Jetson／Mac を確認します。AWS の受講者環境は先に [PC の準備と更新](../setup.md)で用意し、[各種値の設定](../common.md)で開催・受講者・データセットの値を設定してください。
+従来と同じ順で、ロボットを接続した手元の Jetson／Mac を確認します。AWS の受講者環境は先に [PC の準備と更新](../setup.md)で用意し、右上の「各種値の設定」で開催・受講者・データセットの値を入力してください。[設定の使い方](../common.md)も参照できます。
 
 ## 1. 接続確認
 
@@ -26,33 +26,18 @@
     lerobot-find-port
     ```
 
-ここで設定する値は、ロボットを接続した手元の機器で使います。以下の例は説明用で、実際の検出結果と講師の案内に置き換えます。
+検出したLeaderとFollowerの接続先を右上の「各種値の設定」の同名欄へ入力します。手元のLeRobot作業フォルダも講師に確認して入力してください。例えばMacなら `/Users/student/lerobot`、Leaderは `/dev/tty.usbmodem12301`、Followerは `/dev/tty.usbmodem12302` ですが、実際の検出結果を使います。Jetsonの例と各値の意味は[値と機器の対応](../reference/values.md#local-values)を参照してください。
 
-| コマンドでの名前 | 意味と設定方法 | 説明用の例 |
-| --- | --- | --- |
-| `PROJECT_DIR` | LeRobotを準備した作業フォルダ。講師に手元の配置先を確認する | Macの `/Users/student/lerobot`、Jetsonの `/home/student/lerobot` |
-| `TELEOP_PORT` | 人が動かすLeaderアームのUSB接続先。上の検出結果からLeaderに対応するものを選ぶ | Jetsonの `/dev/ttyACM0`、Macの `/dev/tty.usbmodem12301` |
-| `ROBOT_PORT` | Leaderに追従するFollowerアームのUSB接続先。Leaderと取り違えない | Jetsonの `/dev/ttyACM1`、Macの `/dev/tty.usbmodem12302` |
-| `LOCAL_DATASET_DIR` | 手元で本収集するデータの保存フォルダ。下のコマンドが自分のホームフォルダ・開催ID・受講者IDから組み立てる | Macの `/Users/student/handson-data/workshop01/attendee01/round1` |
-| `DATASET_REPO_ID` | 映像と動作記録の一組に付ける識別名。[各種値の設定](../common.md)で講師指定の値を入力する | `attendee01/red-cube` |
-| `TASK` | ロボットにさせたい作業の説明文。講師の課題に合わせ、収集と推論で同じ文を使う | `Pick up the red cube`（赤い立方体を持ち上げる） |
-
-`$HOME`は現在操作中の機器の自分のホームフォルダです。下の `+=` は、直前に設定した文字列の末尾へ続きの文字列を付け足します。`round1`は1回目の収集分を区別する名前です。新しい収集分なら`round2`など未使用の名前へ変え、転送先も合わせます。
-
-検出した Leader／Follower のポート、手元の LeRobot 作業場所、収集先を設定します。`<…>` は手動で置き換えます。以降の手元の実習は、このターミナルで続けて実行します。
+以下は手元の収集先を開催・受講者IDから作り、作業フォルダへ移るコマンドです。収集先はEC2のデータの場所とは別です。以降も同じターミナルで進めます。
 
 ```bash
-PROJECT_DIR='<LeRobot作業ディレクトリ>'
-TELEOP_PORT='<Leaderのポート>'
-ROBOT_PORT='<Followerのポート>'
 LOCAL_DATASET_DIR="$HOME/handson-data/{{EVENT_ID}}"
 LOCAL_DATASET_DIR+="/{{ATTENDEE_ID}}/round1"
-DATASET_REPO_ID={{DATASET_REPO_ID_SH}}
 TASK='Pick up the red cube'
-cd "$PROJECT_DIR"
+cd {{PROJECT_DIR_SH}}
 ```
 
-`DATASET_REPO_ID` は手元と EC2 で共通、`LOCAL_DATASET_DIR` は手元の収集先です。共通設定の `DATASET_DIR` は EC2 の場所です。キャリブレーション・収集・推論で同じ機器 ID を使います。
+`round1`は今回の収集分の名前、`TASK`は「赤い立方体を持ち上げる」という課題です。新しい収集分は未使用の名前にし、講師と転送先も合わせてください。フォルダ・USB接続先・データの識別名は、ブラウザで入力した値が後続のコマンドへ直接入ります。
 
 ## 3. カメラ確認
 

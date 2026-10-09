@@ -1,6 +1,6 @@
 # 推論の実行
 
-実行場所: **手元の Jetson／Mac**。[AWS からのモデル回収](../aws-model-recovery.md)で設定した `POLICY_PATH` を使います。新しい Terminal では [接続の確認](check.md)と [カメラの調整](camera.md)の各変数も設定し直します。この AWS 連携後の実機推論は未検証です。
+実行場所: **手元の Jetson／Mac**。[AWS からのモデル回収](../aws-model-recovery.md)で設定した `POLICY_PATH` を使います。新しい Terminal では [接続の確認](check.md)と [カメラの調整](camera.md)で作った収集先・課題文・カメラの設定も設定し直します。USB接続先と作業フォルダは右上の設定から入ります。この AWS 連携後の実機推論は未検証です。
 
 `POLICY_PATH`は手元へ回収したモデルのフォルダの場所です。EC2の `TRAIN_OUTPUT_DIR` をここへ指定しません。新しいターミナルで再設定する場合は、回収時に控えた「モデル保存先」に `/checkpoints/last/pretrained_model` を付けた実際の場所を使います。例えば保存先が `/tmp/model-example` ならモデルの場所は `/tmp/model-example/checkpoints/last/pretrained_model` です。例のパスは入力せず、本人の取得先を使ってください。
 
@@ -29,13 +29,13 @@ find "$POLICY_PATH" -maxdepth 1 -type f \
 従来と同じ `lerobot-rollout` を使い、手元の Jetson では `DEVICE=cuda`、Mac では `DEVICE=mps` を指定します。設定は [カメラの調整](camera.md)にあります。
 
 ```bash
-cd "$PROJECT_DIR"
+cd {{PROJECT_DIR_SH}}
 export HF_HUB_OFFLINE=1
 lerobot-rollout \
   --strategy.type=base \
   --policy.path="$POLICY_PATH" \
   --robot.type=so101_follower \
-  --robot.port="$ROBOT_PORT" \
+  --robot.port={{ROBOT_PORT_SH}} \
   --robot.id=my_follower_arm \
   --robot.cameras="$CAMERAS" \
   --device="$DEVICE" \

@@ -1,6 +1,6 @@
 # データセットの収集
 
-実行場所: **手元の Jetson／Mac**。[カメラの調整](camera.md)で設定した `CAMERAS`、`DEVICE`、`DISPLAY_DATA` と、[接続の確認](check.md)の各変数を使います。2台のカメラ名 `front` と `side`、それぞれの位置・解像度・FPS、タスクは収集と推論で合わせます。
+実行場所: **手元の Jetson／Mac**。[カメラの調整](camera.md)で設定した `CAMERAS`、`DEVICE`、`DISPLAY_DATA` と、[接続の確認](check.md)で作った手元の収集先と課題文を使います。USB接続先と識別名は右上の設定からコマンドへ入ります。2台のカメラ名 `front` と `side`、それぞれの位置・解像度・FPS、タスクは収集と推論で合わせます。
 
 ## 1. データセット収集（新規）
 
@@ -9,13 +9,13 @@
 ```bash
 lerobot-record \
   --robot.type=so101_follower \
-  --robot.port="$ROBOT_PORT" \
+  --robot.port={{ROBOT_PORT_SH}} \
   --robot.id=my_follower_arm \
   --teleop.type=so101_leader \
-  --teleop.port="$TELEOP_PORT" \
+  --teleop.port={{TELEOP_PORT_SH}} \
   --teleop.id=my_leader_arm \
   --robot.cameras="$CAMERAS" \
-  --dataset.repo_id="$DATASET_REPO_ID" \
+  --dataset.repo_id={{DATASET_REPO_ID_SH}} \
   --dataset.root="$LOCAL_DATASET_DIR" \
   --dataset.push_to_hub=false \
   --dataset.single_task="$TASK" \
@@ -29,33 +29,7 @@ lerobot-record \
 
 `episode_time_s` は1エピソードの時間、`reset_time_s` は次のエピソードまでの準備時間です。収集後、[カメラの調整](camera.md)と同じ `lerobot-dataset-viz` コマンドの `--root` を `"$LOCAL_DATASET_DIR"` にして映像を確認します。
 
-## 2. データセット収集（追加）
-
-追加するときは初回と同じ識別名、保存先、カメラ構成、FPS、タスクで、`--resume=true` を使います。以下は5エピソードを追加する例です。
-
-```bash
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port="$ROBOT_PORT" \
-  --robot.id=my_follower_arm \
-  --teleop.type=so101_leader \
-  --teleop.port="$TELEOP_PORT" \
-  --teleop.id=my_leader_arm \
-  --robot.cameras="$CAMERAS" \
-  --dataset.repo_id="$DATASET_REPO_ID" \
-  --dataset.root="$LOCAL_DATASET_DIR" \
-  --dataset.push_to_hub=false \
-  --dataset.single_task="$TASK" \
-  --dataset.fps=30 \
-  --dataset.episode_time_s=10 \
-  --dataset.reset_time_s=5 \
-  --dataset.num_episodes=5 \
-  --dataset.streaming_encoding=false \
-  --display_data="$DISPLAY_DATA" \
-  --resume=true
-```
-
-`num_episodes=5` は追加する数です。新規30エピソードの後なら合計35になります。追加後も件数と2台の映像を確認します。1台構成で作成した既存データセットには、この2台構成で追加せず、新しい保存先で収集し直します。
+追加の操作が必要な場合は[追加収集](../reference/values.md#additional-collection)を参照してください。
 
 ## AWS へのデータ転送
 

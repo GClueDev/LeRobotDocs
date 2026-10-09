@@ -9,7 +9,7 @@
 | `DISPLAY_DATA` | 実行中の映像を画面へ表示するか。`true`は表示、`false`は非表示。次のタブの接続条件に合わせる |
 | `TEST_DATASET_DIR` | カメラの試験用データを置く手元のフォルダ。本収集先の末尾へ `_camera_test` を付ける。例えば `round1_camera_test` |
 
-カメラの `width`・`height` は画像の横・縦の画素数（例は640×480）、`fps` は1秒あたりの画像枚数（例は30）です。`index_or_path` は機器の接続先、`fourcc` の `MJPG` は映像の形式、Jetsonの `backend: 200` はLinuxのカメラ読取方式の指定です。対応を確認した講師の設定に合わせます。
+各設定項目の詳しい意味は[カメラ設定の読み方](../reference/values.md#camera-options)にまとめています。
 
 ## 1. データセット収集（1回）
 
@@ -51,13 +51,13 @@ TEST_DATASET_DIR="${LOCAL_DATASET_DIR}_camera_test"
 ```bash
 lerobot-record \
   --robot.type=so101_follower \
-  --robot.port="$ROBOT_PORT" \
+  --robot.port={{ROBOT_PORT_SH}} \
   --robot.id=my_follower_arm \
   --teleop.type=so101_leader \
-  --teleop.port="$TELEOP_PORT" \
+  --teleop.port={{TELEOP_PORT_SH}} \
   --teleop.id=my_leader_arm \
   --robot.cameras="$CAMERAS" \
-  --dataset.repo_id="$DATASET_REPO_ID" \
+  --dataset.repo_id={{DATASET_REPO_ID_SH}} \
   --dataset.root="$TEST_DATASET_DIR" \
   --dataset.push_to_hub=false \
   --dataset.single_task="$TASK" \
@@ -75,7 +75,7 @@ lerobot-record \
 
 ```bash
 lerobot-dataset-viz \
-  --repo-id "$DATASET_REPO_ID" \
+  --repo-id {{DATASET_REPO_ID_SH}} \
   --root "$TEST_DATASET_DIR" \
   --episode-index 0 \
   --mode local \

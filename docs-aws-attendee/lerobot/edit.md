@@ -1,6 +1,6 @@
 # データセットの編集
 
-収集したデータセットから、失敗したエピソードを取り除きます。実行場所は **EC2 の ubuntu** です。[AWS へのデータ転送](../aws-transfer.md)で設定した `DATASET_DIR` と `DATASET_REPO_ID` を使い、元データを保った別の場所へ出力します。変更編集は今回の EC2 実測対象外です。
+収集したデータセットから、失敗したエピソードを取り除きます。実行場所は **EC2 の ubuntu** です。[AWS へのデータ転送](../aws-transfer.md)で確認したデータの場所と識別名（右上の設定からコマンドへ入ります）を使い、元データを保った別の場所へ出力します。変更編集は今回の EC2 実測対象外です。
 
 ## 1. 準備
 
@@ -9,7 +9,6 @@
 ```bash
 cd ~/lerobot
 export HF_HUB_OFFLINE=1
-uv run --no-sync lerobot-edit-dataset --help
 ```
 
 ## 2. データセットの内容を確認する
@@ -18,8 +17,8 @@ uv run --no-sync lerobot-edit-dataset --help
 
 ```bash
 uv run --no-sync lerobot-edit-dataset \
-  --repo_id "$DATASET_REPO_ID" \
-  --root "$DATASET_DIR" \
+  --repo_id {{DATASET_REPO_ID_SH}} \
+  --root {{DATASET_DIR_SH}} \
   --operation.type info
 ```
 
@@ -30,7 +29,7 @@ uv run --no-sync lerobot-edit-dataset \
 従来と同じくメタデータの Parquet を読み、短すぎる・長すぎるエピソードを確認します。
 
 ```bash
-uv run --no-sync python - "$DATASET_DIR" <<'PY'
+uv run --no-sync python - {{DATASET_DIR_SH}} <<'PY'
 import glob
 import json
 
@@ -63,7 +62,7 @@ PY
 DCV のデスクトップ内の Terminal で表示します。
 
 ```bash
-uv run --no-sync rerun "$DATASET_DIR"
+uv run --no-sync rerun {{DATASET_DIR_SH}}
 ```
 
 ### 確認結果を控える
@@ -77,11 +76,13 @@ uv run --no-sync rerun "$DATASET_DIR"
 `[1, 2]` は確認した番号へ置き換えます。出力先が既にある場合は削除せず、別の名前にします。
 
 ```bash
+DATASET_DIR={{DATASET_DIR_SH}}
+DATASET_REPO_ID={{DATASET_REPO_ID_SH}}
 CLEAN_DATASET_DIR="${DATASET_DIR}_clean"
 export HF_HUB_OFFLINE=1
 uv run --no-sync lerobot-edit-dataset \
-  --repo_id "$DATASET_REPO_ID" \
-  --root "$DATASET_DIR" \
+  --repo_id {{DATASET_REPO_ID_SH}} \
+  --root {{DATASET_DIR_SH}} \
   --new_repo_id "${DATASET_REPO_ID}_clean" \
   --new_root "$CLEAN_DATASET_DIR" \
   --operation.type delete_episodes \
@@ -119,11 +120,7 @@ DATASET_REPO_ID="${DATASET_REPO_ID}_clean"
 
 `--root` は元データ、`--new_root` は別の出力先です。同じ場所を指定しません。元データと確認記録は、実習の成果を回収するまで保管します。
 
-## エラーが出たとき
-
-### `AssertionError: Episode length mismatch`
-
-エピソード長の不一致や読み込みエラーが出たら変更編集を続けず、[困ったとき](../troubleshooting.md)と [データ確認](../dataset.md)を確認し、講師に元データの状態を伝えます。
+編集時のエラーは[編集時のエラー](../reference/values.md#edit-errors)を参照してください。
 
 ## リファレンス
 
