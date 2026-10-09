@@ -6,19 +6,29 @@
 
 実行場所: **手元の Jetson／Mac**。受講者ツールを有効にしたターミナルで実行します。S3 の `shared/` は共有教材用です。自分の収集データは自分専用の領域へ保存します。
 
-`LOCAL_DATASET_DIR`は[接続の確認](lerobot/check.md)で決めた手元の収集先です。`TRANSFER_DIR`は転送用の圧縮ファイルを置く一時フォルダで、`mktemp -d`が未使用の場所を自動作成します。本人がパスを考えて入力する必要はありません。
+`LOCAL_DATASET_DIR`は[接続の確認](lerobot/check.md)で決めた手元の収集先です。フォルダ内のファイルをそのまま送り、ファイルごとのSHA-256一覧も保存します。収集中は転送せず、記録が終了してから実行します。
 
 ```bash
 TRANSFER_DIR=$(mktemp -d)
-tar -czf "$TRANSFER_DIR/dataset.tar.gz" \
-  -C "$LOCAL_DATASET_DIR" .
-shasum -a 256 "$TRANSFER_DIR/dataset.tar.gz"
-gclue-ai-handson-attendee files upload \
-  "$TRANSFER_DIR/dataset.tar.gz" --to datasets/round1
+CHECKSUM_FILE="$TRANSFER_DIR/round1.sha256"
+(
+  set -e
+  test -f "$LOCAL_DATASET_DIR/meta/info.json"
+  cd "$LOCAL_DATASET_DIR"
+  find -L . -type f ! -name .DS_Store \
+    -exec shasum -a 256 {} + > "$CHECKSUM_FILE"
+  test -s "$CHECKSUM_FILE"
+) && {
+  gclue-ai-handson-attendee files upload \
+    "$LOCAL_DATASET_DIR" --to datasets &&
+  gclue-ai-handson-attendee files upload \
+    "$CHECKSUM_FILE" --to datasets
+}
 ```
 
-表示された64桁の SHA-256 を控えます。アーカイブにはデータセットの中身を直接入れているので、展開後の場所に `meta/info.json` が来ます。`datasets/round1` はこの受講者の領域内の転送先です。次の収集分では `round2` など別の転送先を使い、取得側のパスも合わせます。
+フォルダを送ると、元のフォルダ名も保存先に付きます。この手順の収集先の名前は `round1` なので、自分専用の `datasets/round1/` にデータ、`datasets/round1.sha256` に確認用の一覧が保存されます。両方のアップロードが成功したことを確認してください。`.DS_Store` はMacの表示用ファイルなので、データにも一覧にも含めません。
 
+`TRANSFER_DIR`は一覧ファイルを置く一時フォルダを自動作成する変数、`CHECKSUM_FILE`はそのファイルの場所です。新しい収集分では未使用のフォルダ名（例えば `round2`）を使い、一覧のファイル名と次の取得側の `round1` も同じ名前へ揃えます。保存中は収集データを編集・追加しません。
 
 ## 2. EC2 へ取得し、データと映像を確認する
 
@@ -43,35 +53,36 @@ S3_ROOT="s3://$GCLUE_AI_HANDSON_BUCKET"
 S3_ROOT+="/$GCLUE_AI_HANDSON_ATTENDEE"
 ```
 
-`DATASET_DIR`は右上の「各種値の設定」で入力したEC2側の保存先を、このターミナルで取得・展開に使うために覚える変数です。情報確認の識別名も、同じ設定からコマンドへ反映されます。自分の収集データを取得する場合、例えば `/home/ubuntu/handson-data/workshop01/attendee01/round1` のような未使用のフォルダを講師と確認します。配布データの場合は、講師が既に置いた場所を指定します。
+`DATASET_DIR`は右上の「各種値の設定」で入力したEC2側の保存先を、このターミナルで取得に使うために覚える変数です。情報確認の識別名も、同じ設定からコマンドへ反映されます。自分の収集データを取得する場合、例えば `/home/ubuntu/handson-data/workshop01/attendee01/round1` のような未使用のフォルダを講師と確認します。配布データの場合は、講師が既に置いた場所を指定します。
 
-`source` は講師がEC2に配置した認証情報ファイルをこのターミナルへ読み込む操作です。ファイル内の `GCLUE_AI_HANDSON_BUCKET` はS3バケット名、`GCLUE_AI_HANDSON_ATTENDEE` は自分の受講者IDで、自分で作る値ではありません。`S3_ROOT`はこの2つから作る自分専用の保存先です。説明用の値なら `s3://example-handson-workshop01/attendee01` となります。次の `DOWNLOAD_DIR` も取得用の一時フォルダを自動作成する変数です。
+`source` は講師がEC2に配置した認証情報ファイルをこのターミナルへ読み込む操作です。ファイル内の `GCLUE_AI_HANDSON_BUCKET` はS3バケット名、`GCLUE_AI_HANDSON_ATTENDEE` は自分の受講者IDで、自分で作る値ではありません。`S3_ROOT`はこの2つから作る自分専用の保存先です。説明用の値なら `s3://example-handson-workshop01/attendee01` となります。次の `DOWNLOAD_DIR` は、照合用のSHA-256一覧を取得する一時フォルダを自動作成する変数です。
 
 `whoami` が `ubuntu` であることを確認します。認証情報がない・期限切れの場合は講師に再配布を依頼します。EC2 上で依存を追加・更新せず、環境の不足は講師に確認します。
 
 この工程は自分で収集したデータの取得です。講師の配置済み教材を使う場合は[教材とデータ確認](dataset.md)へ進みます。
 
+**まだ存在しない取得先**へ各ファイルをコピーし、手元で作成したSHA-256一覧と照合します。
+
 ```bash
 DOWNLOAD_DIR=$(mktemp -d)
-aws s3 cp "$S3_ROOT/datasets/round1/dataset.tar.gz" \
-  "$DOWNLOAD_DIR/dataset.tar.gz"
-sha256sum "$DOWNLOAD_DIR/dataset.tar.gz"
-```
-
-手元で控えた SHA-256 と一致することを確認してから、**まだ存在しない取得先**へ展開します。
-
-```bash
 (
   set -e
   test ! -e "$DATASET_DIR" || {
     echo '取得先が存在します。別のパスを指定してください。' >&2
     exit 1
   }
+  aws s3 cp "$S3_ROOT/datasets/round1.sha256" \
+    "$DOWNLOAD_DIR/round1.sha256"
   mkdir -p "$DATASET_DIR"
-  tar -xzf "$DOWNLOAD_DIR/dataset.tar.gz" -C "$DATASET_DIR"
-  test -f "$DATASET_DIR/meta/info.json"
+  aws s3 cp "$S3_ROOT/datasets/round1/" \
+    "$DATASET_DIR/" --recursive
+  cd "$DATASET_DIR"
+  sha256sum -c "$DOWNLOAD_DIR/round1.sha256"
+  test -f meta/info.json
 )
 ```
+
+すべてのファイルが `OK` になり、`meta/info.json` の存在確認も成功すれば取得完了です。不足・不一致があれば次へ進まず講師へ相談します。取得が途中で失敗した場合は、部分的なデータが残ることがあるため、別の未使用の取得先を設定してやり直します。
 
 ## 3. 情報と映像を確認する
 
@@ -99,6 +110,6 @@ uv run --no-sync rerun {{DATASET_DIR_SH}}
 
 ## 講師：AWSへの転送の到達確認
 
-本人のS3 バケットパス・EC2を確認し、SHA-256と展開先、情報表示と映像確認を記録します。認証切れは再発行してPCとEC2それぞれで読み込み直します。
+本人のS3 バケットパス・EC2を確認し、ファイルごとのSHA-256照合と取得先、情報表示と映像確認を記録します。認証切れは再発行してPCとEC2それぞれで読み込み直します。
 
 {% endif %}
