@@ -59,7 +59,7 @@ PY
 
 ### エピソードを可視化して確認する
 
-DCV のデスクトップ内の Terminal で表示します。
+Amazon DCV（リモートデスクトップ接続）のデスクトップ内の Terminal で表示します。
 
 ```bash
 uv run --no-sync rerun {{DATASET_DIR_SH}}

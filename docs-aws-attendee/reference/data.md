@@ -38,7 +38,7 @@ LeRobot の `lerobot-dataset-viz --repo-id ... --root ... --episode-index 0 --mo
 
 ## 実習環境の版とツールを確認する {#environment}
 
-講師の配置したEC2のDCV内Terminalで実行します。通常のデータ確認で問題がなければ、この確認は不要です。
+講師の配置したEC2のAmazon DCV（リモートデスクトップ接続）内Terminalで実行します。通常のデータ確認で問題がなければ、この確認は不要です。
 
 ```bash
 cd ~/lerobot

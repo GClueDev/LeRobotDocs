@@ -6,13 +6,13 @@
 ## 必要なソフトウェアを入れる {#dependencies}
 
 使う機器の OS に合わせて準備します。
-自分の EC2 へ接続しない機器（データのやり取りだけに使う Jetson など）では、Session Manager プラグイン・OpenSSH・git は不要です。
+自分の EC2 へ接続しない機器（データのやり取りだけに使う Jetson など）では、Session Manager プラグイン（SSM 経由のシェル接続・ポート転送用）・OpenSSH・git は不要です。
 
 | ソフトウェア | 用途 |
 | --- | --- |
 | bash・curl | 導入スクリプトと講習会用のコマンドの実行 |
 | AWS CLI v2 | AWS の操作 |
-| Session Manager プラグイン | 自分の EC2 への接続 |
+| Session Manager プラグイン | EC2 へのシェル接続と、SSH・リモートデスクトップ用のポート転送 |
 | OpenSSH（`ssh`・`ssh-keygen`） | SSH・git・VS Code での接続 |
 | git | 手元のリポジトリと自分の EC2 のやり取り |
 

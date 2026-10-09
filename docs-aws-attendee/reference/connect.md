@@ -6,7 +6,7 @@
 
 ## シェルで ubuntu として作業する {#shell-user}
 
-`shell` の接続ユーザーは `ssm-user` です。SSH や DCV と同じ `ubuntu` で作業する場合は、接続後の EC2 で切り替えます。
+`shell` は SSM の Session Manager によるシェル接続です。接続ユーザーは `ssm-user` です。SSH や DCV と同じ `ubuntu` で作業する場合は、接続後の EC2 で切り替えます。
 
 ```bash
 sudo -iu ubuntu
@@ -14,7 +14,7 @@ sudo -iu ubuntu
 
 `exit` で `ssm-user` に戻り、もう一度 `exit` で手元に戻ります。
 
-## DCV のポート・パスワード・証明書 {#dcv}
+## Amazon DCV（リモートデスクトップ接続）のポート・パスワード・証明書 {#dcv}
 
 パスワードを忘れたときは、[初回の設定](../connect.md#first-connection)と同じ手順で設定し直します。
 手元のポート 8443 が使用中の場合は、別のポートを指定します。

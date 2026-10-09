@@ -86,7 +86,7 @@
      --instance-ids {{BUILD_INSTANCE_ID}}
    ```
 
-   Session Manager で接続できることを確かめます。
+   Session Manager（シェル接続・ポート転送）で接続できることを確かめます。
    `Online` と表示されれば接続できます。
 
    ```bash

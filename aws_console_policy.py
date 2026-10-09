@@ -91,7 +91,7 @@ def on_pre_page_macros(env):
     notice = ""
     if not policy["enabled"]:
         notice = ('!!! warning "このビルド：受講者のAWSコンソール手順は無効"\n'
-                  '    CLI・SSM・SSH・DCVを使用します。'
+                  '    CLI・SSM（シェル接続）・SSH・Amazon DCV（リモートデスクトップ接続）を使用します。'
                   'これは静的な資料の設定であり、AWS側の適用確認ではありません。\n\n')
     summaries = {"index.md", "common.md", "staff/preparation.md",
                  "staff/preparation/event-settings.md",
@@ -111,7 +111,7 @@ def on_pre_page_macros(env):
 | 受講者のコンソールURL生成・直接操作・S3画面リンク | {status} |
 | 講師による受講者向けコンソールURLの配布案内 | {status} |
 | 講師・構築担当者自身の管理コンソール手順 | 有効（管理者自身の権限を使用） |
-| CLIによるS3転送・SSM・SSH・DCV | 有効 |
+| CLIによるS3転送・SSM（シェル接続）・SSH・Amazon DCV（リモートデスクトップ接続） | 有効 |
 
 これは静的ビルドに含まれる手順の表示設定です。実AWSのIAM適用を照会した証明ではありません。YAML未指定の通常プレビューは互換性のためtrueとなり、開催用の配布資料には正本YAMLを明示して再ビルドしてください。ブラウザの各種値やJSONインポートでこの設定は変更できません。
 

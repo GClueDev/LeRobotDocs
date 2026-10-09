@@ -41,7 +41,7 @@ gclue-ai-handson-attendee files upload ./checkpoints \
 
 ## EC2 のファイルを保存する {#ec2-upload}
 
-講師が EC2 に用意した受講者ツールを使います。DCV の Terminal（`ubuntu` ユーザー）で有効化し、手元と同じ `files upload` を実行します。
+講師が EC2 に用意した受講者ツールを使います。Amazon DCV（リモートデスクトップ接続）の Terminal（`ubuntu` ユーザー）で有効化し、手元と同じ `files upload` を実行します。
 
 ```bash
 source ~/gclue-ai-handson/{{EVENT_ID}}/activate

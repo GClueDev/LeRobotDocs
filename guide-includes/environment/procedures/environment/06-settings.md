@@ -30,7 +30,7 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 | `aws.handson.attendees` | 受講者 ID の一覧（1 件につき EC2 を 1 台作る。`shared` は使えない） | 用意するもの |
 | `aws.handson.attendee_console_access` | 受講者のAWSコンソール利用。真偽値 `true` / `false`、省略時true。インフラと資料で同じ開催YAMLを使用 | アクセス制御仕様の切替・適用確認に従う |
 | `aws.handson.max_session_duration_seconds` | 受講者に渡す認証情報の有効期間の上限（秒、3600〜43200）。通常は 43200（12 時間）のまま | — |
-| `aws.handson.dcv_port` | DCV の待ち受けポート。通常は 8443 のまま | — |
+| `aws.handson.dcv_port` | Amazon DCV（リモートデスクトップ接続）の待ち受けポート。通常は 8443 のまま | — |
 | `aws.handson_cdk.network.vpc_cidr` | VPC の IP アドレスの範囲。アカウント内の他の VPC と重ならなければ記載例のまま | 下の VPC CIDR 確認コマンド |
 | `aws.handson_cdk.network.availability_zones` / `max_azs` | 2.6 を参照 | 2.6 |
 | `aws.handson_cdk.instance.ami_id` | AMI ID | 2.3（2.4 で導入済みの AMI にした場合はその AMI ID） |
@@ -71,6 +71,6 @@ Ubuntu 22.04 の AMI は、同梱スクリプトの対象外です。DCV と NVI
 次の機能を使う講習会では、AMI に条件があります（理由は [インフラ構成の仕様](<<= guide_link('staff/environment/specs/infrastructure.md') =>>)）。
 
 - DCV（リモートデスクトップ）で接続する: Amazon DCV サーバーを入れた AMI が必要です。Deep Learning AMI には入っていません。
-- 受講者が SSH・git で接続する: SSH のサーバー（sshd）、`git`、`flock` が入っていて、Session Manager で入ったユーザーから `ubuntu` ユーザーへパスワードなしで `sudo` できる AMI が必要です。Ubuntu の AWS 公式の AMI と Deep Learning AMI は、通常この条件を満たします。
+- 受講者が SSH・git で接続する: SSH のサーバー（sshd）、`git`、`flock` が入っていて、Session Manager（シェル接続・ポート転送）で入ったユーザーから `ubuntu` ユーザーへパスワードなしで `sudo` できる AMI が必要です。Ubuntu の AWS 公式の AMI と Deep Learning AMI は、通常この条件を満たします。
 
 講義に使う大きなソフトウェア（PyTorch、LeRobot とその依存など）が 2.3 の AMI に入っていない場合は、次の 2.4 で、それを入れた AMI を用意します。

@@ -53,7 +53,7 @@ test -f {{LOCAL_DATASET_DIR_SH}}/meta/info.json &&
 
 ### 2. EC2 へ取得し、データと映像を確認する
 
-実行場所: **手元の PC**。初回は [接続手順](../connect.md)で DCV のパスワードを設定します。
+実行場所: **手元の PC**。初回は [接続手順](../connect.md)で Amazon DCV（リモートデスクトップ接続）のパスワードを設定します。
 
 ```bash
 gclue-ai-handson-attendee dcv

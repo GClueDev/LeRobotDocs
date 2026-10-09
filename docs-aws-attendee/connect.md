@@ -6,14 +6,14 @@
 
 ## 1. 初回ログイン用のパスワードを決める {#first-connection}
 
-まず手元で次を実行し、自分の EC2 へ接続します。
+まず手元で次を実行し、AWS Systems Manager（SSM）の Session Manager を使って、自分の EC2 へシェル接続します。
 
 ```bash
 gclue-ai-handson-attendee shell
 ```
 
 接続後のプロンプトは **EC2 側**です。ユーザーは `ssm-user` で正常です。
-DCV（リモートデスクトップ）で使う `ubuntu` のパスワードを、EC2 側で設定して手元へ戻ります。
+Amazon DCV（リモートデスクトップ接続）で使う `ubuntu` のパスワードを、EC2 側で設定して手元へ戻ります。
 
 ```bash
 sudo /var/lib/handson/bin/handson-dcv-password set

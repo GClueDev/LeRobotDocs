@@ -31,7 +31,7 @@
     NEW_AMI_ID: ['作成した AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'create-image が出す ami- で始まる値。例: ami-0fedcba9876543210。利用確認後に開催用 AMI ID へ転記する'],
     BUILD_INSTANCE_ID: ['AMI 作成用の一時 EC2 ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'run-instances が出す i- で始まる値。例: i-0123456789abcdef0。受講者の EC2 ID と別の欄'],
     BUILD_SUBNET_ID: ['一時 EC2 の subnet ID', v => /^subnet-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'describe-subnets の SubnetId から選ぶ。例: subnet-0123456789abcdef0。対象 GPU が提供される AZ を選ぶ'],
-    BUILD_PROFILE_NAME: ['一時 EC2 のインスタンスプロファイル名', v => /^[A-Za-z0-9_+=,.@-]{1,128}$/.test(v), '管理者から受け取る SSM 接続用の名前。例: HandsonAmiBuilder。AWS CLI のログインプロファイルとは別'],
+    BUILD_PROFILE_NAME: ['一時 EC2 のインスタンスプロファイル名', v => /^[A-Za-z0-9_+=,.@-]{1,128}$/.test(v), '一時 EC2 が SSM 経由のシェル接続・操作を受け付けるための IAM 設定の名前。管理者から受け取る。例: HandsonAmiBuilder。AWS CLI のログインプロファイルとは別'],
     BUILD_ROOT_DEVICE: ['元の AMI のルートデバイス名', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '元の AMI の describe-images で表示される RootDeviceName。例: /dev/sda1'],
     BUILD_VOLUME_GB: ['一時 EC2 のルート容量（GB）', v => /^[1-9][0-9]{0,4}$/.test(v) && Number(v) <= 16384, '整数。例: 512。ソフトウェアが収まり、開催設定の root_volume_size_gb 以下の容量を管理者と確認'],
     BUILD_AMI_NAME: ['作成する AMI の名前', v => /^GClueAiHandsOn-AMI-[a-z0-9-]+-[0-9]{8}$/.test(v) && v.length <= 128, '用途と作成日を含む未使用名。例: GClueAiHandsOn-AMI-lerobot-20261009'],

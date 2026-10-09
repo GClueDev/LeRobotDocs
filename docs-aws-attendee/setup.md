@@ -35,7 +35,7 @@ ssh -V
 git --version
 ```
 
-bash・curl は導入に、AWS CLI は AWS の操作に、Session Manager プラグインは EC2 への接続に使います。
+bash・curl は導入に、AWS CLI は AWS の操作に、Session Manager プラグインは SSM 経由の EC2 へのシェル接続・ポート転送に使います。
 SSH・git は後の教材取得や接続で使います。
 見つからないものがある場合は、[OS 別のソフトウェア導入](reference/setup.md#dependencies)を先に進めてください。
 Linux で AWS CLI を導入スクリプトに入れてもらう場合は、ここで見つからなくてもかまいません。
