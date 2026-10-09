@@ -1,8 +1,10 @@
 # 学習
 
-実行場所: **EC2 の Ubuntu**。[収集後のデータ転送](collect.md#transfer-to-ec2)、必要なら [データセットの編集](edit.md)を済ませた同じ Terminal で進めます。講師が CUDA と GPU 計算、ACT の ResNet18 重みのキャッシュを確認済みであることが前提です。今回の EC2 の GPU 学習は未検証です。
+実行場所: **EC2 の Ubuntu**。[収集後のデータ転送](collect.md#transfer-to-ec2)、必要なら [データセットの編集](edit.md)を済ませた同じ Terminal で進めます。講師が CUDA と GPU 計算、ACT が画像特徴抽出に使う ResNet18 の事前学習済み重みのキャッシュを確認済みであることが前提です。今回の EC2 の GPU 学習は未検証です。
 
 ## 1. ACT学習（新規）
+
+[ACT（Action Chunking with Transformers）](https://huggingface.co/docs/lerobot/act)は、収集した手本の操作からロボットの動かし方を学習する AI モデルです。ここでは自分のデータセットを使って操作モデルを学習します。
 
 Jetson 用のメモリ設定や Mac の `mps` を EC2 へそのまま移しません。GPU と PyTorch を確認します。
 

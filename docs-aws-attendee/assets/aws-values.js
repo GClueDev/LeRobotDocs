@@ -29,7 +29,7 @@
     POLICY_PATH: ['手元の推論モデルの場所', v => path(v) && v.startsWith('/'), 'モデル回収で表示されたモデルの場所。checkpoints/last/pretrained_model まで含める'],
     SOURCE_AMI_ID: ['元の AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '管理者から受け取る導入前の AMI。例: ami-0123456789abcdef0。開催用・新規 AMI と別の欄'],
     NEW_AMI_ID: ['作成した AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'create-image が出す ami- で始まる値。例: ami-0fedcba9876543210。利用確認後に開催用 AMI ID へ転記する'],
-    BUILD_INSTANCE_ID: ['AMI 作成用の一時 EC2 ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'run-instances が出す i- で始まる値。例: i-0123456789abcdef0。受講者の EC2 ID と別の欄'],
+    BUILD_INSTANCE_ID: ['AMI 作成用の一時 EC2 ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '「一時インスタンスの起動」で AMI 作成用 EC2 を起動した結果の i- で始まる ID。例: i-0123456789abcdef0。受講者の EC2 ID と別の欄'],
     BUILD_SUBNET_ID: ['一時 EC2 の subnet ID', v => /^subnet-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'describe-subnets の SubnetId から選ぶ。例: subnet-0123456789abcdef0。対象 GPU が提供される AZ を選ぶ'],
     BUILD_PROFILE_NAME: ['一時 EC2 のインスタンスプロファイル名', v => /^[A-Za-z0-9_+=,.@-]{1,128}$/.test(v), '一時 EC2 が SSM 経由のシェル接続・操作を受け付けるための IAM 設定の名前。管理者から受け取る。例: HandsonAmiBuilder。AWS CLI のログインプロファイルとは別'],
     BUILD_ROOT_DEVICE: ['元の AMI のルートデバイス名', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '元の AMI の describe-images で表示される RootDeviceName。例: /dev/sda1'],
