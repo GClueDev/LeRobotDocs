@@ -1,8 +1,8 @@
 # 推論の実行
 
-実行場所: **手元の Jetson／Mac**。[AWS からのモデル回収](../aws-model-recovery.md)で設定した `POLICY_PATH` を使います。新しい Terminal では [接続の確認](check.md)と [カメラの調整](camera.md)で作った収集先・課題文・カメラの設定も設定し直します。USB接続先と作業フォルダは右上の設定から入ります。この AWS 連携後の実機推論は未検証です。
+実行場所: **手元の Jetson／Mac**。[学習後のモデル回収](train.md#recover-model)で入力した推論モデルの場所を使います。新しい Terminal では [接続の確認](check.md)と [カメラの調整](camera.md)で作ったカメラの設定を設定し直します。収集先・課題文・モデルの場所はフォームの保存値から入ります。USB接続先と作業フォルダは右上の設定から入ります。この AWS 連携後の実機推論は未検証です。
 
-`POLICY_PATH`は手元へ回収したモデルのフォルダの場所です。EC2の `TRAIN_OUTPUT_DIR` をここへ指定しません。新しいターミナルで再設定する場合は、回収時に控えた「モデル保存先」に `/checkpoints/last/pretrained_model` を付けた実際の場所を使います。例えば保存先が `/tmp/model-example` ならモデルの場所は `/tmp/model-example/checkpoints/last/pretrained_model` です。例のパスは入力せず、本人の取得先を使ってください。
+`POLICY_PATH`は手元へ回収したモデルのフォルダの場所です。EC2の `TRAIN_OUTPUT_DIR` をここへ指定しません。新しいブラウザで入力する場合は、回収時に表示された「推論モデルの場所」を使います。例えば保存先が `/tmp/model-example` ならモデルの場所は `/tmp/model-example/checkpoints/last/pretrained_model` です。例のパスは入力せず、本人の取得先を使ってください。
 
 ## 1. 推論前の安全確認
 
@@ -12,11 +12,15 @@
 - 収集と同じ機器 ID、2台のカメラ名 `front` と `side`、タスク文を使います。
 - 最初は10秒だけ、録画なしで確認します。
 
+モデル回収で表示された「推論モデルの場所」を確認します。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="POLICY_PATH"></div>
+
 回収した Policy の設定とモデルファイルを確認します。
 
 ```bash
-test -f "$POLICY_PATH/config.json"
-find "$POLICY_PATH" -maxdepth 1 -type f \
+test -f {{POLICY_PATH_SH}}/config.json
+find {{POLICY_PATH_SH}} -maxdepth 1 -type f \
   -name '*.safetensors' -print
 ```
 
@@ -33,7 +37,7 @@ cd {{PROJECT_DIR_SH}}
 export HF_HUB_OFFLINE=1
 lerobot-rollout \
   --strategy.type=base \
-  --policy.path="$POLICY_PATH" \
+  --policy.path={{POLICY_PATH_SH}} \
   --robot.type=so101_follower \
   --robot.port={{ROBOT_PORT_SH}} \
   --robot.id=my_follower_arm \
@@ -41,7 +45,7 @@ lerobot-rollout \
   --device="$DEVICE" \
   --fps=30 \
   --duration=10 \
-  --task="$TASK" \
+  --task={{TASK_SH}} \
   --display_data="$DISPLAY_DATA" \
   --return_to_initial_position=true
 ```
@@ -59,7 +63,7 @@ lerobot-rollout \
 
 ---
 
-[前へ: AWS からのモデル回収](../aws-model-recovery.md) · [次へ: 成果の回収確認](../save.md)
+[前へ: 学習](train.md#recover-model) · [次へ: 成果の回収確認](../save.md)
 
 {% if audience == "staff" %}
 

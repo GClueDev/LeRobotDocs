@@ -1,6 +1,6 @@
 # 教材・ファイルの取得と保存の補足
 
-通常の実習では教材は[導入](../setup.md)で取得し、学習結果は[モデル回収](../aws-model-recovery.md)で回収します。以下は追加教材やモデル以外のファイルを扱う場合の補足です。
+通常の実習では教材は[導入](../setup.md)で取得し、学習結果は[モデル回収](../lerobot/train.md#recover-model)で回収します。以下は追加教材やモデル以外のファイルを扱う場合の補足です。
 
 ## 現行教材を再取得する {#materials}
 
@@ -25,7 +25,7 @@ gclue-ai-handson-attendee files pull --prefix datasets/ \
 
 ## モデル以外のファイルを保存するとき
 
-以下は単独の保存例です。通し実習のチェックポイントは[モデル回収](../aws-model-recovery.md)の保存先と手順を使い、例の保存先と混ぜないでください。チェックポイントを圧縮する必要はありません。
+以下は単独の保存例です。通し実習のチェックポイントは[モデル回収](../lerobot/train.md#recover-model)の保存先と手順を使い、例の保存先と混ぜないでください。チェックポイントを圧縮する必要はありません。
 
 ## 手元のファイルを保存する {#upload}
 
@@ -49,7 +49,7 @@ gclue-ai-handson-attendee files upload ./checkpoints \
   --to models/day1
 ```
 
-フォルダ名も付くため、自分専用の `models/day1/checkpoints/` に保存されます。通し実習では[モデル回収](../aws-model-recovery.md)の実行名と保存先を使い、この例と混ぜないでください。
+フォルダ名も付くため、自分専用の `models/day1/checkpoints/` に保存されます。通し実習では[モデル回収](../lerobot/train.md#recover-model)の実行名と保存先を使い、この例と混ぜないでください。
 
 ## 保存したファイルを取り戻す {#recover}
 

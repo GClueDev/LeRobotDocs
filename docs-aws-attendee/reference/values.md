@@ -9,7 +9,7 @@
 | 手元の LeRobot 作業フォルダ（`PROJECT_DIR`） | 講師に確認した手元の配置先。EC2とは別 | Mac `/Users/student/lerobot`、Jetson `/home/student/lerobot` |
 | Leader の USB 接続先（`TELEOP_PORT`） | 人が動かすアームの検出結果を本人と講師が確認する | Mac `/dev/tty.usbmodem12301`、Jetson `/dev/ttyACM0` |
 | Follower の USB 接続先（`ROBOT_PORT`） | 追従するアームの検出結果。Leaderと取り違えない | Mac `/dev/tty.usbmodem12302`、Jetson `/dev/ttyACM1` |
-| `LOCAL_DATASET_DIR` | 手元の収集先。接続確認のコマンドが作る | `/Users/student/handson-data/workshop01/attendee01/round1` |
+| `LOCAL_DATASET_DIR` | 手元の収集先。接続確認の入力欄で決める | `/Users/student/handson-data/workshop01/attendee01/round1` |
 | `TASK` | 収集・推論で同じ課題文を使う | `Pick up the red cube` |
 
 例をそのまま入力せず、実際の配置先と検出結果を使います。機器やUSB接続を変えた場合は「各種値の設定」を更新し、改めて表示されたコマンドをコピーしてください。
@@ -31,9 +31,9 @@ lerobot-record \
   --teleop.id=my_leader_arm \
   --robot.cameras="$CAMERAS" \
   --dataset.repo_id={{DATASET_REPO_ID_SH}} \
-  --dataset.root="$LOCAL_DATASET_DIR" \
+  --dataset.root={{LOCAL_DATASET_DIR_SH}} \
   --dataset.push_to_hub=false \
-  --dataset.single_task="$TASK" \
+  --dataset.single_task={{TASK_SH}} \
   --dataset.fps=30 \
   --dataset.episode_time_s=10 \
   --dataset.reset_time_s=5 \
@@ -54,7 +54,7 @@ lerobot-record \
 `steps` は追加回数ではなく、継続後に到達させる総ステップ数です。5000から15000ステップへ続ける例です。
 
 ```bash
-TRAIN_CONFIG_PATH="$TRAIN_OUTPUT_DIR/checkpoints/last"
+TRAIN_CONFIG_PATH={{TRAIN_OUTPUT_DIR_SH}}/checkpoints/last
 TRAIN_CONFIG_PATH+="/pretrained_model/train_config.json"
 uv run --no-sync lerobot-train \
   --config_path="$TRAIN_CONFIG_PATH" \

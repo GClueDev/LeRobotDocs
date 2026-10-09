@@ -1,6 +1,6 @@
 # データセットの編集
 
-収集したデータセットから、失敗したエピソードを取り除きます。実行場所は **EC2 の Ubuntu** です。[AWS へのデータ転送](../aws-transfer.md)で確認したデータの場所と識別名（右上の設定からコマンドへ入ります）を使い、元データを保った別の場所へ出力します。変更編集は今回の EC2 実測対象外です。
+収集したデータセットから、失敗したエピソードを取り除きます。実行場所は **EC2 の Ubuntu** です。[収集後のデータ転送](collect.md#transfer-to-ec2)で確認したデータの場所と識別名（右上の設定からコマンドへ入ります）を使い、元データを保った別の場所へ出力します。変更編集は今回の EC2 実測対象外です。
 
 ## 1. 準備
 
@@ -76,15 +76,12 @@ uv run --no-sync rerun {{DATASET_DIR_SH}}
 `[1, 2]` は確認した番号へ置き換えます。出力先が既にある場合は削除せず、別の名前にします。
 
 ```bash
-DATASET_DIR={{DATASET_DIR_SH}}
-DATASET_REPO_ID={{DATASET_REPO_ID_SH}}
-CLEAN_DATASET_DIR="${DATASET_DIR}_clean"
 export HF_HUB_OFFLINE=1
 uv run --no-sync lerobot-edit-dataset \
   --repo_id {{DATASET_REPO_ID_SH}} \
   --root {{DATASET_DIR_SH}} \
-  --new_repo_id "${DATASET_REPO_ID}_clean" \
-  --new_root "$CLEAN_DATASET_DIR" \
+  --new_repo_id {{DATASET_REPO_ID_SH}}_clean \
+  --new_root {{DATASET_DIR_SH}}_clean \
   --operation.type delete_episodes \
   --operation.episode_indices '[1, 2]'
 ```
@@ -95,26 +92,24 @@ uv run --no-sync lerobot-edit-dataset \
 
 ```bash
 uv run --no-sync lerobot-edit-dataset \
-  --repo_id "${DATASET_REPO_ID}_clean" \
-  --root "$CLEAN_DATASET_DIR" \
+  --repo_id {{DATASET_REPO_ID_SH}}_clean \
+  --root {{DATASET_DIR_SH}}_clean \
   --operation.type info
 ```
 ```bash
-uv run --no-sync rerun "$CLEAN_DATASET_DIR"
+uv run --no-sync rerun {{DATASET_DIR_SH}}_clean
 ```
 
 ## 5. 元のデータセットと差し替える
 
 AWS 版では元データのフォルダを移動・削除せず、学習で参照する値を編集結果へ切り替えます。結果を確認できてから実行します。
 
-```bash
-DATASET_DIR="$CLEAN_DATASET_DIR"
-DATASET_REPO_ID="${DATASET_REPO_ID}_clean"
-```
+現在の保存先・識別名に `_clean` を付けた編集結果を、下の欄へ入力し直します。情報と映像を確認できてから切り替え、元データは残します。学習コマンドもこの入力値を直接使います。編集しない場合はこの切替を飛ばします。
 
-この切替後は、学習にも編集後のフォルダと識別名を使います。例なら `DATASET_DIR` は `/home/ubuntu/handson-data/workshop01/attendee01/round1_clean`、`DATASET_REPO_ID` は `attendee01/red-cube_clean` です。元データのフォルダはそのまま残ります。
 
-編集しない場合はこの切替も飛ばします。ブラウザの共通設定は自動更新されません。上の切替が済んだら、同じEC2のTerminalで `printf '%s\n' "$DATASET_DIR" "$DATASET_REPO_ID"` を実行し、表示された1行目を「各種値の設定」の「EC2 のデータセットディレクトリ」、2行目を「データセット識別名」に入力し直します。これにより、新しいTerminalで設定コマンドをコピーし直したときも編集後のデータを使えます。別のブラウザやURLを使う場合は設定を受け渡して確認してください。
+<div data-aws-values-panel data-aws-inline data-aws-fields="DATASET_DIR DATASET_REPO_ID"></div>
+
+別のブラウザやURLで学習する場合は、設定JSONで受け渡すか同じ値を入力してください。
 
 ## 出力先の注意
 
@@ -129,7 +124,7 @@ DATASET_REPO_ID="${DATASET_REPO_ID}_clean"
 
 ---
 
-[前へ: AWS へのデータ転送](../aws-transfer.md) · [次へ: 学習](train.md)
+[前へ: データセットの収集](collect.md#transfer-to-ec2) · [次へ: 学習](train.md)
 
 {% if audience == "staff" %}
 

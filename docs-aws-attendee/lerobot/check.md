@@ -26,18 +26,17 @@
     lerobot-find-port
     ```
 
-検出したLeaderとFollowerの接続先を右上の「各種値の設定」の同名欄へ入力します。手元のLeRobot作業フォルダも講師に確認して入力してください。例えばMacなら `/Users/student/lerobot`、Leaderは `/dev/tty.usbmodem12301`、Followerは `/dev/tty.usbmodem12302` ですが、実際の検出結果を使います。Jetsonの例と各値の意味は[値と機器の対応](../reference/values.md#local-values)を参照してください。
+検出したLeaderとFollowerの接続先を下の欄へ入力します。右上の「各種値の設定」と同じ値を共有します。手元のLeRobot作業フォルダも講師に確認して入力してください。例えばMacなら `/Users/student/lerobot`、Leaderは `/dev/tty.usbmodem12301`、Followerは `/dev/tty.usbmodem12302` ですが、実際の検出結果を使います。Jetsonの例と各値の意味は[値と機器の対応](../reference/values.md#local-values)を参照してください。
 
-以下は手元の収集先を開催・受講者IDから作り、作業フォルダへ移るコマンドです。収集先はEC2のデータの場所とは別です。以降も同じターミナルで進めます。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="PROJECT_DIR TELEOP_PORT ROBOT_PORT LOCAL_DATASET_DIR TASK"></div>
+手元の収集先は未使用の絶対パスを入力します。`round1` というフォルダ名で収集する主手順です。ホームの場所は手元のターミナルで `echo "$HOME"` を実行して確認できます。課題文も講師と合わせ、収集・推論で同じ値を使います。以下は作業フォルダへ移るコマンドです。
 
 ```bash
-LOCAL_DATASET_DIR="$HOME/handson-data/{{EVENT_ID}}"
-LOCAL_DATASET_DIR+="/{{ATTENDEE_ID}}/round1"
-TASK='Pick up the red cube'
 cd {{PROJECT_DIR_SH}}
 ```
 
-`round1`は今回の収集分の名前、`TASK`は「赤い立方体を持ち上げる」という課題です。新しい収集分は未使用の名前にし、講師と転送先も合わせてください。フォルダ・USB接続先・データの識別名は、ブラウザで入力した値が後続のコマンドへ直接入ります。
+`round1`は今回の収集分の名前、課題文の説明例 `Pick up the red cube` は「赤い立方体を持ち上げる」です。新しい収集分は未使用の名前にし、講師と転送先も合わせてください。フォルダ・USB接続先・データの識別名は、ブラウザで入力した値が後続のコマンドへ直接入ります。
 
 ## 3. カメラ確認
 

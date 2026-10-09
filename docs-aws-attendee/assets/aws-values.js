@@ -20,6 +20,13 @@
     ROBOT_PORT: ['Follower の USB 接続先', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '手元で検出した追従するアームの接続先。Jetsonの例: /dev/ttyACM1、Macの例: /dev/tty.usbmodem12302。Leaderと取り違えない'],
     DATASET_DIR: ['EC2 のデータセットディレクトリ', v => path(v) && v.startsWith('/'), 'EC2でデータを読むフォルダ。説明例: /home/ubuntu/handson-data/workshop01/attendee01/round1。配布データは講師の配置先、自分の収集分は未使用の取得先。手元のPCのパスではない。引用符を付けず入力'],
     DATASET_REPO_ID: ['データセット識別名', v => /^[A-Za-z0-9][A-Za-z0-9_./-]{0,191}$/.test(v), 'LeRobotでデータ一組に付ける講師指定の名前。説明例: attendee01/red-cube（所有者名/データ名）。フォルダとは別。手元の収集とEC2で同じ値を使う'],
+    LOCAL_DATASET_DIR: ['手元のデータセット保存先', v => path(v) && v.startsWith('/'), '手元の収集先の絶対パス。例: /Users/student/handson-data/workshop01/attendee01/round1。既存データを上書きしない場所を選ぶ'],
+    TASK: ['課題文', v => v.length <= 512 && !/[\x00-\x1f\x7f]/.test(v), '収集と推論で同じ文を使う。例: Pick up the red cube'],
+    FRONT_CAMERA: ['front カメラの接続先', v => /^(?:[0-9]+|\/dev\/video[0-9]+)$/.test(v), '前方のカメラ。Jetsonは /dev/video0 など、Macは検出した番号（例: 0）'],
+    SIDE_CAMERA: ['side カメラの接続先', v => /^(?:[0-9]+|\/dev\/video[0-9]+)$/.test(v), '側面の別のカメラ。Jetsonは /dev/video2 など、Macは検出した番号（例: 2）'],
+    RUN_NAME: ['学習実行名', v => atom.test(v) && v.length <= 64, '今回の学習だけに使う未使用の名前。例: act-20261009-103000。モデル回収でも同じ名前を使う'],
+    TRAIN_OUTPUT_DIR: ['EC2 の学習結果の保存先', v => path(v) && v.startsWith('/'), '今回の学習の未使用の出力先。例: /home/ubuntu/handson-work/workshop01/attendee01/outputs/act-20261009-103000'],
+    POLICY_PATH: ['手元の推論モデルの場所', v => path(v) && v.startsWith('/'), 'モデル回収で表示されたモデルの場所。checkpoints/last/pretrained_model まで含める'],
     RELEASE: ['教材の版', v => atom.test(v) && v.length <= 64, '英数字で始まる64文字以内。公開済み版は上書きしない'],
     MANIFEST_SHA: ['教材 manifest SHA-256', v => /^[a-fA-F0-9]{64}$/.test(v), 'release buildが出力する64桁のハッシュ'],
     MATERIALS_DIR: ['公開する教材ディレクトリ', path, '絶対パスまたは相対パス。引用符を付けず入力'],
@@ -28,7 +35,7 @@
     INSTANCE_ID: ['対象 EC2 インスタンス ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の確認対象。一時構築EC2は各手順で別途指定'],
     INSTANCE_TYPE: ['EC2 インスタンスタイプ', v => /^[a-z][a-z0-9-]*\.[a-z0-9]+$/.test(v), '管理者が選定したタイプ'],
   };
-  const attendeeFields = ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','DATASET_DIR','DATASET_REPO_ID','PROJECT_DIR','TELEOP_PORT','ROBOT_PORT'];
+  const attendeeFields = ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','DATASET_DIR','DATASET_REPO_ID','PROJECT_DIR','TELEOP_PORT','ROBOT_PORT','LOCAL_DATASET_DIR','TASK','FRONT_CAMERA','SIDE_CAMERA','RUN_NAME','TRAIN_OUTPUT_DIR','POLICY_PATH'];
   const roleFields = {
     attendee: attendeeFields,
     instructor: ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','PROFILE','CONFIG_DIR','RELEASE','MANIFEST_SHA','MATERIALS_DIR'],
@@ -172,10 +179,13 @@
     host.dataset.initialized = 'true'; host.classList.add('lerobot-port-panel');
     const form = document.createElement('form'); form.className = 'lerobot-port-form';
     form.autocomplete = 'off'; form.addEventListener('submit', e => e.preventDefault());
-    for (const key of roleFields) {
+    const inline = host.hasAttribute('data-aws-inline');
+    const keys = inline ? (host.dataset.awsFields || '').split(/\s+/).filter(key => roleFields.includes(key)) : roleFields;
+    const panelId = host.id || (host.id = `aws-panel-${document.querySelectorAll('[data-aws-values-panel][data-initialized]').length}`);
+    for (const key of keys) {
       const row = document.createElement('div'); row.className = 'lerobot-port-row';
       const label = document.createElement('label'); label.className = 'lerobot-port-label';
-      label.htmlFor = `aws-${host.closest('dialog') ? 'modal' : 'page'}-${key}`; label.textContent = fields[key][0];
+      label.htmlFor = `${panelId}-${key}`; label.textContent = fields[key][0];
       const cell = document.createElement('div');
       const input = document.createElement('input'); input.id = label.htmlFor;
       input.className = 'lerobot-port-input'; input.value = state[key] || '';
@@ -192,6 +202,10 @@
         save(); syncInputs(input); refresh();
       });
       cell.append(input,hint,error); row.append(label,cell); form.append(row);
+    }
+    if (inline) {
+      const status = document.createElement('p'); status.dataset.awsSaveStatus = ''; status.setAttribute('role', 'status');
+      host.append(form, status); return;
     }
     const actions = document.createElement('div'); actions.className = 'lerobot-port-actions';
     const reset = document.createElement('button'); reset.type = 'button';
