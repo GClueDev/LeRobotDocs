@@ -26,7 +26,7 @@
 
    Ubuntu 24.04・x86_64・Python 3.12・GPU ドライバー導入済みの EC2 が対象です。導入先と固定する版は [インフラ構成の仕様](<<= guide_link('staff/environment/specs/infrastructure.md#ec2-のソフトウェア導入スクリプト') =>>) を参照してください。
 
-   **手元の Terminal** で、LeRobotDocs の直下から次を実行し、表示された全文をコピーします。
+   **手元の ターミナル** で、LeRobotDocs の直下から次を実行し、表示された全文をコピーします。
 
    ```bash
    SETUP_SCRIPT=docs-aws-attendee/staff/environment/scripts/
@@ -34,7 +34,7 @@
    base64 < "$SETUP_SCRIPT" | fold -w 76
    ```
 
-   **EC2 の Terminal**（`sudo -iu ubuntu` で切り替えた `ubuntu` ユーザー）で、次の 1 行を実行します。
+   **EC2 の ターミナル**（`sudo -iu ubuntu` で切り替えた `ubuntu` ユーザー）で、次の 1 行を実行します。
 
    ```bash
    base64 -d > ~/setup-lerobot-ec2.sh <<'SETUP_BASE64'
@@ -86,7 +86,7 @@
    - `--cache-resnet18` は画像特徴抽出用の ResNet18 の事前学習済み重みを取得する任意オプションです。[ACT（Action Chunking with Transformers）](https://huggingface.co/docs/lerobot/act)は、手本の操作からロボットの動かし方を学習する AI モデルです。ACT がカメラ画像を処理する部分に ResNet18 を使うため、その重みを事前に用意します。ACT 全体の操作モデルを取得するオプションではありません。
    - GPU 計算と重みの事前取得は、EC2 の実機では未検証です。
    - 導入先を変える場合は `--lerobot-dir /home/ubuntu/<フォルダ>` を追加し、確認時の `cd` もそのフォルダに変えます。
-   - Amazon DCV（リモートデスクトップ接続）の Terminal 内で `Monospace 12pt` を設定する場合は `--terminal-font` を追加します。SSM のシェルではこのオプションを付けません。
+   - Amazon DCV（リモートデスクトップ接続）の ターミナル 内で `Monospace 12pt` を設定する場合は `--terminal-font` を追加します。SSM のシェルではこのオプションを付けません。
    - `sudo`、通信、空き容量のエラーは原因を解消してから同じコマンドを再実行します。既存の uv・AWS CLI の版が異なる場合は管理者に確認します。LeRobot の版が異なる場合や変更がある場合は、必要なら `--lerobot-dir` で別の配置先を指定します。
    - GPU の確認で失敗した場合は `nvidia-smi` の出力を管理者に共有します。CPU のみの環境に導入する場合は `--check-gpu` を省略します。
 

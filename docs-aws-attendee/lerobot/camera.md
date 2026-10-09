@@ -85,7 +85,7 @@ lerobot-dataset-viz \
   --batch-size 1
 ```
 
-SSH のみで作業している場合は手元のデスクトップで表示します。EC2 で表示する本収集データは、[収集後のデータ転送](collect.md#transfer-to-ec2)後に Amazon DCV（リモートデスクトップ接続）の Terminal から確認します。従来の Jetson 向け `192.168.55.1` を EC2 の接続先として使いません。
+SSH のみで作業している場合は手元のデスクトップで表示します。EC2 で表示する本収集データは、[収集後のデータ転送](collect.md#transfer-to-ec2)後に Amazon DCV（リモートデスクトップ接続）の ターミナル から確認します。従来の Jetson 向け `192.168.55.1` を EC2 の接続先として使いません。
 
 ## 3.Testデータの削除
 

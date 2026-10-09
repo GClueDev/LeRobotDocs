@@ -24,7 +24,7 @@
 
 このページは、講師が LeRobot とデータセットを配置済みの EC2 を使います。受講者は構築スクリプトを実行しません。配置場所が違う場合は講師の案内に合わせてください。
 
-[Amazon DCV（リモートデスクトップ接続）](connect.md) のデスクトップから Terminal を開きます。**以降は EC2 の ubuntu ユーザー** で実行します。`~/lerobot` がない、`uv` がない場合は講師に構築状況を確認してください。
+[Amazon DCV（リモートデスクトップ接続）](connect.md) のデスクトップから ターミナル を開きます。**以降は EC2 の ubuntu ユーザー** で実行します。`~/lerobot` がない、`uv` がない場合は講師に構築状況を確認してください。
 
 ```bash
 whoami
@@ -57,7 +57,7 @@ uv run --no-sync lerobot-edit-dataset \
 
 ## 3. 映像を確認する
 
-**EC2 の DCV デスクトップ内の Terminal** で実行します。通常の SSH ターミナルから GUI を開こうとせず、DCV 内で操作します。
+**EC2 の DCV デスクトップ内の ターミナル** で実行します。通常の SSH ターミナルから GUI を開こうとせず、DCV 内で操作します。
 
 ```bash
 uv run --no-sync rerun {{DATASET_DIR_SH}}

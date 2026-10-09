@@ -40,7 +40,7 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 | `aws.handson_cdk.instance.availability_zone` | インスタンスを置く Availability Zone（任意） | [Availability Zone を選ぶ](<<= guide_link('staff/preparation/placement.md#26-availability-zone') =>>) |
 | `aws.handson_cdk.issuer.access_key_serial` | 1 のまま | 変えるのは [払出し用の鍵を作り直す](<<= guide_link('staff/environment/procedures/environment.md#64') =>>) のときだけ |
 
-手元の Terminal（インフラリポジトリ直下）で、既存 VPC の CIDR を確認します。表示された範囲と重ならない範囲を設定してください。
+手元の ターミナル（インフラリポジトリ直下）で、既存 VPC の CIDR を確認します。表示された範囲と重ならない範囲を設定してください。
 
 ```bash
 aws --profile {{PROFILE_SH}} --region {{REGION}} \
@@ -58,7 +58,7 @@ aws --profile {{PROFILE_SH}} --region {{REGION}} \
   --output text
 ```
 
-AMI から起動した EC2 に接続した後、**EC2 の Terminal（`ubuntu` ユーザー）**で実行します。OS が Ubuntu 24.04、アーキテクチャが `x86_64` であり、`nvidia-smi` がエラーなくドライバーと GPU の情報を表示することを確認します。
+AMI から起動した EC2 に接続した後、**EC2 の ターミナル（`ubuntu` ユーザー）**で実行します。OS が Ubuntu 24.04、アーキテクチャが `x86_64` であり、`nvidia-smi` がエラーなくドライバーと GPU の情報を表示することを確認します。
 
 ```bash
 cat /etc/os-release

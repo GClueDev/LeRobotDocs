@@ -42,7 +42,7 @@
 | --- | --- |
 | macOS の Git 操作で `unbound variable` | 講師が動作確認した配布版へ[ツールを更新する](reference/setup.md#update)。検証時の修正・配布状況は[出典と版の確認](verification.md#source-version)を参照 |
 | DCV ログイン後が灰色 | デスクトップからログアウトして再ログインする。Ubuntu のデスクトップ環境 GNOME の重要なプロセスを強制終了しない。改善しなければ講師へ相談する |
-| GNOME Terminal の文字が横に広い | 設定でフォントを Monospace 12、セルの幅・高さを 1.00 にする |
+| ターミナルアプリ GNOME Terminal の文字が横に広い | 設定でフォントを Monospace 12、セルの幅・高さを 1.00 にする |
 | Parquet の `Corrupt footer` | 大きなデータファイルの本体が未取得で、参照情報だけ残っている可能性。[Git LFS の復旧](reference/data.md#git-lfs)で本体の取得を確認する |
 {% if attendee_console_access %}| S3 バケット一覧が AccessDenied | [S3 バケットパスへの直接 URL](connect.md) を使う。バケット一覧権限は要求しない |{% else %}| S3の画面が使えない | このビルドでは受講者のコンソール操作を案内しません。CLIで保存・回収してください。 |{% endif %}
 

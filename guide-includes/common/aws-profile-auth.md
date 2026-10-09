@@ -1,4 +1,4 @@
-利用する認証方式のタブを選びます。**以降のコマンドを実行する dev container 内の Terminal** で準備してください。ホスト側の設定を共有していない場合、コンテナー内にも同じ名前のプロファイルが必要です。プロファイル名は入力欄の `{{PROFILE}}` を使います。
+利用する認証方式のタブを選びます。**以降のコマンドを実行する dev container 内の ターミナル** で準備してください。ホスト側の設定を共有していない場合、コンテナー内にも同じ名前のプロファイルが必要です。プロファイル名は入力欄の `{{PROFILE}}` を使います。
 
 === "IAM Identity Center"
 
@@ -24,7 +24,7 @@
     aws configure --profile {{PROFILE_SH}}
     ```
 
-    `AWS Access Key ID` と `AWS Secret Access Key` は Terminal の対話プロンプトへ直接入力します。`Default region name` は `{{REGION}}`、`Default output format` は `json` を指定します。キーをコマンド引数・資料・このページの入力フォーム・設定JSONへ記載しません。キーは AWS CLI がローカルの `~/.aws/credentials`、プロファイル設定は `~/.aws/config` で管理します。このガイドの保存値とは別です。
+    `AWS Access Key ID` と `AWS Secret Access Key` は ターミナル の対話プロンプトへ直接入力します。`Default region name` は `{{REGION}}`、`Default output format` は `json` を指定します。キーをコマンド引数・資料・このページの入力フォーム・設定JSONへ記載しません。キーは AWS CLI がローカルの `~/.aws/credentials`、プロファイル設定は `~/.aws/config` で管理します。このガイドの保存値とは別です。
 
     IAM ユーザーのキーを使う場合は `aws sso login` を実行しません。キーの無効化・更新時は管理者の案内に従ってプロファイルの設定を更新します。
 

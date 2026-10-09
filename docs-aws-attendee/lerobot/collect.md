@@ -59,7 +59,7 @@ test -f {{LOCAL_DATASET_DIR_SH}}/meta/info.json &&
 gclue-ai-handson-attendee dcv
 ```
 
-トンネル用のターミナルは開いたまま、案内された URL から DCV にログインします。DCV デスクトップ内で Terminal を開き、以降の EC2 工程はそこで実行します。
+トンネル用のターミナルは開いたまま、案内された URL から DCV にログインします。DCV デスクトップ内で ターミナル を開き、以降の EC2 工程はそこで実行します。
 
 実行場所: **EC2 の Ubuntu**。講師が LeRobot と受講者ツールを準備済みであることが前提です。
 
@@ -110,7 +110,7 @@ uv run --no-sync lerobot-edit-dataset \
   --operation.type info
 ```
 
-エピソード数、フレーム数、FPS、タスクと、`front`・`side` の2台の映像を収集時の記録と照合します。DCV の Terminal では、次で Rerun を表示します。
+エピソード数、フレーム数、FPS、タスクと、`front`・`side` の2台の映像を収集時の記録と照合します。DCV の ターミナル では、次で Rerun を表示します。
 
 ```bash
 uv run --no-sync rerun {{DATASET_DIR_SH}}
