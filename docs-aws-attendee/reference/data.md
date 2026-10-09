@@ -35,3 +35,19 @@ cd ~/lerobot
 LeRobot の `lerobot-dataset-viz --repo-id ... --root ... --episode-index 0 --mode local` は別の CLI です。今回そのコマンドでの表示を実測済みとはしていません。講師が別途確認した場合に使ってください。
 
 [教材とデータ確認へ戻る](../dataset.md)
+
+## 実習環境の版とツールを確認する {#environment}
+
+講師の配置したEC2のDCV内Terminalで実行します。通常のデータ確認で問題がなければ、この確認は不要です。
+
+```bash
+cd ~/lerobot
+git rev-parse HEAD
+uv --version
+uv run --no-sync python --version
+uv run --no-sync lerobot-edit-dataset --help
+```
+
+検証環境はUbuntu 24.04 / x86_64、LeRobot v0.6.0（`30da8e687a6dfc617fcd94afc367ac7071c376ce`）、Python 3.12.3、uv 0.12.23でした。各バージョンとhelpを講師の指定と照合します。`--no-sync`は構築済みの依存をそのまま使う指定です。違いがあれば受講者自身で更新せず講師へ確認してください。
+
+[データ確認へ戻る](../dataset.md)

@@ -21,7 +21,7 @@
 
 | 順番 | ページ | 実行場所 |
 | --- | --- | --- |
-| 準備 | [PC の準備と更新](setup.md)（右上の「各種値の設定」で配布値を入力） | 手元 |
+| 準備 | [PC の準備と導入](setup.md)（右上の「各種値の設定」で配布値を入力） | 手元 |
 | 1 | [接続の確認](lerobot/check.md) | 手元の Jetson／Mac |
 | 2 | [キャリブレーション](lerobot/calibration.md) | 手元の Jetson／Mac |
 | 3 | [カメラの調整](lerobot/camera.md) | 手元の Jetson／Mac |
