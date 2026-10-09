@@ -40,7 +40,7 @@ gclue-ai-handson-attendee dcv
 
 トンネル用のターミナルは開いたまま、案内された URL から DCV にログインします。DCV デスクトップ内で Terminal を開き、以降の EC2 工程はそこで実行します。
 
-実行場所: **EC2 の ubuntu**。講師が LeRobot と受講者用の一時認証情報を配置済みであることが前提です。
+実行場所: **EC2 の Ubuntu**。講師が LeRobot と受講者用の一時認証情報を配置済みであることが前提です。
 
 ```bash
 whoami

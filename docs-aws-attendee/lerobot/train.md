@@ -1,6 +1,6 @@
 # 学習
 
-実行場所: **EC2 の ubuntu**。[AWS へのデータ転送](../aws-transfer.md)、必要なら [データセットの編集](edit.md)を済ませた同じ Terminal で進めます。講師が CUDA と GPU 計算、ACT の ResNet18 重みのキャッシュを確認済みであることが前提です。今回の EC2 の GPU 学習は未検証です。
+実行場所: **EC2 の Ubuntu**。[AWS へのデータ転送](../aws-transfer.md)、必要なら [データセットの編集](edit.md)を済ませた同じ Terminal で進めます。講師が CUDA と GPU 計算、ACT の ResNet18 重みのキャッシュを確認済みであることが前提です。今回の EC2 の GPU 学習は未検証です。
 
 ## 1. ACT学習（新規）
 

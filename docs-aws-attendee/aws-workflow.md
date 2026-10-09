@@ -27,8 +27,8 @@
 | 3 | [カメラの調整](lerobot/camera.md) | 手元の Jetson／Mac |
 | 4 | [データセットの収集](lerobot/collect.md) | 手元の Jetson／Mac |
 | AWS | [AWS へのデータ転送](aws-transfer.md) | 手元 → S3 → EC2 |
-| 5 | [データセットの編集](lerobot/edit.md) | EC2 の ubuntu |
-| 6 | [学習](lerobot/train.md) | EC2 の ubuntu |
+| 5 | [データセットの編集](lerobot/edit.md) | EC2 の Ubuntu |
+| 6 | [学習](lerobot/train.md) | EC2 の Ubuntu |
 | AWS | [AWS からのモデル回収](aws-model-recovery.md) | EC2 → S3 → 手元 |
 | 7 | [推論の実行](lerobot/run.md) | 手元の Jetson／Mac |
 | 終了 | [保存と回収](save.md)、[終了時の片付け](finish.md) | 手元 |
