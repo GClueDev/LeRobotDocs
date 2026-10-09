@@ -41,7 +41,7 @@
 | 症状 | 対処 |
 | --- | --- |
 | macOS の Git 操作で `unbound variable` | Bash 3.2 / C.UTF-8 と日本語隣接変数に関する修正 `fc6e58d` を含むツールを講師から受け取る。旧配布版は更新未実施だったため、公開済みかを確認する |
-| DCV ログイン後が灰色 | デスクトップからログアウトして再ログインする。GNOME に `SIGQUIT` を送らない。改善しなければ講師へ相談する |
+| DCV ログイン後が灰色 | デスクトップからログアウトして再ログインする。Ubuntu のデスクトップ環境 GNOME の重要なプロセスを強制終了しない。改善しなければ講師へ相談する |
 | GNOME Terminal の文字が横に広い | 設定でフォントを Monospace 12、セルの幅・高さを 1.00 にする |
 | Parquet の `Corrupt footer` | Git LFS ポインタの可能性。[Git LFS の復旧](reference/data.md#git-lfs)で実体化を確認する |
 {% if attendee_console_access %}| S3 バケット一覧が AccessDenied | [S3 バケットパスへの直接 URL](connect.md) を使う。バケット一覧権限は要求しない |{% else %}| S3の画面が使えない | このビルドでは受講者のコンソール操作を案内しません。CLIで保存・回収してください。 |{% endif %}
