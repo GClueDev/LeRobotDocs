@@ -71,7 +71,7 @@ uv run --no-sync rerun {{DATASET_DIR_SH}}
 
 ## 3. エピソードを削除する
 
-`CLEAN_DATASET_DIR`は編集後のデータを置くEC2の新しいフォルダです。元の場所が `/home/ubuntu/handson-data/workshop01/attendee01/round1` なら末尾に `_clean` が付きます。新しい識別名も、元が `attendee01/red-cube` なら `attendee01/red-cube_clean` になります。どちらも下のコマンドが作る値で、元データと区別するためのものです。
+下の `--new_root` は、元データの場所 `DATASET_DIR` の末尾に `_clean` を付けたEC2の新しい出力先です。元の場所が `/home/ubuntu/handson-data/workshop01/attendee01/round1` なら末尾に `_clean` が付きます。新しい識別名も、元が `attendee01/red-cube` なら `attendee01/red-cube_clean` になります。どちらも下のコマンドが作る値で、元データと区別するためのものです。
 
 `[1, 2]` は確認した番号へ置き換えます。出力先が既にある場合は削除せず、別の名前にします。
 
