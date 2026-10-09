@@ -46,34 +46,26 @@ WSL の Ubuntu を入れたら、Ubuntu のターミナルを開き、上の「L
 
 ### 入ったことを確かめる
 
-次のコマンドを 1 つずつ実行し、バージョンが表示されることを確かめます。
+導入スクリプトの取得と実行に必要な bash・curl をまとめて確認します。両方のバージョンが表示されれば準備できています。
 
 ```bash
 bash --version
-```
-
-```bash
 curl --version
 ```
+
+AWS の操作には AWS CLI v2 が必要です。
 
 ```bash
 aws --version
 ```
 
-`aws --version` は `aws-cli/2.` で始まる表示であれば使えます。
-Linux で AWS CLI を導入スクリプトに入れてもらう場合は、ここで見つからなくてもかまいません。
+`aws-cli/2.` で始まる表示を確認します。Linux で導入スクリプトに AWS CLI を入れてもらう場合は、ここで見つからなくても導入へ進めます。導入後の `env info` に表示される AWS CLI のパスを確認してください。
 
-自分の EC2 へ接続する機器では、次も確かめます。
+自分の EC2 へ接続する機器では、接続用のソフトウェアもまとめて確認します。それぞれの版が表示されることを確かめます。Linux で Session Manager プラグインを導入スクリプトに入れてもらう場合は、導入後に確認します。
 
 ```bash
 session-manager-plugin --version
-```
-
-```bash
 ssh -V
-```
-
-```bash
 git --version
 ```
 
@@ -128,7 +120,13 @@ gclue-ai-handson-attendee env update
 
 ## 認証情報を入れ替える {#credentials}
 
-認証情報には有効期限があります（`env info` の「認証情報の有効期限」）。
+認証情報には有効期限があります。導入済みの講習会環境の設定と、一時認証情報の期限を次で確認します。
+
+```bash
+gclue-ai-handson-attendee env info
+```
+
+表示された「認証情報の有効期限」を確認してください。
 期限が切れたときや、講師から新しい認証情報ファイルを受け取ったときは、次のコマンドで入れ替えます。
 
 ```bash
@@ -144,4 +142,8 @@ gclue-ai-handson-attendee env credentials \
 source ~/gclue-ai-handson/{{EVENT_ID}}/activate
 ```
 
-`env info` で、認証情報の有効期限が新しくなっていることを確かめます。
+導入先へ保存された認証情報の有効期限が新しくなっていることを、次で確かめます。
+
+```bash
+gclue-ai-handson-attendee env info
+```

@@ -37,6 +37,8 @@
 | 終了時の最終回収・撤去 | 手順・CLI 照合のみ。全体タイムラインの最終工程は未実施 |
 | Ubuntu / Jetson / WSL の受講者導入 | 元手順に基づく案内。今回の端末実測は Mac |
 
+<span id="runtime-versions"></span>
+
 ## 固定した EC2 環境
 
 | 項目 | 実測値 |

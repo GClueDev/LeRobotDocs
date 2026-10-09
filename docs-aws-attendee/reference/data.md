@@ -15,6 +15,8 @@ scp -r '<手元のデータセットフォルダ>' \
 
 ## Parquet を読めない：Git LFS の実体化 {#git-lfs}
 
+Git LFS は大きなファイル本体を Git の履歴と別に管理し、履歴には小さな参照情報（ポインタ）を残します。通常は clone 時に本体も取得されますが、自動取得の無効化や Git LFS の未導入などで参照情報だけが残ることがあります。
+
 `Corrupt footer` などが出て、Hugging Face 等から Git で clone したデータの場合、実データの代わりに Git LFS の小さなポインタファイルだけがある可能性があります。
 
 講師に、対象が Git LFS を使うデータセットの clone であることと、ネットワーク取得してよいことを確認します。**EC2** で対象の clone に移動して次を実行します。LeRobot 本体のディレクトリではありません。
@@ -32,7 +34,8 @@ cd ~/lerobot
 
 ## 別の可視化コマンドを使う {#other-viewers}
 
-LeRobot の `lerobot-dataset-viz --repo-id ... --root ... --episode-index 0 --mode local` は別の CLI です。今回そのコマンドでの表示を実測済みとはしていません。講師が別途確認した場合に使ってください。
+!!! warning "別の可視化コマンドは未検証です"
+    通常の確認は[教材とデータ確認](../dataset.md)の Rerun を使います。別の CLI `lerobot-dataset-viz` は今回の EC2 では未検証です。講師が同じ環境で確認し、案内した場合だけ使ってください。検証範囲は[出典と検証範囲](../verification.md)を参照してください。
 
 [教材とデータ確認へ戻る](../dataset.md)
 
@@ -48,6 +51,6 @@ uv run --no-sync python --version
 uv run --no-sync lerobot-edit-dataset --help
 ```
 
-検証環境はUbuntu 24.04 / x86_64、LeRobot v0.6.0（`30da8e687a6dfc617fcd94afc367ac7071c376ce`）、Python 3.12.3、uv 0.12.23でした。各バージョンとhelpを講師の指定と照合します。`--no-sync`は構築済みの依存をそのまま使う指定です。違いがあれば受講者自身で更新せず講師へ確認してください。
+検証時の OS・LeRobot・Python・uv の版は[固定した EC2 環境の記録](../verification.md#runtime-versions)にまとめています。各バージョンと help を講師の指定と照合します。`--no-sync`は構築済みの依存をそのまま使う指定です。違いがあれば受講者自身で更新せず講師へ確認してください。
 
 [データ確認へ戻る](../dataset.md)

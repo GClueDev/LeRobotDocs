@@ -30,7 +30,13 @@
 
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="PROJECT_DIR TELEOP_PORT ROBOT_PORT LOCAL_DATASET_DIR TASK"></div>
-手元の収集先は未使用の絶対パスを入力します。`round1` というフォルダ名で収集する主手順です。ホームの場所は手元のターミナルで `echo "$HOME"` を実行して確認できます。課題文も講師と合わせ、収集・推論で同じ値を使います。以下は作業フォルダへ移るコマンドです。
+手元の収集先は未使用の絶対パスを入力します。`round1` というフォルダ名で収集する主手順です。ホームの場所は手元のターミナルで次を実行して確認できます。
+
+```bash
+echo "$HOME"
+```
+
+課題文も講師と合わせ、収集・推論で同じ値を使います。以下は作業フォルダへ移るコマンドです。
 
 ```bash
 cd {{PROJECT_DIR_SH}}
