@@ -1,5 +1,9 @@
 ## 2. 開催の設定ファイルを用意する
 
+ここは構築の設定値です。構築担当・管理者が確定した内容を入力し、同じ内容を開催 YAML に記載します。フォームを変えても YAML は変更されません。AMI を作り直す工程の元・新・一時 ID は、この開催用 AMI の欄と区別します。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="CONFIG_DIR EVENT_ID ACCOUNT_ID REGION PROFILE INSTANCE_TYPE AMI_ID"></div>
+
 ### 2.1 記載例をコピーする
 
 [共通設定](<<= guide_link('common.md') =>>) の設定ディレクトリ（`{{CONFIG_DIR}}`）を使います。開催ごとに別のディレクトリにしてください。
@@ -39,7 +43,8 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 手元の Terminal（インフラリポジトリ直下）で、既存 VPC の CIDR を確認します。表示された範囲と重ならない範囲を設定してください。
 
 ```bash
-aws ec2 describe-vpcs --query 'Vpcs[].CidrBlock' --output text
+aws --profile {{PROFILE_SH}} --region {{REGION}} \
+  ec2 describe-vpcs --query 'Vpcs[].CidrBlock' --output text
 ```
 
 ### 2.3 AMI を選ぶ
@@ -47,7 +52,8 @@ aws ec2 describe-vpcs --query 'Vpcs[].CidrBlock' --output text
 今回の再現対象は **Ubuntu 24.04 / x86_64 / Python 3.12 / NVIDIA ドライバー導入済み** の AMI です。管理者から対象リージョンで利用できる AMI ID を受け取り、次で状態・OS の説明・アーキテクチャを確認します。起動後は下の EC2 内確認も行います。`available`、`x86_64` と対象の説明が成功条件です。
 
 ```bash
-aws ec2 describe-images --image-ids {{AMI_ID}} \
+aws --profile {{PROFILE_SH}} --region {{REGION}} \
+  ec2 describe-images --image-ids {{AMI_ID}} \
   --query 'Images[0].[State,Architecture,Name,Description]' \
   --output text
 ```

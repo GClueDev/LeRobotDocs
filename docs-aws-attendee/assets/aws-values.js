@@ -27,19 +27,38 @@
     RUN_NAME: ['学習実行名', v => atom.test(v) && v.length <= 64, '今回の学習だけに使う未使用の名前。例: act-20261009-103000。モデル回収でも同じ名前を使う'],
     TRAIN_OUTPUT_DIR: ['EC2 の学習結果の保存先', v => path(v) && v.startsWith('/'), '今回の学習の未使用の出力先。例: /home/ubuntu/handson-work/workshop01/attendee01/outputs/act-20261009-103000'],
     POLICY_PATH: ['手元の推論モデルの場所', v => path(v) && v.startsWith('/'), 'モデル回収で表示されたモデルの場所。checkpoints/last/pretrained_model まで含める'],
+    SOURCE_AMI_ID: ['元の AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '管理者から受け取る導入前の AMI。例: ami-0123456789abcdef0。開催用・新規 AMI と別の欄'],
+    NEW_AMI_ID: ['作成した AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'create-image が出す ami- で始まる値。例: ami-0fedcba9876543210。利用確認後に開催用 AMI ID へ転記する'],
+    BUILD_INSTANCE_ID: ['AMI 作成用の一時 EC2 ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'run-instances が出す i- で始まる値。例: i-0123456789abcdef0。受講者の EC2 ID と別の欄'],
+    BUILD_SUBNET_ID: ['一時 EC2 の subnet ID', v => /^subnet-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), 'describe-subnets の SubnetId から選ぶ。例: subnet-0123456789abcdef0。対象 GPU が提供される AZ を選ぶ'],
+    BUILD_PROFILE_NAME: ['一時 EC2 のインスタンスプロファイル名', v => /^[A-Za-z0-9_+=,.@-]{1,128}$/.test(v), '管理者から受け取る SSM 接続用の名前。例: HandsonAmiBuilder。AWS CLI のログインプロファイルとは別'],
+    BUILD_ROOT_DEVICE: ['元の AMI のルートデバイス名', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '元の AMI の describe-images で表示される RootDeviceName。例: /dev/sda1'],
+    BUILD_VOLUME_GB: ['一時 EC2 のルート容量（GB）', v => /^[1-9][0-9]{0,4}$/.test(v) && Number(v) <= 16384, '整数。例: 512。ソフトウェアが収まり、開催設定の root_volume_size_gb 以下の容量を管理者と確認'],
+    BUILD_AMI_NAME: ['作成する AMI の名前', v => /^GClueAiHandsOn-AMI-[a-z0-9-]+-[0-9]{8}$/.test(v) && v.length <= 128, '用途と作成日を含む未使用名。例: GClueAiHandsOn-AMI-lerobot-20261009'],
+    AMI_DESCRIPTION: ['作成する AMI の説明', v => v.length <= 255 && !/[\x00-\x1f\x7f]/.test(v), '入れたソフトウェアを記す。例: Ubuntu 24.04 with LeRobot 0.6.0'],
+    ROOT_DEVICE_NAME: ['開催用 AMI のルートデバイス名', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '開催用 AMI の describe-images で確認した値。例: /dev/sda1。元の AMI の欄とは別'],
+    PRIMARY_AZ: ['インスタンスを置く AZ', v => /^[a-z]{2}(?:-[a-z]+)+-[0-9]+[a-z]$/.test(v), 'describe-instance-type-offerings の Location から選ぶ。例: ap-northeast-1a'],
+    SECONDARY_AZ: ['2つ目のネットワーク AZ', v => /^[a-z]{2}(?:-[a-z]+)+-[0-9]+[a-z]$/.test(v), '同じリージョンの別の Location。例: ap-northeast-1c。1つ目と異なるものを選ぶ'],
+    ISSUER_KMS_ARN: ['認証情報暗号化用 KMS キー ARN', v => /^arn:aws(?:-us-gov|-cn)?:kms:[a-z0-9-]+:[0-9]{12}:key\/[A-Za-z0-9-]+$/.test(v), 'describe-key の KeyMetadata.Arn を転記。例: arn:aws:kms:ap-northeast-1:123456789012:key/11111111-2222-3333-4444-555555555555。鍵の秘密値は入力しない'],
+    SSH_HOST: ['コピー先の SSH 接続先', v => /^(?:[A-Za-z0-9_.-]+@)?[A-Za-z0-9_.-]+$/.test(v), '接続確認済みの SSH Host 名または user@host。例: ubuntu@jetson04.local'],
+    EDGE_SETUP_HOOK: ['教材の準備スクリプトのパス', path, '任意 hook の実ファイルを確認して入力。例: /home/teacher/materials/hooks/edge-setup.sh。秘密の値を入力しない'],
+    GUIDE_EXPORTER: ['設定JSON生成スクリプトのパス', v => path(v) && v.startsWith('/'), '保存した export_attendee_guide_settings.py の絶対パス。例: /home/teacher/tools/export_attendee_guide_settings.py'],
+    WHEEL_PATH: ['公開する wheel のパス', path, 'build-wheel が作ったファイルのパスを転記。例: dist/handson-tools/gclue_ai_handson-0.1.0-py3-none-any.whl'],
+    PATCH_ID: ['適用済みパッチ ID', v => atom.test(v) && v.length <= 128, 'rollout patch の「パッチ ID:」の後を転記。例: p20261009-103000。未適用なら空欄。実際の出力を使う'],
     RELEASE: ['教材の版', v => atom.test(v) && v.length <= 64, '英数字で始まる64文字以内。公開済み版は上書きしない'],
+    TOOLS_MANIFEST_SHA: ['受講者ツール manifest SHA-256', v => /^[a-fA-F0-9]{64}$/.test(v), 'release publish --attendee-tools の最後の64桁。例: 64個の a。教材の版の manifest とは別の出力を転記'],
     MANIFEST_SHA: ['教材 manifest SHA-256', v => /^[a-fA-F0-9]{64}$/.test(v), 'release buildが出力する64桁のハッシュ'],
     MATERIALS_DIR: ['公開する教材ディレクトリ', path, '絶対パスまたは相対パス。引用符を付けず入力'],
     ACCOUNT_ID: ['AWS アカウント ID', v => /^\d{12}$/.test(v), '対象アカウントの12桁の番号'],
-    AMI_ID: ['使用する AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の構築対象。元・新・削除対象AMIは各手順で別途指定'],
-    INSTANCE_ID: ['対象 EC2 インスタンス ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の確認対象。一時構築EC2は各手順で別途指定'],
+    AMI_ID: ['開催で使用する AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の構築対象。元・新・削除対象AMIは各手順で別途指定'],
+    INSTANCE_ID: ['受講者 EC2 のインスタンス ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の確認対象。一時構築EC2は各手順で別途指定'],
     INSTANCE_TYPE: ['EC2 インスタンスタイプ', v => /^[a-z][a-z0-9-]*\.[a-z0-9]+$/.test(v), '管理者が選定したタイプ'],
   };
   const attendeeFields = ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','DATASET_DIR','DATASET_REPO_ID','PROJECT_DIR','TELEOP_PORT','ROBOT_PORT','LOCAL_DATASET_DIR','TASK','FRONT_CAMERA','SIDE_CAMERA','RUN_NAME','TRAIN_OUTPUT_DIR','POLICY_PATH'];
   const roleFields = {
     attendee: attendeeFields,
-    instructor: ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','PROFILE','CONFIG_DIR','RELEASE','MANIFEST_SHA','MATERIALS_DIR'],
-    environment: ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','PROFILE','CONFIG_DIR','ACCOUNT_ID','AMI_ID','INSTANCE_ID','INSTANCE_TYPE'],
+    instructor: ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','PROFILE','CONFIG_DIR','RELEASE','MANIFEST_SHA','TOOLS_MANIFEST_SHA','MATERIALS_DIR','SSH_HOST','EDGE_SETUP_HOOK','GUIDE_EXPORTER','WHEEL_PATH','PATCH_ID','DATASET_DIR','DATASET_REPO_ID'],
+    environment: ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','PROFILE','CONFIG_DIR','ACCOUNT_ID','AMI_ID','INSTANCE_ID','INSTANCE_TYPE','SOURCE_AMI_ID','NEW_AMI_ID','BUILD_INSTANCE_ID','BUILD_SUBNET_ID','BUILD_PROFILE_NAME','BUILD_ROOT_DEVICE','BUILD_VOLUME_GB','BUILD_AMI_NAME','AMI_DESCRIPTION','ROOT_DEVICE_NAME','PRIMARY_AZ','SECONDARY_AZ','ISSUER_KMS_ARN','SSH_HOST'],
     staff: Object.keys(fields),
   }[role];
   const allowed = new Set(Object.keys(fields));
@@ -195,6 +214,7 @@
       const error = document.createElement('div'); error.className = 'aws-error'; error.setAttribute('aria-live','polite');
       input.addEventListener('input', () => {
         const value = input.value;
+        if (key === 'RELEASE' && value !== (state.RELEASE || '')) delete state.MANIFEST_SHA;
         const valid = value === '' || (value.length <= 512 && fields[key][1](value));
         input.setAttribute('aria-invalid', String(!valid));
         error.textContent = valid ? '' : '形式を確認してください。この値は保存・反映しません。';
@@ -241,6 +261,7 @@
           next[key] = value; accepted.push(key);
           if (!roleFields.includes(key)) retained.push(key);
         }
+        if (next.RELEASE !== state.RELEASE && !accepted.includes('MANIFEST_SHA')) delete next.MANIFEST_SHA;
         state = next; save(); syncInputs(); refresh();
         const names = keys => keys.length ? keys.join(', ') : 'なし';
         reportTransfer(`採用 ${accepted.length}件（${names(accepted)}）。うち他の役割用に保持: ${names(retained)}。未対応として無視: ${names(ignored)}。不正値として無視: ${names(invalid)}。ファイルにない既存設定は維持しました。`);

@@ -1,37 +1,48 @@
 #### 2.4.4 AMI を作る
 
+元の AMI と今回作成する AMI を別々に管理します。一時 EC2 ID は起動時の出力、名前は前ページで決めた値です。説明には導入した OS・ソフトウェア・版を記載します。例: `Ubuntu 24.04 with LeRobot 0.6.0`。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="BUILD_INSTANCE_ID BUILD_AMI_NAME AMI_DESCRIPTION"></div>
+
 1. 一時的なインスタンスを停止します。
 
    エラーが表示されずに 2 つ目のコマンドが終われば、停止しています。
 
    ```bash
-   aws ec2 stop-instances --instance-ids <一時的なインスタンス ID>
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 stop-instances --instance-ids {{BUILD_INSTANCE_ID}}
    ```
 
    ```bash
-   aws ec2 wait instance-stopped \
-     --instance-ids <一時的なインスタンス ID>
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 wait instance-stopped \
+     --instance-ids {{BUILD_INSTANCE_ID}}
    ```
 
 2. AMI を作ります。
 
-   `<AMI の名前>` は、2.4.2 の決まりに沿った名前（例: `GClueAiHandsOn-AMI-lerobot-20261008`）にします。
+   `{{BUILD_AMI_NAME}}` は、2.4.2 の決まりに沿った名前（例: `GClueAiHandsOn-AMI-lerobot-20261008`）にします。
    AMI とそのスナップショットには、タグ `gclue-ai-handson-ami` を、値を AMI の名前にして付けます。
    開催 ID のタグ `handson-deployment` は付けません（付けると、その開催の後片付けの対象と見分けがつかなくなり、ほかの開催でも使う AMI を消してしまうおそれがあるためです。詳しくは [アクセス制御の仕様](<<= guide_link('staff/environment/specs/access-control.md') =>>) の「管理者の作業」）。
-   `<説明>` には、入れたソフトウェアを書いておきます。
+   説明欄 には、入れたソフトウェアを書いておきます。
    表示された `ami-` で始まる値が、新しい AMI の ID です。
 
    ```bash
    TAGS='ResourceType=image,Tags=[{Key=gclue-ai-handson-ami,Value='
-   TAGS+='<AMI の名前>}]'
+   TAGS+='{{BUILD_AMI_NAME}}}]'
    TAGS2='ResourceType=snapshot,Tags=[{Key=gclue-ai-handson-ami,'
-   TAGS2+='Value=<AMI の名前>}]'
+   TAGS2+='Value={{BUILD_AMI_NAME}}}]'
 
-   aws ec2 create-image --instance-id <一時的なインスタンス ID> \
-     --name <AMI の名前> --description '<説明>' \
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 create-image --instance-id {{BUILD_INSTANCE_ID}} \
+     --name {{BUILD_AMI_NAME}} --description {{AMI_DESCRIPTION_SH}} \
      --tag-specifications "$TAGS" "$TAGS2" --query ImageId \
      --output text
    ```
+
+   `create-image` の最後の ImageId を下の欄へ転記します。例: `ami-0fedcba9876543210`。元の AMI ID や開催用 AMI ID はこの時点で上書きしません。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="NEW_AMI_ID"></div>
 
 3. AMI ができるまで待ちます。
 
@@ -39,7 +50,8 @@
    待ちきれずに時間切れのエラーになった場合は、もう一度実行します。
 
    ```bash
-   aws ec2 wait image-available --image-ids <新しい AMI ID>
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 wait image-available --image-ids {{NEW_AMI_ID}}
    ```
 
 4. AMI の状態を確かめます。
@@ -51,7 +63,8 @@
    QUERY='Images[0].[[State,RootDeviceName],BlockDeviceMappings[].'
    QUERY+='[DeviceName,Ebs.VolumeSize,Ebs.SnapshotId]]'
 
-   aws ec2 describe-images --image-ids <新しい AMI ID> \
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 describe-images --image-ids {{NEW_AMI_ID}} \
      --query "$QUERY" --output text
    ```
 
@@ -60,16 +73,22 @@
    エラーが表示されずに 2 つ目のコマンドが終われば、削除されています。
 
    ```bash
-   aws ec2 terminate-instances \
-     --instance-ids <一時的なインスタンス ID>
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 terminate-instances \
+     --instance-ids {{BUILD_INSTANCE_ID}}
    ```
 
    ```bash
-   aws ec2 wait instance-terminated \
-     --instance-ids <一時的なインスタンス ID>
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 wait instance-terminated \
+     --instance-ids {{BUILD_INSTANCE_ID}}
    ```
 
 6. 設定ファイルの `aws.handson_cdk.instance.ami_id` に、新しい AMI ID を書きます。
+
+   状態が `available` と確認できたら、新しい AMI ID を下の「使用する AMI ID」へ転記し、開催 YAML の `ami_id` も同じ値にします。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="AMI_ID"></div>
 
    `root_device_name` は、2.5 で新しい AMI について調べて書きます。
 

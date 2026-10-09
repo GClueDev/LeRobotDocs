@@ -1,5 +1,9 @@
 ### 2.4 （任意）ソフトウェアを導入済みの AMI を用意する
 
+選定済みの開催用 AMI ID を入力して状態を確認します。例: `ami-0123456789abcdef0`。これから作成する元の AMI や、作成直後の ID は別の欄で扱います。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="AMI_ID"></div>
+
 2.3 の AMI（以下「元の AMI」）に講義で使うソフトウェアを入れた AMI（以下「導入済みの AMI」）を使うと、受講者全員のインスタンスが、そのソフトウェアが入った状態で起動します。
 導入済みの AMI は、特定の開催のものではなく、同じ AWS アカウント・リージョンの複数の開催で使い回せます。
 前の開催で作った導入済みの AMI を使うのが通常で、2.4.1 で見つかれば、その AMI ID を設定ファイルに書くだけで済みます。
@@ -14,7 +18,8 @@ AMI の作成は AWS CLI で手動で行い、LeRobot の導入にはインフ�
    説明には、入れたソフトウェアが書いてあります。
 
    ```bash
-   aws ec2 describe-images --owners self \
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 describe-images --owners self \
      --filters Name=tag-key,Values=gclue-ai-handson-ami \
      --query 'Images[].[ImageId,Name,CreationDate,Description]' \
      --output text
@@ -29,7 +34,8 @@ AMI の作成は AWS CLI で手動で行い、LeRobot の導入にはインフ�
    QUERY='Images[0].[[State,RootDeviceName],BlockDeviceMappings[].'
    QUERY+='[DeviceName,Ebs.VolumeSize,Ebs.SnapshotId]]'
 
-   aws ec2 describe-images --image-ids {{AMI_ID}} --query "$QUERY" \
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ec2 describe-images --image-ids {{AMI_ID}} --query "$QUERY" \
      --output text
    ```
 

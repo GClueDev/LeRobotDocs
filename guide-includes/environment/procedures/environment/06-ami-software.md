@@ -1,11 +1,16 @@
 #### 2.4.3 ソフトウェアを入れる {#243-ソフトウェアを入れる}
 
+前ページの run-instances の出力を使います。ここで接続するのは AMI 作成用の一時 EC2 です。受講者の EC2 へ置き換えないでください。
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="BUILD_INSTANCE_ID"></div>
+
 1. Session Manager で一時的なインスタンスに入ります（Session Manager プラグインが必要です）。
 
    AWS マネジメントコンソールの EC2 の画面で、インスタンスを選んで「接続」から「Session Manager」で入ることもできます。
 
    ```bash
-   aws ssm start-session --target <一時的なインスタンス ID>
+   aws --profile {{PROFILE_SH}} --region {{REGION}} \
+     ssm start-session --target {{BUILD_INSTANCE_ID}}
    ```
 
 2. `ubuntu` ユーザーに切り替えます。
@@ -38,12 +43,15 @@
    bash ~/setup-lerobot-ec2.sh
    ```
 
-   既に SSH の接続先を設定している場合は、base64 の代わりに手元で次を実行してコピーできます。`<SSH 接続先>` は接続できるホスト名に置き換えます。受講者用 Bash CLI の `gclue-ai-handson-attendee ssh-config` で SSH 設定を作った講習会の EC2 では `gclue-ai-handson-{{EVENT_ID}}` を使えます。
+   既に SSH の接続先を設定している場合は、base64 の代わりに手元で次を実行してコピーできます。下の SSH 接続先欄へ、接続確認済みの Host 名を入力します。例: `ubuntu@ami-builder.local`。この工程では、一時 EC2 へ接続するために用意した SSH 接続先だけを使います。受講者 EC2 用の `gclue-ai-handson-{{EVENT_ID}}` は AMI 作成元の接続先ではありません。
+
+
+<div data-aws-values-panel data-aws-inline data-aws-fields="SSH_HOST"></div>
 
    ```bash
    SETUP_SCRIPT=docs-aws-attendee/staff/environment/scripts/
    SETUP_SCRIPT+=setup-lerobot-ec2.sh
-   scp "$SETUP_SCRIPT" <SSH 接続先>:~/setup-lerobot-ec2.sh
+   scp "$SETUP_SCRIPT" {{SSH_HOST_SH}}:~/setup-lerobot-ec2.sh
    ```
 
    導入が成功したら、EC2 で次を実行します。GPU が使えることと、各コマンドの版・ヘルプが表示されることを確かめます。
