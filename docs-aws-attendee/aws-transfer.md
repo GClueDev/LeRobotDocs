@@ -22,17 +22,13 @@ gclue-ai-handson-attendee files upload \
 
 ## 2. EC2 へ取得し、データと映像を確認する
 
-### 2.1 EC2 の ubuntu ユーザーへ接続する
-
 実行場所: **手元の PC**。初回は [接続手順](connect.md)で DCV のパスワードを設定します。
 
 ```bash
 gclue-ai-handson-attendee dcv
 ```
 
-トンネル用のターミナルは開いたまま、案内された URL から DCV にログインします。DCV デスクトップ内で Terminal を開き、以降の EC2 工程はそこで実行します。情報表示や学習だけなら `gclue-ai-handson-attendee ssh` でも接続できます。
-
-### 2.2 EC2 の作業環境と認証を確認する
+トンネル用のターミナルは開いたまま、案内された URL から DCV にログインします。DCV デスクトップ内で Terminal を開き、以降の EC2 工程はそこで実行します。
 
 実行場所: **EC2 の ubuntu**。講師が LeRobot と受講者用の一時認証情報を配置済みであることが前提です。
 
@@ -43,20 +39,17 @@ uv run --no-sync python --version
 uv run --no-sync lerobot-train --help
 source /tmp/gclue-ai-handson-{{EVENT_ID}}-{{ATTENDEE_ID}}.env
 DATASET_DIR={{DATASET_DIR_SH}}
-DATASET_REPO_ID={{DATASET_REPO_ID_SH}}
 S3_ROOT="s3://$GCLUE_AI_HANDSON_BUCKET"
 S3_ROOT+="/$GCLUE_AI_HANDSON_ATTENDEE"
 ```
 
-`DATASET_DIR`と`DATASET_REPO_ID`は[各種値の設定](common.md)で入力したEC2側のデータの場所・識別名です。自分の収集データを取得する場合、例えば `/home/ubuntu/handson-data/workshop01/attendee01/round1` のような未使用のフォルダを講師と確認します。配布データの場合は、講師が既に置いた場所を指定します。
+`DATASET_DIR`は右上の「各種値の設定」で入力したEC2側の保存先を、このターミナルで取得・展開に使うために覚える変数です。情報確認の識別名も、同じ設定からコマンドへ反映されます。自分の収集データを取得する場合、例えば `/home/ubuntu/handson-data/workshop01/attendee01/round1` のような未使用のフォルダを講師と確認します。配布データの場合は、講師が既に置いた場所を指定します。
 
 `source` は講師がEC2に配置した認証情報ファイルをこのターミナルへ読み込む操作です。ファイル内の `GCLUE_AI_HANDSON_BUCKET` はS3バケット名、`GCLUE_AI_HANDSON_ATTENDEE` は自分の受講者IDで、自分で作る値ではありません。`S3_ROOT`はこの2つから作る自分専用の保存先です。説明用の値なら `s3://example-handson-workshop01/attendee01` となります。次の `DOWNLOAD_DIR` も取得用の一時フォルダを自動作成する変数です。
 
 `whoami` が `ubuntu` であることを確認します。認証情報がない・期限切れの場合は講師に再配布を依頼します。EC2 上で依存を追加・更新せず、環境の不足は講師に確認します。
 
-### 2.3 自分の収集データを取得する
-
-講師の配置済みデータを使う場合は、この取得・展開を飛ばして次の情報表示へ進みます。
+この工程は自分で収集したデータの取得です。講師の配置済み教材を使う場合は[教材とデータ確認](dataset.md)へ進みます。
 
 ```bash
 DOWNLOAD_DIR=$(mktemp -d)
@@ -80,22 +73,22 @@ sha256sum "$DOWNLOAD_DIR/dataset.tar.gz"
 )
 ```
 
-### 2.4 情報と映像を確認する
+## 3. 情報と映像を確認する
 
 ```bash
 uv run --no-sync lerobot-edit-dataset \
-  --repo_id "$DATASET_REPO_ID" \
-  --root "$DATASET_DIR" \
+  --repo_id {{DATASET_REPO_ID_SH}} \
+  --root {{DATASET_DIR_SH}} \
   --operation.type info
 ```
 
 エピソード数、フレーム数、FPS、タスクと、`front`・`side` の2台の映像を収集時の記録と照合します。DCV の Terminal では、次で Rerun を表示します。
 
 ```bash
-uv run --no-sync rerun "$DATASET_DIR"
+uv run --no-sync rerun {{DATASET_DIR_SH}}
 ```
 
-失敗したエピソード番号を控えます。配布データが Git LFS のポインタのままの場合は、[データ確認](dataset.md)の復旧手順を使います。
+失敗したエピソード番号を控えます。配布データが Git LFS のポインタのままの場合は、[Git LFS の復旧](reference/data.md#git-lfs)を使います。
 
 
 ---

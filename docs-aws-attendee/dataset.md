@@ -1,6 +1,6 @@
 # 教材の取得と LeRobot のデータ確認
 
-最初に [共通値の設定](common.md) を開き、講師から受け取った値を入力してください。認証情報ファイルのパス・期限付き URL はフォームに保存せず、各コマンドの手動置換箇所で指定します。
+右上の「各種値の設定」で、講師から受け取った値を確認してください。認証情報ファイルのパス・期限付きURLは保存せず、指定箇所を手動で置き換えます。
 
 {% if audience == "staff" %}
 
@@ -14,24 +14,11 @@
 
 {% endif %}
 
-## 1. 手元に現行教材を取得する
+## 1. コースと教材を確認する
 
-**手元の PC** で講習会用の環境を有効化してから実行します。
+この基本コースでは、講師がEC2に配置した教材を変更せず、情報と映像を確認します。自分で収集・編集・学習する場合は[実習の進め方](aws-workflow.md)に従ってください。
 
-```bash
-gclue-ai-handson-attendee files pull --dest ./materials
-```
-
-`manifest.json のとおりであることを SHA-256 で確認しました。` が成功条件です。版の指定がある場合は `--version '<版>'` を追加します。
-
-共有データセットは、講師が指定したS3 バケットパスから取得します。`--prefix` には共有領域 `shared/` からの相対パスを指定します。次の `datasets/` は配置例です。
-
-```bash
-gclue-ai-handson-attendee files pull --prefix datasets/ \
-  --dest ./datasets
-```
-
-これは共有領域 `shared/datasets/` の取得です。現行教材取得と違い、任意の `--prefix` 取得に manifest の SHA 検証が必ず付くわけではありません。講師のチェックサム表があれば別に照合してください。
+手元の講義資料は[導入](setup.md)で取得済みです。再取得が必要なら[教材の再取得](reference/files.md#materials)、追加の共有データを指定されたら[共有データの取得](reference/files.md#shared-datasets)を使います。
 
 ## 2. EC2 にある実習環境を確かめる
 
@@ -52,26 +39,17 @@ uv run --no-sync lerobot-edit-dataset --help
 
 ## 3. データセットの場所を指定する
 
-[共通値の設定](common.md)のデータセットの場所と識別名を確認して、次を実行します。以下はシェル変数なので、このターミナル内で続けて使います。`{{DATASET_REPO_ID}}` はバケット名や EC2 名ではなく、データセットの識別名です。
+右上の「各種値の設定」でデータセットの場所と識別名を確認して、次を実行します。`{{DATASET_REPO_ID}}` はバケット名や EC2 名ではなく、データセットの識別名です。
 
 ```bash
-DATASET_DIR={{DATASET_DIR_SH}}
-DATASET_REPO_ID={{DATASET_REPO_ID_SH}}
-ls "$DATASET_DIR/meta/info.json"
+ls {{DATASET_DIR_SH}}/meta/info.json
 ```
 
 例えば講師が「EC2の `/home/ubuntu/handson-data/workshop01/attendee01/round1`、識別名は `attendee01/red-cube`」と案内したら、フォームの「EC2 のデータセットディレクトリ」と「データセット識別名」にそれぞれ入力します。この2つは説明用の例です。講師の配置先と指定名を使ってください。
 
 `meta/info.json` のパスが表示されれば配置確認は成功です。検証では `1cam_test` を使いましたが、本番配布する教材名・場所は講師が決めます。
 
-手元だけにデータがある場合は、講師に EC2 への配置を依頼するか、[SSH 設定](connect.md)を作成した後、**手元**からコピーできます。この `scp` による汎用手順は今回の実測対象外です。
-
-```bash
-scp -r '<手元のデータセットフォルダ>' \
-  'gclue-ai-handson-{{EVENT_ID}}:/home/ubuntu/lerobot/'
-```
-
-コピー後に EC2 で `meta/info.json` の存在を確認し、講師から受け取ったチェックサムで照合します。
+手元だけにデータがある場合は講師に配置を確認してください。[手動コピーの補足](reference/data.md#manual-copy)も参照できます。
 
 ## 4. データを変更せず内容を確認する
 
@@ -79,8 +57,8 @@ scp -r '<手元のデータセットフォルダ>' \
 
 ```bash
 uv run --no-sync lerobot-edit-dataset \
-  --repo_id "$DATASET_REPO_ID" \
-  --root "$DATASET_DIR" \
+  --repo_id {{DATASET_REPO_ID_SH}} \
+  --root {{DATASET_DIR_SH}} \
   --operation.type info
 ```
 
@@ -90,33 +68,18 @@ uv run --no-sync lerobot-edit-dataset \
 
 ## 5. Rerun で映像を表示する
 
-**EC2 の DCV デスクトップ内の Terminal** で、同じ変数を設定済みの状態から実行します。通常の SSH ターミナルから GUI を開こうとせず、DCV 内で操作します。
+**EC2 の DCV デスクトップ内の Terminal** で実行します。通常の SSH ターミナルから GUI を開こうとせず、DCV 内で操作します。
 
 ```bash
 cd ~/lerobot
-uv run --no-sync rerun "$DATASET_DIR"
+uv run --no-sync rerun {{DATASET_DIR_SH}}
 ```
 
 Rerun のウィンドウが開き、映像や時系列データを確認できれば成功です。Rerun を閉じ、ターミナルが戻らなければ Ctrl+C で終了します。この主手順は今回の実測で使った Rerun へのデータセットディレクトリ指定に合わせています。
 
-LeRobot の `lerobot-dataset-viz --repo-id ... --root ... --episode-index 0 --mode local` は別の CLI です。今回そのコマンドでの表示を実測済みとはしていません。講師が別途確認した場合に使ってください。
+別の可視化コマンドを指定された場合は[可視化の補足](reference/data.md#other-viewers)を参照してください。
 
-## Parquet の読み取りに失敗する場合
-
-`Corrupt footer` などが出て、Hugging Face 等から Git で clone したデータの場合、実データの代わりに Git LFS の小さなポインタファイルだけがある可能性があります。
-
-講師に、対象が Git LFS を使うデータセットの clone であることと、ネットワーク取得してよいことを確認します。**EC2** で対象の clone に移動して次を実行します。LeRobot 本体のディレクトリではありません。
-
-```bash
-cd "$DATASET_DIR"
-git lfs version
-git lfs ls-files
-git lfs fetch
-git lfs checkout
-cd ~/lerobot
-```
-
-`git lfs` がなければ講師へ導入を依頼します。取得後に上の `info` と表示コマンドを再実行します。検証では aloha のデータ実体化後の表示が成功しました。pusht の表示成功は確認していません。
+表示に失敗した場合は[Git LFS の復旧](reference/data.md#git-lfs)または[困ったとき](troubleshooting.md)を確認してください。
 
 ## 学習に進む前に
 

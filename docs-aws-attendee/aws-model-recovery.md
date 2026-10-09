@@ -41,7 +41,7 @@ printf '学習実行名: %s\n' "$RUN_NAME"
 
 両方の転送が成功したことと、表示された学習実行名を控えます。自分専用の `models/学習実行名/` に保存されます。認証切れなら更新後に保存し直します。
 
-`checkpoints/last` が別のチェックポイントへのシンボリックリンクでも、リンク先のファイルを `last/` の名前で転送します。手元では `last` は通常のディレクトリになります。各ステップのチェックポイントも回収します。[AWS CLI のリンクの扱い](https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html)も参照してください。
+リンクや転送オプションは[チェックポイント転送の補足](reference/files.md#checkpoint-links)を参照してください。
 
 ## 2. 手元へ取得し、内容を確認する
 
