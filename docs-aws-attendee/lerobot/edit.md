@@ -4,7 +4,7 @@
 
 ## 1. 準備
 
-講師が用意した LeRobot 環境のまま作業します。従来の手元向け `pip install` は EC2 では行わず、ツールがない場合は講師に確認します。
+講師が用意した LeRobot 環境のまま作業します。EC2 では `pip install` で LeRobot を入れ直さず、ツールがない場合は講師に確認します。
 
 ```bash
 cd ~/lerobot
@@ -26,7 +26,7 @@ uv run --no-sync lerobot-edit-dataset \
 
 ### エピソードごとの長さを確認する
 
-従来と同じくメタデータの Parquet を読み、短すぎる・長すぎるエピソードを確認します。
+メタデータの Parquet ファイルを読み、短すぎる・長すぎるエピソードを確認します。
 
 ```bash
 uv run --no-sync python - {{DATASET_DIR_SH}} <<'PY'

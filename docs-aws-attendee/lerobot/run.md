@@ -30,7 +30,7 @@ find {{POLICY_PATH_SH}} -maxdepth 1 -type f \
 
 ## 2. 推論動作テスト（録画なし）
 
-従来と同じ `lerobot-rollout` を使い、手元の Jetson では `DEVICE=cuda`、Mac では `DEVICE=mps` を指定します。設定は [カメラの調整](camera.md)にあります。
+推論には `lerobot-rollout` を使い、手元の Jetson では `DEVICE=cuda`、Mac では `DEVICE=mps` を指定します。設定は [カメラの調整](camera.md)にあります。
 
 ```bash
 cd {{PROJECT_DIR_SH}}
