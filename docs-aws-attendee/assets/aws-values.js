@@ -69,7 +69,7 @@
     BUCKET: 'example-handson-workshop01',
     REGION: 'ap-northeast-1',
     PROFILE: 'your-profile',
-    CONFIG_DIR: 'config/environments/new_env',
+    CONFIG_DIR: 'config/environments/workshop01',
     PROJECT_DIR: '/Users/student/lerobot',
     TELEOP_PORT: '/dev/ttyACM0',
     ROBOT_PORT: '/dev/ttyACM1',
