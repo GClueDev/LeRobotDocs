@@ -78,3 +78,31 @@ body {
     overflow-wrap: anywhere;
     word-break: break-word;
 }
+
+/* ビルド情報は手順の本文と区別し、既定では畳んで目立たせない。 */
+.md-typeset details.aws-build-info {
+    margin: 1em 0 1.5em;
+    padding: 0.4em 0.8em;
+    border: 0.05rem dashed var(--md-default-fg-color--lighter);
+    border-radius: 0.2rem;
+    background-color: var(--md-code-bg-color);
+    color: var(--md-default-fg-color--light);
+    font-size: 0.68rem;
+}
+.md-typeset details.aws-build-info > summary {
+    cursor: pointer;
+    font-weight: 400;
+}
+.md-typeset .aws-build-info__label {
+    display: inline-block;
+    margin-right: 0.6em;
+    padding: 0 0.5em;
+    border-radius: 0.2rem;
+    background-color: var(--md-default-fg-color--lighter);
+    color: var(--md-default-bg-color);
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+}
+.md-typeset .aws-build-info__body {
+    margin-top: 0.6em;
+}

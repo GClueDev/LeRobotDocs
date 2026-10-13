@@ -104,9 +104,10 @@ def on_pre_page_macros(env):
         }[audience]
         console_status = "掲載する（true）" if policy["enabled"] else "掲載しない（false）"
         summary = f"""
-
-## このビルドで有効・無効な手順
-
+<details class="aws-build-info">
+<summary><span class="aws-build-info__label">ビルド情報</span>このビルドで有効・無効な手順（受講者の AWS コンソール利用手順：{console_status}）</summary>
+<div class="aws-build-info__body">
+<p>この資料を作ったときの設定です。手順の本文ではありません。講習会側が、配布する資料が正しい設定ファイルから作られたかを確かめるために使います。</p>
 <table class="aws-build-summary">
 <thead><tr><th>項目</th><th>このビルドの設定</th></tr></thead>
 <tbody>
@@ -120,14 +121,11 @@ def on_pre_page_macros(env):
 <tr><td>CLIによるS3転送・SSM（シェル接続）・SSH・Amazon DCV（リモートデスクトップ接続）</td><td>有効</td></tr>
 </tbody>
 </table>
-
-講習会設定ファイルは、AWS 環境と講習資料に共通で使う設定ファイルです。照合値（SHA-256）は、同じ入力ファイルを使ったかを確認するための値です。
-
-この表は資料に掲載する手順の設定を示します。実際の AWS の権限設定を確認した証明ではありません。設定ファイルを指定しない通常プレビューでは、互換性のためコンソール利用手順を掲載します（true）。開催用の配布資料は、AWS 環境の構築に使った正本の設定ファイルを指定して再ビルドしてください。ブラウザの各種値や JSON インポートでこの設定は変更できません。
-
-コンソール利用手順を掲載しない設定（false）へ変更する場合は、同じ正本の設定ファイルを変更 → AWS Sign-Inの有効化状態を確認 → CDK deploy → 受講者・インスタンスロールのIAM適用を確認 → 資格情報の払い出しと資料の再ビルド、の順で進めます。資料だけを非掲載（false）にしても AWS のアクセスは拒否されません。
-
----
+<p>講習会設定ファイルは、AWS 環境と講習資料に共通で使う設定ファイルです。照合値（SHA-256）は、同じ入力ファイルを使ったかを確認するための値です。</p>
+<p>この表は資料に掲載する手順の設定を示します。実際の AWS の権限設定を確認した証明ではありません。設定ファイルを指定しない通常プレビューでは、互換性のためコンソール利用手順を掲載します（true）。開催用の配布資料は、AWS 環境の構築に使った正本の設定ファイルを指定して再ビルドしてください。ブラウザの各種値や JSON インポートでこの設定は変更できません。</p>
+<p>コンソール利用手順を掲載しない設定（false）へ変更する場合は、同じ正本の設定ファイルを変更 → AWS Sign-Inの有効化状態を確認 → CDK deploy → 受講者・インスタンスロールのIAM適用を確認 → 資格情報の払い出しと資料の再ビルド、の順で進めます。資料だけを非掲載（false）にしても AWS のアクセスは拒否されません。</p>
+</div>
+</details>
 
 """
         # Insert after the first source heading, keeping it as the page title.
