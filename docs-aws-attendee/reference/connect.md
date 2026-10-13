@@ -51,7 +51,7 @@ gclue-ai-handson-attendee ssh -- nvidia-smi
 gclue-ai-handson-attendee ssh -L 8000:localhost:8000
 ```
 
-これらは CLI の指定形式の例です。今回の通し確認では、この単一コマンド例とポート転送例そのものは未実測です。
+これらは CLI の指定形式の例です。
 
 ## 手元のリポジトリを EC2 とやり取りする {#git}
 
@@ -141,13 +141,13 @@ https://s3.console.aws.amazon.com/s3/buckets/{{BUCKET}}?region={{REGION}}&prefix
 https://s3.console.aws.amazon.com/s3/buckets/{{BUCKET}}?region={{REGION}}&prefix=shared%2F&showversions=false
 ```
 
-自分の領域と `shared/` の直接表示は実測済みです。画面でのダウンロード・書き込み・削除は未検証です。[CLI で保存と回収](../save.md) を進めてください。`ListAllMyBuckets` 権限の追加は前提にしません。
+バケットの一覧の画面は権限がないため表示できません。上の URL から直接開いてください。成果の保存と回収は、画面ではなく [CLI で保存と回収](../save.md) で行います。
 
 {% endif %}
 
 ## Git 往復の小さな練習
 
-受講者ツールは修正版が必要です。手元に既存の教材リポジトリがある場合はそれを使います。練習用に新規作成する場合は、手元で次を実行します。`<表示名>` と `<メールアドレス>` を自分のコミット用の値に置き換えます。
+手元に既存の教材リポジトリがある場合はそれを使います。練習用に新規作成する場合は、手元で次を実行します。`<表示名>` と `<メールアドレス>` を自分のコミット用の値に置き換えます。
 
 ```bash
 mkdir -p ~/handson-practice
