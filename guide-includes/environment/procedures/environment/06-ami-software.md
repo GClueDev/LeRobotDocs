@@ -19,15 +19,14 @@
    sudo -i -u ubuntu
    ```
 
-3. LeRobot を使う場合は、[導入スクリプト](<<= guide_link('staff/environment/scripts/setup-lerobot-ec2.sh') =>>)を EC2 にコピーして実行します。
+3. LeRobot を使う場合は、[導入スクリプト](<<= guide_link('staff/environment/scripts/setup-lerobot-ec2.sh') =>>)（ai-learning-handson-aws-infra の `scripts/setup-lerobot-ec2.sh`）を EC2 にコピーして実行します。
 
    Ubuntu 24.04・x86_64・Python 3.12・GPU ドライバー導入済みの EC2 が対象です。導入先と固定する版は [インフラ構成の仕様](<<= guide_link('staff/environment/specs/infrastructure.md#ec2-のソフトウェア導入スクリプト') =>>) を参照してください。
 
-   **手元の ターミナル** で、LeRobotDocs の直下から次を実行し、表示された全文をコピーします。
+   **手元の ターミナル** で、[作業場所と用意する版](<<= guide_link('staff/preparation/environment-start.md') =>>)で `git clone` した ai-learning-handson-aws-infra の直下から次を実行し、表示された全文をコピーします。
 
    ```bash
-   SETUP_SCRIPT=docs-aws-attendee/staff/environment/scripts/
-   SETUP_SCRIPT+=setup-lerobot-ec2.sh
+   SETUP_SCRIPT=scripts/setup-lerobot-ec2.sh
    base64 < "$SETUP_SCRIPT" | fold -w 76
    ```
 
@@ -49,8 +48,7 @@
 <div data-aws-values-panel data-aws-inline data-aws-fields="SSH_HOST"></div>
 
    ```bash
-   SETUP_SCRIPT=docs-aws-attendee/staff/environment/scripts/
-   SETUP_SCRIPT+=setup-lerobot-ec2.sh
+   SETUP_SCRIPT=scripts/setup-lerobot-ec2.sh
    scp "$SETUP_SCRIPT" {{SSH_HOST_SH}}:~/setup-lerobot-ec2.sh
    ```
 
