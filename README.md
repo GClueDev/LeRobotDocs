@@ -131,7 +131,7 @@ python -m mkdocs build -f mkdocs.aws-attendee.yml --strict
 python -m mkdocs build -f mkdocs.aws-staff.yml --strict
 ```
 
-未指定は通常プレビュー用のtrueです。明示したYAMLの読込・型・名前空間エラーでは失敗します。担当者のはじめに・各種値の設定で入力YAML名、SHA-256、audience、boolと有効・無効の手順を確認できます。ブラウザのフォームやJSONはこの値を変更しません。YAML変更後は再ビルドが必要で、serveは選択YAMLを監視します。YAMLの全内容は公開せず、この設定値と来歴だけを投影します。
+未指定は通常プレビュー用のtrueです。明示したYAMLの読込・型・名前空間エラーでは失敗します。トップページの「このビルドで有効・無効な手順」で入力YAML名、SHA-256、audience、boolと有効・無効の手順を確認できます。ブラウザのフォームやJSONはこの値を変更しません。YAML変更後は再ビルドが必要で、serveは選択YAMLを監視します。YAMLの全内容は公開せず、この設定値と来歴だけを投影します。
 
 falseへの切替は正本YAML変更、AWS Sign-In有効化状態の確認、CDK deploy、両ロールのIAM適用確認、資格情報払い出し・文書ビルドの順です。静的資料の表示はAWS適用を確認した証明ではありません。管理者自身の管理コンソールとCLI・SSM・SSH・DCVの手順は維持します。
 

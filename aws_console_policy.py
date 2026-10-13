@@ -93,9 +93,7 @@ def on_pre_page_macros(env):
         notice = ('!!! warning "このビルド：受講者のAWSコンソール手順は無効"\n'
                   '    CLI・SSM（シェル接続）・SSH・Amazon DCV（リモートデスクトップ接続）を使用します。'
                   'これは静的な資料の設定であり、AWS側の適用確認ではありません。\n\n')
-    summaries = {"index.md", "common.md", "staff/preparation.md",
-                 "staff/preparation/event-settings.md",
-                 "staff/instructor/index.md", "staff/environment/index.md"}
+    summaries = {"index.md"}
     if audience != "attendee" and page in summaries:
         status = "有効" if policy["enabled"] else "無効（掲載しません）"
         audience_label = {
