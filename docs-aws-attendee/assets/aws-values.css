@@ -29,19 +29,31 @@
 a[aria-disabled="true"] { cursor: default; }
 [data-aws-transfer-status] { overflow-wrap: anywhere; }
 
-.lerobot-port-btn.aws-reset-danger {
-  background: #b3261e;
-  border-color: #b3261e;
-  color: #fff;
+/* リセット: 保存ボタンと取り違えないよう、明るいピンクの背景に濃い文字（コントラスト比 9.6:1）にする */
+.lerobot-port-btn.aws-reset {
+  background: #f8bbd0;
+  border-color: #d6578a;
+  color: #4a0a24;
 }
-.lerobot-port-btn.aws-reset-danger:hover {
-  background: #8c1d18;
-  border-color: #8c1d18;
+.lerobot-port-btn.aws-reset:hover {
+  background: #f48fb1;
 }
-.lerobot-port-btn.aws-reset-danger:active {
-  background: #601410;
-  border-color: #601410;
+.lerobot-port-btn.aws-reset:active {
+  background: #ec6a99;
+  color: #3b0a1c;
 }
-.lerobot-port-btn.aws-reset-danger:focus-visible {
-  outline-color: #b3261e;
+.lerobot-port-btn.aws-reset:focus-visible {
+  outline-color: #d6578a;
 }
+/* リセットの確認: 元のボタンの位置に、同じ行で表示する */
+.aws-reset-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #fdecf2;
+  color: #4a0a24;
+}
+.aws-reset-confirm[hidden] { display: none; }

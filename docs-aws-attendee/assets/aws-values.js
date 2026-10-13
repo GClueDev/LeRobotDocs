@@ -13,7 +13,7 @@
     ATTENDEE_ID: ['受講者 ID', v => /^[a-z][a-z0-9-]{1,30}$/.test(v) && v !== 'shared', '講師が配布する自分用のID。説明例: attendee01。英小文字で始まる2〜31文字。英小文字・数字・ハイフン。sharedは予約語'],
     BUCKET: ['S3 バケット名', v => /^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(v), '講師が配布するAWS上の保管先の名前。説明例: example-handson-workshop01。s3://やパスを付けない。3〜63文字。英小文字・数字・ドット・ハイフン'],
     REGION: ['AWS リージョン', v => /^[a-z]{2}(?:-[a-z]+)+-\d+$/.test(v), '講師が指定するAWSの地域。説明例: ap-northeast-1（東京）。自分の住所から選ばない'],
-    PROFILE: ['AWS プロファイル', v => /^\S+$/.test(v) && !/[\x00-\x1f\x7f]/.test(v), '管理者が指定する講師本人の AWS 認証設定の名前。例: handson-staff。空白不可。@や:も使用可'],
+    PROFILE: ['AWS プロファイル', v => /^\S+$/.test(v) && !/[\x00-\x1f\x7f]/.test(v), '自分の作業環境に作った AWS CLI プロファイルの名前。例: handson-staff。空白不可。@や:も使用可'],
     CONFIG_DIR: ['開催設定ディレクトリ', path, '開催の設定ファイル gclue-ai-handson-config.yml を置くフォルダ。絶対パスまたは相対パス。~ は使わず、空白はそのまま入力'],
     PROJECT_DIR: ['手元の LeRobot 作業フォルダ', v => path(v) && v.startsWith('/'), '講師に確認した手元の配置先。Macの例: /Users/student/lerobot、Jetsonの例: /home/student/lerobot。EC2の場所を入力しない'],
     TELEOP_PORT: ['Leader の USB 接続先', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '手元で検出した人が動かすアームの接続先。Jetsonの例: /dev/ttyACM0、Macの例: /dev/tty.usbmodem12301'],
@@ -229,13 +229,37 @@
     }
     const actions = document.createElement('div'); actions.className = 'lerobot-port-actions';
     const reset = document.createElement('button'); reset.type = 'button';
-    reset.className = 'lerobot-port-btn aws-reset-danger'; reset.textContent = '入力と保存をリセット';
+    reset.className = 'lerobot-port-btn aws-reset'; reset.textContent = 'リセット';
+    reset.setAttribute('aria-label', 'すべての入力値をリセット');
+    // Reset is destructive and not a save action: ask for confirmation in place before clearing.
+    const confirmBox = document.createElement('div'); confirmBox.className = 'aws-reset-confirm';
+    confirmBox.setAttribute('role', 'group'); confirmBox.setAttribute('aria-labelledby', `${panelId}-reset-message`);
+    confirmBox.hidden = true;
+    const confirmMessage = document.createElement('span'); confirmMessage.id = `${panelId}-reset-message`;
+    confirmMessage.textContent = '入力した値と保存した値が、すべて消えます。削除しますか？';
+    const confirmYes = document.createElement('button'); confirmYes.type = 'button';
+    confirmYes.className = 'lerobot-port-btn aws-reset'; confirmYes.textContent = 'はい、削除する';
+    const confirmNo = document.createElement('button'); confirmNo.type = 'button';
+    confirmNo.className = 'lerobot-port-btn'; confirmNo.textContent = 'やめる';
+    confirmBox.append(confirmMessage, confirmYes, confirmNo);
+    const closeConfirm = () => { confirmBox.hidden = true; reset.hidden = false; reset.focus(); };
     reset.addEventListener('click', () => {
+      reset.hidden = true; confirmBox.hidden = false; confirmNo.focus();
+    });
+    confirmNo.addEventListener('click', closeConfirm);
+    // Escape cancels the confirmation first instead of closing the whole settings dialog.
+    confirmBox.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeConfirm(); }
+    });
+    host.closest('dialog')?.addEventListener('cancel', e => {
+      if (!confirmBox.hidden) { e.preventDefault(); closeConfirm(); }
+    });
+    confirmYes.addEventListener('click', () => {
       state = {}; save();
       for (const status of document.querySelectorAll('[data-aws-transfer-status]')) status.textContent = '';
       for (const input of form.querySelectorAll('input')) { input.value = ''; input.setAttribute('aria-invalid','false'); }
       for (const error of form.querySelectorAll('.aws-error')) error.textContent = '';
-      syncInputs(); refresh();
+      syncInputs(); refresh(); closeConfirm();
     });
     const transferStatus = document.createElement('p');
     transferStatus.dataset.awsTransferStatus = ''; transferStatus.setAttribute('role', 'status');
@@ -298,7 +322,7 @@
       });
       actions.append(attendeeExport);
     }
-    actions.append(reset, file); form.append(actions, transferStatus);
+    actions.append(reset, confirmBox, file); form.append(actions, transferStatus);
 
     const status = document.createElement('p'); status.dataset.awsSaveStatus = ''; status.setAttribute('role','status');
     host.append(form,status);

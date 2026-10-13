@@ -23,7 +23,7 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 
 | 項目 | 埋める値 | 値の調べ方 |
 | --- | --- | --- |
-| `aws.profile` | [管理者に依頼するもの](<<= guide_link('staff/preparation/environment-start.md#11') =>>) で用意したプロファイル名 | 管理者から受け取る |
+| `aws.profile` | 自分の作業環境に作った AWS CLI プロファイルの名前 | 自分で決める（作り方は [管理者に依頼するもの](<<= guide_link('staff/preparation/environment-start.md#11') =>>) の下の説明） |
 | `aws.handson.deployment_id` | 開催 ID | [用意するもの](<<= guide_link('staff/preparation/environment-start.md#_6') =>>) |
 | `aws.handson.account` | アカウント ID（12 桁。`"` で囲む） | [AWS アカウントの状態を確かめる](<<= guide_link('staff/preparation/environment-start.md#13-aws') =>>) で表示した値 |
 | `aws.handson.region` | リージョン（例: `ap-northeast-1`） | 管理者から受け取る |
