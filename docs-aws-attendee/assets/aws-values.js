@@ -13,7 +13,7 @@
     ATTENDEE_ID: ['受講者 ID', v => /^[a-z][a-z0-9-]{1,30}$/.test(v) && v !== 'shared', '講師が配布する自分用のID。説明例: attendee01。英小文字で始まる2〜31文字。英小文字・数字・ハイフン。sharedは予約語'],
     BUCKET: ['S3 バケット名', v => /^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(v), '講師が配布するAWS上の保管先の名前。説明例: example-handson-workshop01。s3://やパスを付けない。3〜63文字。英小文字・数字・ドット・ハイフン'],
     REGION: ['AWS リージョン', v => /^[a-z]{2}(?:-[a-z]+)+-\d+$/.test(v), '講師が指定するAWSの地域。説明例: ap-northeast-1（東京）。自分の住所から選ばない。未設定のときは ap-northeast-1 を入れています'],
-    PROFILE: ['AWS プロファイル', v => /^\S+$/.test(v) && !/[\x00-\x1f\x7f]/.test(v), '自分の作業環境に作った AWS CLI プロファイルの名前。例: handson-staff。空白不可。@や:も使用可'],
+    PROFILE: ['AWS プロファイル', v => /^\S+$/.test(v) && !/[\x00-\x1f\x7f]/.test(v), '自分の作業環境に作った AWS CLI プロファイルの名前。例: your-profile。空白不可。@や:も使用可'],
     CONFIG_DIR: ['開催設定ディレクトリ', path, '開催の設定ファイル gclue-ai-handson-config.yml を置くフォルダ。絶対パスまたは相対パス。~ は使わず、空白はそのまま入力'],
     PROJECT_DIR: ['手元の LeRobot 作業フォルダ', v => path(v) && v.startsWith('/'), '講師に確認した手元の配置先。Macの例: /Users/student/lerobot、Jetsonの例: /home/student/lerobot。EC2の場所を入力しない'],
     TELEOP_PORT: ['Leader の USB 接続先', v => /^\/dev\/[A-Za-z0-9_.-]+$/.test(v), '手元で検出した人が動かすアームの接続先。Jetsonの例: /dev/ttyACM0、Macの例: /dev/tty.usbmodem12301'],
@@ -62,6 +62,53 @@
     staff: Object.keys(fields),
   }[role];
   const allowed = new Set(Object.keys(fields));
+  // 入力欄が空のときに薄く表示する値の例（説明用の架空の値）。
+  const examples = {
+    EVENT_ID: 'workshop01',
+    ATTENDEE_ID: 'attendee01',
+    BUCKET: 'example-handson-workshop01',
+    REGION: 'ap-northeast-1',
+    PROFILE: 'your-profile',
+    CONFIG_DIR: 'config/environments/new_env',
+    PROJECT_DIR: '/Users/student/lerobot',
+    TELEOP_PORT: '/dev/ttyACM0',
+    ROBOT_PORT: '/dev/ttyACM1',
+    DATASET_DIR: '/home/ubuntu/handson-data/workshop01/attendee01/round1',
+    DATASET_REPO_ID: 'attendee01/red-cube',
+    LOCAL_DATASET_DIR: '/Users/student/handson-data/workshop01/attendee01/round1',
+    TASK: 'Pick up the red cube',
+    FRONT_CAMERA: '/dev/video0',
+    SIDE_CAMERA: '/dev/video2',
+    RUN_NAME: 'act-20261009-103000',
+    TRAIN_OUTPUT_DIR: '/home/ubuntu/handson-work/workshop01/attendee01/outputs/act-20261009-103000',
+    POLICY_PATH: '/tmp/model-example/checkpoints/last/pretrained_model',
+    SOURCE_AMI_ID: 'ami-0123456789abcdef0',
+    NEW_AMI_ID: 'ami-0fedcba9876543210',
+    BUILD_INSTANCE_ID: 'i-0123456789abcdef0',
+    BUILD_SUBNET_ID: 'subnet-0123456789abcdef0',
+    BUILD_PROFILE_NAME: 'HandsonAmiBuilder',
+    BUILD_ROOT_DEVICE: '/dev/sda1',
+    BUILD_VOLUME_GB: '512',
+    BUILD_AMI_NAME: 'GClueAiHandsOn-AMI-lerobot-20261009',
+    AMI_DESCRIPTION: 'Ubuntu 24.04 with LeRobot 0.6.0',
+    ROOT_DEVICE_NAME: '/dev/sda1',
+    PRIMARY_AZ: 'ap-northeast-1a',
+    SECONDARY_AZ: 'ap-northeast-1c',
+    ISSUER_KMS_ARN: 'arn:aws:kms:ap-northeast-1:123456789012:key/11111111-2222-3333-4444-555555555555',
+    SSH_HOST: 'ubuntu@jetson04.local',
+    EDGE_SETUP_HOOK: '/home/teacher/materials/hooks/edge-setup.sh',
+    GUIDE_EXPORTER: '/home/teacher/tools/export_attendee_guide_settings.py',
+    WHEEL_PATH: 'dist/handson-tools/gclue_ai_handson-0.1.0-py3-none-any.whl',
+    PATCH_ID: 'p20261009-103000',
+    RELEASE: 'workshop01-v1',
+    TOOLS_MANIFEST_SHA: '64 桁の 16 進数',
+    MANIFEST_SHA: '64 桁の 16 進数',
+    MATERIALS_DIR: '/home/teacher/materials',
+    ACCOUNT_ID: '123456789012',
+    AMI_ID: 'ami-0123456789abcdef0',
+    INSTANCE_ID: 'i-0123456789abcdef0',
+    INSTANCE_TYPE: 'g6e.2xlarge',
+  };
   // 未設定のときに入力欄へ初めから入れる値。人が書き換えた値を優先する。
   const defaults = {REGION: 'ap-northeast-1', INSTANCE_TYPE: 'g6e.2xlarge'};
   function applyDefaults() {
@@ -216,6 +263,7 @@
       const cell = document.createElement('div');
       const input = document.createElement('input'); input.id = label.htmlFor;
       input.className = 'lerobot-port-input'; input.value = state[key] || '';
+      if (examples[key]) input.placeholder = `例: ${examples[key]}`;
       input.dataset.awsField = key; input.type = 'text'; input.maxLength = 512; input.spellcheck = false; input.autocomplete = 'off';
       const hint = document.createElement('small'); hint.id = `${input.id}-hint`;
       hint.textContent = fields[key][2]; input.setAttribute('aria-describedby',hint.id);
