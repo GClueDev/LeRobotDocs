@@ -36,11 +36,11 @@ mkdocs build
 
 受講者版は `docs-aws-attendee/` と `mkdocs.aws-attendee.yml` で管理します。既存の `mkdocs.yml` から独立したビルドです。実測済み・手順照合のみ・未検証を区別し、秘密、アカウント固有値、期限付き URL はコミットせず置換値を使ってください。並列エージェントは別 checkout を使い、bind mount の dev container もエージェントごとに別のシャドウコピーを使います。
 
-同じ固定依存を用意したコンテナ内、または専用 Python 仮想環境で実行します。
+同じ固定依存を用意したコンテナ内、または専用 Python 仮想環境で実行します。AWS 版は、リポジトリ直下の `aws_guide_macros.py` と `aws_console_policy.py` を読み込むため、`mkdocs` ではなく `python -m mkdocs` で起動します（`mkdocs` コマンドでは `ModuleNotFoundError` になります）。
 
 ```bash
-mkdocs serve -f mkdocs.aws-attendee.yml -a 0.0.0.0:8000
-mkdocs build --strict -f mkdocs.aws-attendee.yml
+python -m mkdocs serve -f mkdocs.aws-attendee.yml -a 0.0.0.0:8000
+python -m mkdocs build --strict -f mkdocs.aws-attendee.yml
 ```
 
 出力先は `site-aws-attendee/` です。リンク先と見出しアンカーも警告として検証し、strict build で失敗させます。外部 URL の到達性、AWS 操作、EC2 上のコマンド実行はこのビルドでは検証しません。生成物はコミットしません。
@@ -66,11 +66,11 @@ AWSプロファイルもコマンド内では `{{PROFILE_SH}}`、YAML設定内�
 
 ```bash
 # 受講者版: site-aws-attendee/
-mkdocs build --strict -f mkdocs.aws-attendee.yml
+python -m mkdocs build --strict -f mkdocs.aws-attendee.yml
 
 # 講習会側版: site-aws-staff/
-mkdocs build --strict -f mkdocs.aws-staff.yml
-mkdocs serve -f mkdocs.aws-staff.yml -a 127.0.0.1:8004
+python -m mkdocs build --strict -f mkdocs.aws-staff.yml
+python -m mkdocs serve -f mkdocs.aws-staff.yml -a 127.0.0.1:8004
 ```
 
 - 受講者版は `extra.audience: attendee`。担当者の差し込みを省き、
@@ -82,6 +82,7 @@ mkdocs serve -f mkdocs.aws-staff.yml -a 127.0.0.1:8004
   差し込み箇所と `staff/` の全文参照は同じ部分ファイルを使います。
   元資料の版・部分ファイル一覧は `guide-includes/sources.json` に記録。
   他の作業コピーからの自動同期は行いません。
+
 - `aws_guide_macros.py` は相対リンクの解決と見出し階層の調整だけを
   担当します。シェルコマンドは実行しません。
 
