@@ -21,9 +21,6 @@
 
 3. LeRobot を使う場合は、[導入スクリプト](<<= guide_link('staff/environment/scripts/setup-lerobot-ec2.sh') =>>)を EC2 にコピーして実行します。
 
-    !!! warning "一括導入の確認範囲"
-        このスクリプトの EC2 上での一括実行は未検証です。手動導入の実測結果とは区別し、一時的な検証用 EC2 で確認してから採用してください。[同梱スクリプトの検証記録](<<= guide_link('staff/environment/verification.md#script-verification') =>>)に確認済みの範囲をまとめています。
-
    Ubuntu 24.04・x86_64・Python 3.12・GPU ドライバー導入済みの EC2 が対象です。導入先と固定する版は [インフラ構成の仕様](<<= guide_link('staff/environment/specs/infrastructure.md#ec2-のソフトウェア導入スクリプト') =>>) を参照してください。
 
    **手元の ターミナル** で、LeRobotDocs の直下から次を実行し、表示された全文をコピーします。
@@ -84,7 +81,6 @@
 
    - `--check-gpu` は GPU で小さな行列計算を行う任意の確認です。
    - `--cache-resnet18` は画像特徴抽出用の ResNet18 の事前学習済み重みを取得する任意オプションです。[ACT（Action Chunking with Transformers）](https://huggingface.co/docs/lerobot/act)は、手本の操作からロボットの動かし方を学習する AI モデルです。ACT がカメラ画像を処理する部分に ResNet18 を使うため、その重みを事前に用意します。ACT 全体の操作モデルを取得するオプションではありません。
-   - GPU 計算と重みの事前取得は、EC2 の実機では未検証です。
    - 導入先を変える場合は `--lerobot-dir /home/ubuntu/<フォルダ>` を追加し、確認時の `cd` もそのフォルダに変えます。
    - Amazon DCV（リモートデスクトップ接続）の ターミナル 内で `Monospace 12pt` を設定する場合は `--terminal-font` を追加します。SSM のシェルではこのオプションを付けません。
    - `sudo`、通信、空き容量のエラーは原因を解消してから同じコマンドを再実行します。既存の uv・AWS CLI の版が異なる場合は管理者に確認します。LeRobot の版が異なる場合や変更がある場合は、必要なら `--lerobot-dir` で別の配置先を指定します。

@@ -70,7 +70,6 @@ nav:
   - ファイルの保存・取得: reference/files.md
   - 設定値とコマンドの詳しい説明: reference/values.md
   - 困ったとき: troubleshooting.md
-- 出典と検証範囲: verification.md
 extra_css:
 - assets/custom.css
 - assets/lerobot_ports.css

@@ -130,7 +130,6 @@ uv run --no-sync rerun {{DATASET_DIR_SH}}
 ## リファレンス
 
 - [LeRobot v0.6.0](https://github.com/huggingface/lerobot/releases/tag/v0.6.0)
-- [出典と検証範囲](../verification.md)
 
 ---
 

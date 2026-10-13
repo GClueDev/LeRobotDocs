@@ -2,9 +2,6 @@
 
 実行場所: **EC2 の Ubuntu**。[収集後のデータ転送](collect.md#transfer-to-ec2)、必要なら [データセットの編集](edit.md)を済ませた同じ ターミナル で進めます。講師が CUDA と GPU 計算、ACT が画像特徴抽出に使う ResNet18 の事前学習済み重みのキャッシュを確認済みであることが前提です。
 
-!!! warning "GPU 学習は未検証です"
-    今回の EC2 の GPU 学習は未検証です。講師が同じ機器・データ・環境で事前確認してから実施します。[出典と検証範囲](../verification.md)を参照してください。
-
 ## 1. ACT学習（新規）
 
 [ACT（Action Chunking with Transformers）](https://huggingface.co/docs/lerobot/act)は、収集した手本の操作からロボットの動かし方を学習する AI モデルです。ここでは自分のデータセットを使って操作モデルを学習します。
@@ -137,7 +134,6 @@ printf '推論モデルの場所: %s\n' "$POLICY_PATH"
 ## リファレンス
 
 - [LeRobot v0.6.0](https://github.com/huggingface/lerobot/releases/tag/v0.6.0)
-- [出典と検証範囲](../verification.md)
 
 ---
 

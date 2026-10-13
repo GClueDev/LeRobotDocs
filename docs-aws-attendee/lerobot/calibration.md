@@ -47,7 +47,6 @@ Follower が Leader に追従することを確認し、Ctrl+C で終了しま�
 ## 4. リファレンス
 
 - [LeRobot v0.6.0](https://github.com/huggingface/lerobot/releases/tag/v0.6.0)
-- [出典と検証範囲](../verification.md)
 
 ---
 

@@ -2,9 +2,6 @@
 
 実行場所: **手元の Jetson／Mac**。[学習後のモデル回収](train.md#recover-model)で入力した推論モデルの場所を使います。新しい ターミナル では [接続の確認](check.md)と [カメラの調整](camera.md)で作ったカメラの設定を設定し直します。収集先・課題文・モデルの場所はフォームの保存値から入ります。USB接続先と作業フォルダは右上の設定から入ります。
 
-!!! warning "AWS 連携後の実機推論は未検証です"
-    この AWS 連携後の実機推論は未検証です。講師が同じ機器・データ・環境で事前確認してから実施します。[出典と検証範囲](../verification.md)を参照してください。
-
 `POLICY_PATH`は手元へ回収したモデルのフォルダの場所です。EC2の `TRAIN_OUTPUT_DIR` をここへ指定しません。新しいブラウザで入力する場合は、回収時に表示された「推論モデルの場所」を使います。例えば保存先が `/tmp/model-example` ならモデルの場所は `/tmp/model-example/checkpoints/last/pretrained_model` です。例のパスは入力せず、本人の取得先を使ってください。
 
 ## 1. 推論前の安全確認
@@ -62,7 +59,6 @@ lerobot-rollout \
 ## リファレンス
 
 - [LeRobot v0.6.0](https://github.com/huggingface/lerobot/releases/tag/v0.6.0)
-- [出典と検証範囲](../verification.md)
 
 ---
 

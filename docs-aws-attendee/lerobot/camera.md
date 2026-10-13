@@ -102,7 +102,6 @@ rm -ri -- {{LOCAL_DATASET_DIR_SH}}_camera_test
 ## リファレンス
 
 - [LeRobot v0.6.0](https://github.com/huggingface/lerobot/releases/tag/v0.6.0)
-- [出典と検証範囲](../verification.md)
 
 ---
 

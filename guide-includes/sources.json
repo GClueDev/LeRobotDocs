@@ -47,12 +47,6 @@
       "instructor/support/04.md",
       "instructor/support/05.md"
     ],
-    "instructor/verification.md": [
-      "instructor/verification/00.md",
-      "instructor/verification/01.md",
-      "instructor/verification/02.md",
-      "instructor/verification/03.md"
-    ],
     "environment/handoff.md": [
       "environment/handoff/00.md",
       "environment/handoff/01.md",
@@ -105,14 +99,6 @@
       "environment/specs/infrastructure/05.md",
       "environment/specs/infrastructure/06.md",
       "environment/specs/infrastructure/07.md"
-    ],
-    "environment/verification.md": [
-      "environment/verification/00.md",
-      "environment/verification/01.md",
-      "environment/verification/02.md",
-      "environment/verification/03.md",
-      "environment/verification/04.md",
-      "environment/verification/05.md"
     ]
   },
   "console_access_contract": {

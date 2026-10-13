@@ -30,12 +30,12 @@ git lfs checkout
 cd ~/lerobot
 ```
 
-`git lfs` がなければ講師へ導入を依頼します。取得後に[教材とデータ確認](../dataset.md)の情報・映像確認を再実行します。検証では aloha のデータ実体化後の表示が成功しました。pusht の表示成功は確認していません。
+`git lfs` がなければ講師へ導入を依頼します。取得後に[教材とデータ確認](../dataset.md)の情報・映像確認を再実行します。
 
 ## 別の可視化コマンドを使う {#other-viewers}
 
-!!! warning "別の可視化コマンドは未検証です"
-    通常の確認は[教材とデータ確認](../dataset.md)の Rerun を使います。別の CLI `lerobot-dataset-viz` は今回の EC2 では未検証です。講師が同じ環境で確認し、案内した場合だけ使ってください。検証範囲は[出典と検証範囲](../verification.md)を参照してください。
+!!! warning "講師の案内がある場合だけ使います"
+    通常の確認は[教材とデータ確認](../dataset.md)の Rerun を使います。別の CLI `lerobot-dataset-viz` は、講師が同じ環境で確認し、案内した場合だけ使ってください。
 
 [教材とデータ確認へ戻る](../dataset.md)
 
@@ -51,6 +51,22 @@ uv run --no-sync python --version
 uv run --no-sync lerobot-edit-dataset --help
 ```
 
-検証時の OS・LeRobot・Python・uv の版は[固定した EC2 環境の記録](../verification.md#runtime-versions)にまとめています。各バージョンと help を講師の指定と照合します。`--no-sync`は構築済みの依存をそのまま使う指定です。違いがあれば受講者自身で更新せず講師へ確認してください。
+OS・LeRobot・Python・uv などの版は、後述の[固定した EC2 環境](#runtime-versions)のとおりです。各バージョンと help を講師の指定と照合します。`--no-sync`は構築済みの依存をそのまま使う指定です。違いがあれば受講者自身で更新せず講師へ確認してください。
 
 [データ確認へ戻る](../dataset.md)
+
+## 固定した EC2 環境 {#runtime-versions}
+
+実習で使う EC2 の環境は、次の組合せに固定されています。
+
+| 項目 | 版 |
+| --- | --- |
+| OS / CPU | Ubuntu 24.04 / x86_64 |
+| LeRobot | v0.6.0、`30da8e687a6dfc617fcd94afc367ac7071c376ce` |
+| Python / uv | 3.12.3 / 0.12.23 |
+| torch / torchvision | 2.11.0+cu128 / 0.26.0+cu128 |
+| av / torchcodec | 15.1.0 / 0.11.1+cpu |
+| rerun-sdk | 0.33.1 |
+| AWS CLI | 2.37.10 |
+
+この一覧は最新推奨版の主張ではなく、固定した組合せの記録です。環境構築は講師・構築担当者が行い、受講者は途中で依存を入れ替えません。

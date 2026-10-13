@@ -117,6 +117,10 @@ Jinja変数は `<<= ... =>>`、コメントは `{## ... ##}` を使います。
 `staff/preparation/` の14工程へ分けています。ナビゲーションは
 `mkdocs.aws-staff.yml` で管理し、本文は共通部分ファイルを再利用します。
 
+### 手順書と保守用情報の分離
+
+配布する手順書（`docs-aws-attendee/`、`guide-includes/`）には、出典・版・検証範囲・変更履歴・改修 TODO を書きません。これらは `docs-aws-meta/` に Markdown のまま置きます。`docs-aws-meta/` はビルドの対象外で、手順書からリンクしません。
+
 ## AWSガイドの静的コンソール設定
 
 開催YAMLをインフラと資料で共有します。`aws.handson.attendee_console_access` は厳格なboolで、省略時trueです。資料専用の真偽値フラグはありません。
