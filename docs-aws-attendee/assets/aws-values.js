@@ -12,7 +12,7 @@
     EVENT_ID: ['開催 ID', v => /^[a-z][a-z0-9-]{1,14}[a-z0-9]$/.test(v), '講師が配布する開催の名前。説明例: workshop01。英小文字で始まる3〜16文字。英小文字・数字・ハイフン、末尾ハイフン不可'],
     ATTENDEE_ID: ['受講者 ID', v => /^[a-z][a-z0-9-]{1,30}$/.test(v) && v !== 'shared', '講師が配布する自分用のID。説明例: attendee01。英小文字で始まる2〜31文字。英小文字・数字・ハイフン。sharedは予約語'],
     BUCKET: ['S3 バケット名', v => /^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(v), '講師が配布するAWS上の保管先の名前。説明例: example-handson-workshop01。s3://やパスを付けない。3〜63文字。英小文字・数字・ドット・ハイフン'],
-    REGION: ['AWS リージョン', v => /^[a-z]{2}(?:-[a-z]+)+-\d+$/.test(v), '講師が指定するAWSの地域。説明例: ap-northeast-1（東京）。自分の住所から選ばない'],
+    REGION: ['AWS リージョン', v => /^[a-z]{2}(?:-[a-z]+)+-\d+$/.test(v), '講師が指定するAWSの地域。説明例: ap-northeast-1（東京）。自分の住所から選ばない。未設定のときは ap-northeast-1 を入れています'],
     PROFILE: ['AWS プロファイル', v => /^\S+$/.test(v) && !/[\x00-\x1f\x7f]/.test(v), '自分の作業環境に作った AWS CLI プロファイルの名前。例: handson-staff。空白不可。@や:も使用可'],
     CONFIG_DIR: ['開催設定ディレクトリ', path, '開催の設定ファイル gclue-ai-handson-config.yml を置くフォルダ。絶対パスまたは相対パス。~ は使わず、空白はそのまま入力'],
     PROJECT_DIR: ['手元の LeRobot 作業フォルダ', v => path(v) && v.startsWith('/'), '講師に確認した手元の配置先。Macの例: /Users/student/lerobot、Jetsonの例: /home/student/lerobot。EC2の場所を入力しない'],
@@ -52,7 +52,7 @@
     ACCOUNT_ID: ['AWS アカウント ID', v => /^\d{12}$/.test(v), '対象アカウントの12桁の番号'],
     AMI_ID: ['開催で使用する AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の構築対象。元・新・削除対象AMIは各手順で別途指定'],
     INSTANCE_ID: ['受講者 EC2 のインスタンス ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の確認対象。一時構築EC2は各手順で別途指定'],
-    INSTANCE_TYPE: ['EC2 インスタンスタイプ', v => /^[a-z][a-z0-9-]*\.[a-z0-9]+$/.test(v), '管理者が選定したタイプ'],
+    INSTANCE_TYPE: ['EC2 インスタンスタイプ', v => /^[a-z][a-z0-9-]*\.[a-z0-9]+$/.test(v), '管理者が選定したタイプ。未設定のときは、構築の既定と同じ g6e.2xlarge を入れています'],
   };
   const attendeeFields = ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','DATASET_DIR','DATASET_REPO_ID','PROJECT_DIR','TELEOP_PORT','ROBOT_PORT','LOCAL_DATASET_DIR','TASK','FRONT_CAMERA','SIDE_CAMERA','RUN_NAME','TRAIN_OUTPUT_DIR','POLICY_PATH'];
   const roleFields = {
@@ -62,6 +62,13 @@
     staff: Object.keys(fields),
   }[role];
   const allowed = new Set(Object.keys(fields));
+  // 未設定のときに入力欄へ初めから入れる値。人が書き換えた値を優先する。
+  const defaults = {REGION: 'ap-northeast-1', INSTANCE_TYPE: 'g6e.2xlarge'};
+  function applyDefaults() {
+    for (const [key, value] of Object.entries(defaults)) {
+      if (roleFields.includes(key) && !state[key]) state[key] = value;
+    }
+  }
   const links = new WeakMap();
   // Explicit documentation placeholders only; never classify arbitrary tags or redirects.
   const manualTokens = new Set(["<...>", "<64 桁の英数字>", "<AMI の名前>", "<ID>", "<SSH 接続先>", "<YYYYMMDD>", "<subnet ID>", "<…>", "<アカウント>", "<インスタンス ID>", "<インスタンスプロファイル名>", "<インフラリポジトリの作業コピー>", "<キーの ARN>", "<コマンド>", "<スクリプト>", "<スタックのリージョン>", "<スナップショット ID>", "<セッション名>", "<ディレクトリ>", "<パス>", "<パッケージのバージョン>", "<パッチ ID>", "<フォルダ>", "<ブランチ>", "<ホスト>", "<ポート番号>", "<メールアドレス>", "<リポジトリ名>", "<ルートデバイス名>", "<ロググループ名>", "<一時的なインスタンス ID>", "<人数>", "<件数>", "<作成日>", "<作業名>", "<保存先>", "<元の AMI ID>", "<削除する AMI ID>", "<台数>", "<場所>", "<容量>", "<導入 URL>", "<導入スクリプトの URL>", "<手元のデータセットフォルダ>", "<手元のリポジトリのフォルダ>", "<数>", "<新しい AMI ID>", "<新しい認証情報ファイル>", "<新しい認証情報ファイルの絶対パス>", "<時刻>", "<準備用のスクリプト>", "<版>", "<用途>", "<秒>", "<表示名>", "<認証情報ファイル>", "<認証情報ファイルの絶対パス>", "<説明>", "{種類}", "<LeRobot作業ディレクトリ>", "<Leaderのポート>", "<Followerのポート>", "<学習実行名>"]);
@@ -78,6 +85,7 @@
         if (typeof saved[key] === 'string' && fields[key][1](saved[key])) state[key] = saved[key];
       }
     } catch { storageAvailable = false; }
+    applyDefaults();
   }
   function save() {
     try {
@@ -255,7 +263,7 @@
       if (!confirmBox.hidden) { e.preventDefault(); closeConfirm(); }
     });
     confirmYes.addEventListener('click', () => {
-      state = {}; save();
+      state = {}; save(); applyDefaults();
       for (const status of document.querySelectorAll('[data-aws-transfer-status]')) status.textContent = '';
       for (const input of form.querySelectorAll('input')) { input.value = ''; input.setAttribute('aria-invalid','false'); }
       for (const error of form.querySelectorAll('.aws-error')) error.textContent = '';
