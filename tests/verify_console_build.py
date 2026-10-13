@@ -30,6 +30,6 @@ for value in ['true', 'false']:
             assert 'このビルド：受講者のAWSコンソール手順は無効' in content
         if 'attendee' not in args.config:
             assert 'このビルドで有効・無効な手順' in content
-            assert 'IAM適用を照会した証明ではありません' in content
+            assert '実際の AWS の権限設定を確認した証明ではありません' in content
         assert '{% if attendee_console_access' not in content
         print(f'{args.config}: {value} passed')
