@@ -49,7 +49,7 @@ aws --profile {{PROFILE_SH}} --region {{REGION}} \
 
 ### 2.3 AMI を選ぶ
 
-今回の再現対象は **Ubuntu 24.04 / x86_64 / Python 3.12 / NVIDIA ドライバー導入済み** の AMI です。管理者から対象リージョンで利用できる AMI ID を受け取り、次で状態・OS の説明・アーキテクチャを確認します。起動後は下の EC2 内確認も行います。`available`、`x86_64` と対象の説明が成功条件です。
+今回の再現対象は **Ubuntu 24.04 / x86_64 / Python 3.12 / NVIDIA ドライバー導入済み** の AMI です。管理者から対象リージョンで利用できる AMI ID を受け取り、次で状態・OS の説明・アーキテクチャを確認します。`available`、`x86_64` と対象の説明が成功条件です。この時点では、まだインスタンスは起動していません。
 
 ```bash
 aws --profile {{PROFILE_SH}} --region {{REGION}} \
@@ -58,13 +58,7 @@ aws --profile {{PROFILE_SH}} --region {{REGION}} \
   --output text
 ```
 
-AMI から起動した EC2 に接続した後、**EC2 の ターミナル（`ubuntu` ユーザー）**で実行します。OS が Ubuntu 24.04、アーキテクチャが `x86_64` であり、`nvidia-smi` がエラーなくドライバーと GPU の情報を表示することを確認します。
-
-```bash
-cat /etc/os-release
-uname -m
-nvidia-smi
-```
+AMI の中身（OS、ドライバー、GPU）は、インスタンスを起動した後に、[（任意）インスタンスの中身を確かめる](<<= guide_link('staff/preparation/verify.md#54') =>>)で確かめます。
 
 Ubuntu 22.04 の AMI は、同梱スクリプトの対象外です。DCV と NVIDIA ドライバーの導入はこのスクリプトに含まれないため、それらが備わる AMI を用意します。今回の資料では新しい AMI の取得・起動・作成を実施していません。
 
