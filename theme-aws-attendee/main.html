@@ -2,6 +2,7 @@
 {% block extrahead %}
 {{ super() }}
 <meta name="aws-guide-role" content="{{ config.extra.audience }}">
+{% if page and page.meta and page.meta.aws_page_owner %}<meta name="aws-page-owner" content="{{ page.meta.aws_page_owner }}">{% endif %}
 {% endblock %}
 {% block header %}
 {{ super() }}

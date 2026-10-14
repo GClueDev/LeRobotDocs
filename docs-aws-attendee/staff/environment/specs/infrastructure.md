@@ -1,3 +1,7 @@
+---
+aws_page_owner: environment
+---
+
 {% include 'environment/specs/infrastructure/00.md' %}
 
 {% include 'environment/specs/infrastructure/01.md' %}

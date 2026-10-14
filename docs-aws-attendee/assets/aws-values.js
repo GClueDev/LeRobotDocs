@@ -12,7 +12,7 @@
     EVENT_ID: ['開催 ID', v => /^[a-z][a-z0-9-]{1,14}[a-z0-9]$/.test(v), '講師が配布する開催の名前。説明例: workshop01。英小文字で始まる3〜16文字。英小文字・数字・ハイフン、末尾ハイフン不可'],
     ATTENDEE_ID: ['受講者 ID', v => /^[a-z][a-z0-9-]{1,30}$/.test(v) && v !== 'shared', '講師が配布する自分用のID。説明例: attendee01。英小文字で始まる2〜31文字。英小文字・数字・ハイフン。sharedは予約語'],
     BUCKET: ['S3 バケット名', v => /^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(v), '講師が配布するAWS上の保管先の名前。説明例: example-handson-workshop01。s3://やパスを付けない。3〜63文字。英小文字・数字・ドット・ハイフン'],
-    REGION: ['AWS リージョン', v => /^[a-z]{2}(?:-[a-z]+)+-\d+$/.test(v), '講師が指定するAWSの地域。説明例: ap-northeast-1（東京）。自分の住所から選ばない。未設定のときは ap-northeast-1 を入れています'],
+    REGION: ['AWS リージョン', v => /^[a-z]{2}(?:-[a-z]+)+-\d+$/.test(v), '講師が指定するAWSの地域。説明例: ap-northeast-1（東京）。自分の住所から選ばない。環境構築担当者のページでは、未設定のとき ap-northeast-1 を入れています'],
     PROFILE: ['AWS プロファイル', v => /^\S+$/.test(v) && !/[\x00-\x1f\x7f]/.test(v), '自分の作業環境に作った AWS CLI プロファイルの名前。例: your-profile。空白不可。@や:も使用可'],
     CONFIG_DIR: ['開催設定ディレクトリ', path, '開催の設定ファイル gclue-ai-handson-config.yml を置くフォルダ。絶対パスまたは相対パス。~ は使わず、空白はそのまま入力'],
     PROJECT_DIR: ['手元の LeRobot 作業フォルダ', v => path(v) && v.startsWith('/'), '講師に確認した手元の配置先。Macの例: /Users/student/Documents/lerobot、Jetsonの例: /home/student/Documents/lerobot。EC2の場所を入力しない'],
@@ -52,7 +52,7 @@
     ACCOUNT_ID: ['AWS アカウント ID', v => /^\d{12}$/.test(v), '対象アカウントの12桁の番号'],
     AMI_ID: ['開催で使用する AMI ID', v => /^ami-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の構築対象。元・新・削除対象AMIは各手順で別途指定'],
     INSTANCE_ID: ['受講者 EC2 のインスタンス ID', v => /^i-(?:[a-f0-9]{8}|[a-f0-9]{17})$/.test(v), '通常の確認対象。一時構築EC2は各手順で別途指定'],
-    INSTANCE_TYPE: ['EC2 インスタンスタイプ', v => /^[a-z][a-z0-9-]*\.[a-z0-9]+$/.test(v), '管理者が選定したタイプ。未設定のときは、構築の既定と同じ g6e.2xlarge を入れています'],
+    INSTANCE_TYPE: ['EC2 インスタンスタイプ', v => /^[a-z][a-z0-9-]*\.[a-z0-9]+$/.test(v), '管理者が選定したタイプ。環境構築担当者のページでは、未設定のとき構築の既定と同じ g6e.2xlarge を入れています'],
   };
   const attendeeFields = ['EVENT_ID','ATTENDEE_ID','BUCKET','REGION','DATASET_DIR','DATASET_REPO_ID','PROJECT_DIR','TELEOP_PORT','ROBOT_PORT','LOCAL_DATASET_DIR','TASK','FRONT_CAMERA','SIDE_CAMERA','RUN_NAME','TRAIN_OUTPUT_DIR','POLICY_PATH'];
   const roleFields = {
@@ -110,8 +110,11 @@
     INSTANCE_TYPE: 'g6e.2xlarge',
   };
   // 未設定のときに入力欄へ初めから入れる値。人が書き換えた値を優先する。
+  // 講師・受講者は前の担当者から受け取った値を確かめるため、環境構築担当者のページだけで入れる。
   const defaults = {REGION: 'ap-northeast-1', INSTANCE_TYPE: 'g6e.2xlarge'};
+  const pageOwner = document.querySelector('meta[name="aws-page-owner"]')?.content;
   function applyDefaults() {
+    if (role !== 'environment' && pageOwner !== 'environment') return;
     for (const [key, value] of Object.entries(defaults)) {
       if (roleFields.includes(key) && !state[key]) state[key] = value;
     }
