@@ -39,7 +39,7 @@ SO-101（ロボットアーム）を使う LeRobot 実習（接続確認、キ�
 
 | 変数名 | 意味・どこで使うか | 説明用の値 |
 | --- | --- | --- |
-| `LOCAL_DATASET_DIR` | 手元のJetson／Macで収集した映像と動作記録を置くフォルダ。[接続の確認](lerobot/check.md)の入力欄で設定する | Macなら `/Users/student/handson-data/workshop01/attendee01/round1` |
+| `LOCAL_DATASET_DIR` | 手元のJetson／Macで収集した映像と動作記録を置くフォルダ。[接続の確認](lerobot/check.md)の入力欄で設定する | Macなら `/Users/student/Documents/handson-data/workshop01/attendee01/round1` |
 | `DATASET_DIR` | EC2で編集・学習するデータのフォルダ。手元から送ったデータはここへ取得する。配布データなら講師の配置先を使う | `/home/ubuntu/handson-data/workshop01/attendee01/round1` |
 | `DATASET_REPO_ID` | データ一組に付けるLeRobotの識別名。収集・転送後の確認・学習で同じ名前を使う | `attendee01/red-cube` |
 

@@ -9,7 +9,7 @@
 | 手元の LeRobot 作業フォルダ（`PROJECT_DIR`） | 講師に確認した手元の配置先。EC2とは別 | Mac `/Users/student/Documents/lerobot`、Jetson `/home/student/Documents/lerobot` |
 | Leader の USB 接続先（`TELEOP_PORT`） | 人が動かすアームの検出結果を本人と講師が確認する | Mac `/dev/tty.usbmodem12301`、Jetson `/dev/ttyACM0` |
 | Follower の USB 接続先（`ROBOT_PORT`） | 追従するアームの検出結果。Leaderと取り違えない | Mac `/dev/tty.usbmodem12302`、Jetson `/dev/ttyACM1` |
-| `LOCAL_DATASET_DIR` | 手元の収集先。接続確認の入力欄で決める | `/Users/student/handson-data/workshop01/attendee01/round1` |
+| `LOCAL_DATASET_DIR` | 手元の収集先。接続確認の入力欄で決める | `/Users/student/Documents/handson-data/workshop01/attendee01/round1` |
 | `TASK` | 収集・推論で同じ課題文を使う | `Pick up the red cube` |
 
 例をそのまま入力せず、実際の配置先と検出結果を使います。機器やUSB接続を変えた場合は「各種値の設定」を更新し、改めて表示されたコマンドをコピーしてください。
