@@ -26,7 +26,7 @@
     lerobot-find-port
     ```
 
-検出したLeaderとFollowerの接続先を下の欄へ入力します。右上の「各種値の設定」と同じ値を共有します。手元のLeRobot作業フォルダも講師に確認して入力してください。例えばMacなら `/Users/student/lerobot`、Leaderは `/dev/tty.usbmodem12301`、Followerは `/dev/tty.usbmodem12302` ですが、実際の検出結果を使います。Jetsonの例と各値の意味は[値と機器の対応](../reference/values.md#local-values)を参照してください。
+検出したLeaderとFollowerの接続先を下の欄へ入力します。右上の「各種値の設定」と同じ値を共有します。手元のLeRobot作業フォルダも講師に確認して入力してください。例えばMacなら `/Users/student/Documents/lerobot`、Leaderは `/dev/tty.usbmodem12301`、Followerは `/dev/tty.usbmodem12302` ですが、実際の検出結果を使います。Jetsonの例と各値の意味は[値と機器の対応](../reference/values.md#local-values)を参照してください。
 
 
 <div data-aws-values-panel data-aws-inline data-aws-fields="PROJECT_DIR TELEOP_PORT ROBOT_PORT LOCAL_DATASET_DIR TASK"></div>

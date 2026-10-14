@@ -25,7 +25,7 @@
 
 | 設定欄（コマンドでの名前） | 使う場所・決め方 | 説明用の例 |
 | --- | --- | --- |
-| 手元の LeRobot 作業フォルダ（`PROJECT_DIR`） | 手元に準備したLeRobotの配置先を講師に確認する | Mac `/Users/student/lerobot`、Jetson `/home/student/lerobot` |
+| 手元の LeRobot 作業フォルダ（`PROJECT_DIR`） | 手元に準備したLeRobotの配置先を講師に確認する | Mac `/Users/student/Documents/lerobot`、Jetson `/home/student/Documents/lerobot` |
 | Leader の USB 接続先（`TELEOP_PORT`） | 手元で検出した、人が動かすアームの接続先 | Jetson `/dev/ttyACM0`、Mac `/dev/tty.usbmodem12301` |
 | Follower の USB 接続先（`ROBOT_PORT`） | 手元で検出した、追従するアームの接続先 | Jetson `/dev/ttyACM1`、Mac `/dev/tty.usbmodem12302` |
 

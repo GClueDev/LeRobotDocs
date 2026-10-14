@@ -6,7 +6,7 @@
 
 | 設定欄 | 用途・誰が決めるか | 説明用の例 |
 | --- | --- | --- |
-| 手元の LeRobot 作業フォルダ（`PROJECT_DIR`） | 講師に確認した手元の配置先。EC2とは別 | Mac `/Users/student/lerobot`、Jetson `/home/student/lerobot` |
+| 手元の LeRobot 作業フォルダ（`PROJECT_DIR`） | 講師に確認した手元の配置先。EC2とは別 | Mac `/Users/student/Documents/lerobot`、Jetson `/home/student/Documents/lerobot` |
 | Leader の USB 接続先（`TELEOP_PORT`） | 人が動かすアームの検出結果を本人と講師が確認する | Mac `/dev/tty.usbmodem12301`、Jetson `/dev/ttyACM0` |
 | Follower の USB 接続先（`ROBOT_PORT`） | 追従するアームの検出結果。Leaderと取り違えない | Mac `/dev/tty.usbmodem12302`、Jetson `/dev/ttyACM1` |
 | `LOCAL_DATASET_DIR` | 手元の収集先。接続確認の入力欄で決める | `/Users/student/handson-data/workshop01/attendee01/round1` |
