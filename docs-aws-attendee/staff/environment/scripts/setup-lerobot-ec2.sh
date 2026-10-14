@@ -23,8 +23,7 @@ LeRobotはv0.6.0、uvは0.12.23、AWS CLIは2.37.10に固定します。
 オプション:
   --lerobot-dir PATH  LeRobotの配置先（既定: ~/lerobot、絶対パス）
   --check-gpu         CUDAの認識とGPUでの小さな行列計算を確認する
-  --cache-resnet18    画像特徴抽出用 ResNet18 の
-                     事前学習済み重みを取得する
+  --cache-resnet18    ACTのResNet18の重みを事前に取得する
   --terminal-font    DCV内でGNOME Terminalの既定プロファイルをMonospace 12にする
   -h, --help         この説明を表示する
 
