@@ -181,7 +181,32 @@
     fragment.append(text.slice(offset));
     return fragment;
   }
+  // 前の担当者が決めた値が、各種値の設定に入っているかだけを示す。値の説明はしない。
+  function requiredChecks() {
+    for (const host of document.querySelectorAll('[data-aws-required-check]')) {
+      const keys = (host.dataset.awsFields || '').split(/\s+/).filter(key => allowed.has(key));
+      const owner = host.dataset.awsOwner || '環境構築担当者';
+      const missing = keys.filter(key => !state[key]);
+      const list = document.createElement('ul');
+      for (const key of keys) {
+        const item = document.createElement('li');
+        const name = document.createElement('strong'); name.textContent = fields[key][0];
+        const value = document.createElement('code'); value.textContent = state[key] || '未設定';
+        item.append(state[key] ? '✅ ' : '❌ ', name, '：', value); list.append(item);
+      }
+      const message = document.createElement('p');
+      message.textContent = missing.length
+        ? `未設定の値があります（${missing.map(key => fields[key][0]).join('、')}）。${owner}から受け取った設定JSONをインポートしてください。設定JSONがない、またはインポートしても未設定のままなら、${owner}に値を問い合わせてください。`
+        : `すべて設定されています。値が${owner}から伝えられたものと同じか、念のため見比べてください。`;
+      host.className = `admonition ${missing.length ? 'danger' : 'success'} aws-required-check`;
+      const title = document.createElement('p'); title.className = 'admonition-title';
+      title.textContent = missing.length ? `${owner}が決めた値が未設定です` : `${owner}が決めた値`;
+      host.setAttribute('role', 'status');
+      host.replaceChildren(title, list, message);
+    }
+  }
   function refresh() {
+    requiredChecks();
     const article = document.querySelector('article');
     if (!article) return;
     // Normalize highlighted code once so tokens split across syntax spans work too.
