@@ -7,7 +7,7 @@
 ### 2.1 記載例をコピーする
 
 [共通設定](<<= guide_link('common.md') =>>) の設定ディレクトリ（`{{CONFIG_DIR}}`）を使います。開催ごとに別のディレクトリにしてください。
-`config/environments/` は Git の管理対象外です。
+設定ファイルは Git で管理し、講師と共有します。秘密の値（アクセスキー・パスワードなど）は書きません。
 
 ```bash
 mkdir -p {{CONFIG_DIR_SH}}
@@ -23,7 +23,6 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 
 | 項目 | 埋める値 | 値の調べ方 |
 | --- | --- | --- |
-| `aws.profile` | 自分の作業環境に作った AWS CLI プロファイルの名前 | 自分で決める（作り方は [管理者に依頼するもの](<<= guide_link('staff/preparation/environment-start.md#11') =>>) の下の説明） |
 | `aws.handson.deployment_id` | 開催 ID | [用意するもの](<<= guide_link('staff/preparation/environment-start.md#_6') =>>) |
 | `aws.handson.account` | アカウント ID（12 桁。`"` で囲む） | [AWS アカウントの状態を確かめる](<<= guide_link('staff/preparation/environment-start.md#13-aws') =>>) で表示した値 |
 | `aws.handson.region` | リージョン（例: `ap-northeast-1`） | 管理者から受け取る |
@@ -39,6 +38,8 @@ cp config/env.template/gclue-ai-handson-config.yml {{CONFIG_DIR_SH}}
 | `aws.handson_cdk.instance.root_device_name` | AMI のルートデバイス名 | [ルートデバイス名を調べる](<<= guide_link('staff/preparation/placement.md#25') =>>) |
 | `aws.handson_cdk.instance.availability_zone` | インスタンスを置く Availability Zone（任意） | [Availability Zone を選ぶ](<<= guide_link('staff/preparation/placement.md#26-availability-zone') =>>) |
 | `aws.handson_cdk.issuer.access_key_serial` | 1 のまま | 変えるのは [払出し用の鍵を作り直す](<<= guide_link('staff/environment/procedures/environment.md#64') =>>) のときだけ |
+
+設定ファイルに `aws.profile`（自分の AWS プロファイル名）は書きません。共有する設定ファイルに個人のプロファイル名が入らないよう、プロファイルは各自が環境変数 `AWS_PROFILE` で指定します（[設定ファイルを検査する](<<= guide_link('staff/preparation/validate.md') =>>)）。
 
 手元の ターミナル（インフラリポジトリ直下）で、既存 VPC の CIDR を確認します。表示された範囲と重ならない範囲を設定してください。
 
